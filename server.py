@@ -1,6 +1,7 @@
 """
 FastAPI Server for Render Deployment
 Backend only — Facebook Messenger webhook.
+Deferred imports to ensure fast port binding.
 """
 import os
 import sys
@@ -13,12 +14,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from fastapi import FastAPI, Request, HTTPException, Query, BackgroundTasks
-from typing import List
-
-from core.initialize import initialize_system
 
 # ══════════════════════════════════════════════════════════════
-# Config
+# Config (lightweight — no heavy imports here)
 # ══════════════════════════════════════════════════════════════
 PORT = int(os.getenv("PORT", 10000))
 
@@ -88,42 +86,65 @@ def get_drive_links_for_sources(sources: list[str]) -> dict[str, str]:
     return result
 
 
-load_drive_links()
-
 # ══════════════════════════════════════════════════════════════
-# Chatbot init (lazy)
+# Chatbot init (fully deferred — no heavy imports at module level)
 # ══════════════════════════════════════════════════════════════
 workflow = None
 conversation_manager = None
 init_lock = asyncio.Lock()
+_init_started = False
 
 
 def _init_sync():
+    """Synchronous initialization — heavy imports happen HERE, not at module level."""
+    from core.initialize import initialize_system
     print("🚀 Initializing Chatbot System...")
     return initialize_system()
 
 
 async def get_chatbot():
-    global workflow, conversation_manager
+    global workflow, conversation_manager, _init_started
     async with init_lock:
         if workflow is None:
+            _init_started = True
             from concurrent.futures import ThreadPoolExecutor
             loop = asyncio.get_event_loop()
             with ThreadPoolExecutor() as pool:
                 wf, cm, _ = await loop.run_in_executor(pool, _init_sync)
             workflow, conversation_manager = wf, cm
+            load_drive_links()
     return workflow, conversation_manager
 
 
 # ══════════════════════════════════════════════════════════════
-# FastAPI App
+# FastAPI App — starts IMMEDIATELY, no heavy deps
 # ══════════════════════════════════════════════════════════════
 app = FastAPI(title="HaUI Chatbot API")
 
 
+@app.on_event("startup")
+async def startup_event():
+    """Trigger chatbot init in background after server starts."""
+    asyncio.create_task(_background_init())
+
+
+async def _background_init():
+    """Initialize chatbot in background so port binds fast."""
+    print("⏳ Starting background initialization...")
+    try:
+        await get_chatbot()
+        print("✅ Chatbot system ready!")
+    except Exception as e:
+        print(f"❌ Background init failed: {e}")
+
+
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy", "chatbot_loaded": workflow is not None}
+    return {
+        "status": "healthy",
+        "chatbot_loaded": workflow is not None,
+        "init_started": _init_started,
+    }
 
 
 @app.get("/webhook")
