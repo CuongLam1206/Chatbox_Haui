@@ -14,65 +14,60 @@ from core.config import GEMINI_API_KEY
 
 class GeminiEmbedding(Embeddings):
     """
-    Google Gemini Embedding via REST API (v1 endpoint).
-    Uses text-embedding-004 model — lightweight, no local GPU/RAM needed.
+    Google Gemini Embedding via REST API.
+    Uses gemini-embedding-001 model — lightweight, no local GPU/RAM needed.
     """
     
-    def __init__(self, model: str = "text-embedding-004"):
+    def __init__(self, model: str = "gemini-embedding-001"):
         import requests as _req
         self._requests = _req
         self.model = model
         self.api_key = GEMINI_API_KEY
-        self.base_url = f"https://generativelanguage.googleapis.com/v1/models/{model}"
+        self.base_url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}"
         
         # Verify model is accessible
         print(f"Loading Gemini Embedding API: {model}")
-        test = self._embed_batch(["test"])
+        test = self._embed_single("test")
         if test:
-            print(f"✓ Gemini Embedding ready ({len(test[0])} dimensions, cloud API)")
+            print(f"✓ Gemini Embedding ready ({len(test)} dimensions, cloud API)")
         else:
             raise RuntimeError("Failed to connect to Gemini Embedding API")
     
-    def _embed_batch(self, texts: list[str]) -> list[list[float]]:
-        """Call Gemini REST API to embed a batch of texts."""
-        requests_body = [
-            {"model": f"models/{self.model}", "content": {"parts": [{"text": t}]}}
-            for t in texts
-        ]
-        
+    def _embed_single(self, text: str) -> list[float]:
+        """Embed a single text via embedContent API."""
         resp = self._requests.post(
-            f"{self.base_url}:batchEmbedContents",
+            f"{self.base_url}:embedContent",
             params={"key": self.api_key},
             headers={"Content-Type": "application/json"},
-            json={"requests": requests_body},
+            json={
+                "model": f"models/{self.model}",
+                "content": {"parts": [{"text": text}]},
+            },
         )
         
         if resp.status_code != 200:
             raise RuntimeError(f"Gemini Embedding API error {resp.status_code}: {resp.text}")
         
-        data = resp.json()
-        return [e["values"] for e in data["embeddings"]]
+        return resp.json()["embedding"]["values"]
     
     def embed_documents(self, texts: list[str]) -> list[list[float]]:
         if not texts:
             return []
         
         all_embeddings = []
-        batch_size = 100  # Gemini supports up to 100 per batch
         
         print(f"    - Embedding {len(texts)} chunks via Gemini API...")
-        for i in range(0, len(texts), batch_size):
-            batch = texts[i : i + batch_size]
-            batch_embeddings = self._embed_batch(batch)
-            all_embeddings.extend(batch_embeddings)
+        for i, text in enumerate(texts):
+            emb = self._embed_single(text)
+            all_embeddings.append(emb)
             
-            done = min(i + batch_size, len(texts))
-            print(f"      ✓ Processed {done}/{len(texts)} chunks")
+            if (i + 1) % 50 == 0 or (i + 1) == len(texts):
+                print(f"      ✓ Processed {i + 1}/{len(texts)} chunks")
         
         return all_embeddings
     
     def embed_query(self, text: str) -> list[float]:
-        return self._embed_batch([text])[0]
+        return self._embed_single(text)
     
     def get_embedding_function(self):
         return self
