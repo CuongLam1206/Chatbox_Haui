@@ -1,0 +1,62 @@
+# ============================================================
+# .dockerignore - Reduce Docker build context
+# ============================================================
+
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+agentic_rag/
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Git
+.git/
+.gitignore
+
+# Heavy original files (we only need .md versions)
+data/documents/*.pdf
+data/documents/*.docx
+data/documents/*.doc
+data/documents/*.pptm
+data/documents/*.pptx
+
+# OCR tools (not needed at runtime)
+tools/ocr/
+data/ocr/
+
+# Pre-built vector DB (will be rebuilt on first run)
+vector_db/
+
+# Tests & docs (not needed in production)
+tests/
+docs/
+
+# Environment file (use Render dashboard instead)
+.env
+
+# Misc
+.DS_Store
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Old entry points (replaced by server.py)
+# demo.py  — keep for local dev
+# api/     — keep for reference

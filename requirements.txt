@@ -1,0 +1,48 @@
+# LangChain Core
+langchain>=0.3.0
+langchain-openai>=0.2.0
+langchain-ollama>=0.2.0
+langchain-groq>=0.2.0
+langchain-google-genai>=2.0.0
+langchain-huggingface>=0.1.0
+langchain-chroma>=0.2.0
+langchain-community>=0.3.0
+langchain-text-splitters>=0.3.0
+langchain-core>=0.3.0
+
+# Agentic RAG
+langgraph>=0.2.0
+
+# Embeddings & Vector DB
+sentence-transformers>=3.0.0
+chromadb>=0.5.0
+rank_bm25>=0.2.2
+
+# Conversation Storage
+pymongo>=4.8.0
+
+# Interface
+gradio>=5.0.0
+fastapi>=0.115.0
+uvicorn>=0.30.0
+
+# API Requests
+requests>=2.31.0
+
+# Utilities
+python-dotenv>=1.0.0
+pydantic>=2.0.0
+
+# Document Conversion (Docling for DOC/PDF)
+python-docx>=1.1.0
+docx2txt>=0.8
+pypdf>=5.1.0
+docling>=2.0.0
+
+# OCR for scanned PDFs (EasyOCR with preprocessing)
+easyocr>=1.7.0
+opencv-python>=4.5.0
+pdf2image>=1.16.0
+
+# File-system watcher for auto-update
+watchdog>=4.0.0

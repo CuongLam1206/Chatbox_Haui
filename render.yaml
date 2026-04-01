@@ -1,0 +1,49 @@
+# ============================================================
+# render.yaml - Render Blueprint for HaUI Chatbot
+# ============================================================
+# Deploy guide:
+#   1. Push repo to GitHub
+#   2. Go to https://render.com → New → Blueprint
+#   3. Connect your GitHub repo
+#   4. Render will auto-detect this file and create the service
+
+services:
+  - type: web
+    name: haui-chatbot
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: starter  # $7/mo — 512MB RAM, 0.5 CPU (minimum for embedding model)
+    region: singapore  # Closest to Vietnam
+    healthCheckPath: /health
+    envVars:
+      # Gemini LLM
+      - key: USE_GEMINI
+        value: "true"
+      - key: GEMINI_API_KEY
+        sync: false  # Will prompt for value during setup
+      - key: GEMINI_MODEL
+        value: "gemini-2.0-flash"
+
+      # MongoDB Atlas
+      - key: MONGODB_URI
+        sync: false
+      - key: MONGODB_DATABASE
+        value: "agentic_rag_db"
+
+      # Disable other LLM providers
+      - key: USE_OLLAMA
+        value: "false"
+      - key: USE_GROQ
+        value: "false"
+      - key: USE_OPENROUTER
+        value: "false"
+
+      # Facebook Messenger (optional)
+      - key: FB_PAGE_ACCESS_TOKEN
+        sync: false
+      - key: FB_VERIFY_TOKEN
+        value: "haui_chatbot_2024"
+
+      # Render provides PORT automatically
+      # - key: PORT
+      #   value: "10000"
