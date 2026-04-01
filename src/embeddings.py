@@ -19,7 +19,7 @@ class GeminiEmbedding(Embeddings):
     Free tier: 1500 requests/min.
     """
     
-    def __init__(self, model: str = "models/text-embedding-004"):
+    def __init__(self, model: str = "models/embedding-001"):
         from langchain_google_genai import GoogleGenerativeAIEmbeddings
         print(f"Loading Gemini Embedding API: {model}")
         
