@@ -46,3 +46,8 @@ pdf2image>=1.16.0
 
 # File-system watcher for auto-update
 watchdog>=4.0.0
+
+# Google Sheets Logging
+gspread>=6.0.0
+google-auth>=2.27.0
+pytz>=2024.1

@@ -66,3 +66,15 @@ RELEVANCE_THRESHOLD = 0.2
 # Agent Configuration
 MAX_RETRIES = 1  # Reduced retries for faster response
 ENABLE_HALLUCINATION_CHECK = False  # Disabled to save time and tokens
+
+# Facebook Configuration
+FB_PAGE_ACCESS_TOKEN = os.getenv("FB_PAGE_ACCESS_TOKEN")
+FB_VERIFY_TOKEN = os.getenv("FB_VERIFY_TOKEN")
+FB_APP_ID = os.getenv("FB_APP_ID")
+FB_APP_SECRET = os.getenv("FB_APP_SECRET")
+
+# Google Sheets Configuration
+GOOGLE_SHEET_ID = os.getenv("GOOGLE_SHEET_ID")
+GOOGLE_SERVICE_ACCOUNT_EMAIL = os.getenv("GOOGLE_SERVICE_ACCOUNT_EMAIL")
+GOOGLE_PRIVATE_KEY = os.getenv("GOOGLE_PRIVATE_KEY")
+GOOGLE_LOG_SHEET_NAME = os.getenv("GOOGLE_LOG_SHEET_NAME", "Haui_Chatbot_Logs")
