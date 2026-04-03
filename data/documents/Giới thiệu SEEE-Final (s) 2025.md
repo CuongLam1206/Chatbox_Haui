@@ -25,8 +25,28 @@ Trường Điện - Điện tử (SEEE) gồm các ngành/chương trình đào 
 10. CNKT Điện tử - Viễn thông (CTĐT bằng tiếng Anh)
 11. CNKT Điện (CTĐT bằng tiếng Anh)
 
+## Nhân sự Ban Giám hiệu Trường Điện - Điện tử (SEEE)
 
-## Slide 1: [Theo dõi fanpage của Trường Điện - Điện tử để cập nhật đầy đủ và nhanh chóng các thông báo quan trọng, theo dõi các hoạt động Sinh viên và hỗ trợ sinh viên, giao lưu và hỏi đáp]
+| Chức danh | Họ tên | Phòng | SĐT |
+|---|---|---|---|
+| Hiệu trưởng Trường SEEE | PGS. TS. Hoàng Mạnh Kha | Phòng 507 – A7, CS1 | 0912668779 |
+| Phó Hiệu trưởng Trường SEEE | TS. Quách Đức Cường | Phòng 507 – A7, CS1 | 0918793004 |
+
+## Trưởng chương trình và Cố vấn học tập (CVHT) theo ngành - Trường SEEE
+
+| Ngành đào tạo | Trưởng chương trình | Cố vấn học tập (CVHT) | SĐT CVHT |
+|---|---|---|---|
+| CNKT Máy tính | TS. Vũ Trung Kiên (0989646848) | Thầy Nguyễn Vũ Thắng | 0986350910 |
+| CNKT Nhiệt | TS. Nguyễn Vũ Linh (0905266696) | Thầy Nguyễn Vũ Thắng | 0986350910 |
+| Năng lượng tái tạo | TS. Ninh Văn Quân (0912485051) | Thầy Nguyễn Vũ Thắng | 0986350910 |
+| CNKT Điện, Điện tử | TS. Nguyễn Mạnh Quân (0936428889) | Thầy Vũ Trường Sơn | 09865761272 |
+| CNKT Điện tử - Viễn thông | TS. Bồ Quốc Bảo (0936779989) | Cô Nguyễn Thị Uyên | 0973357113 |
+| CNKT Điện tử y sinh | TS. Nguyễn Đắc Hải (0979456234) | Cô Nguyễn Thị Uyên | 0973357113 |
+| CNKT Điều khiển và Tự động hóa | TS. Bùi Văn Huy (0977642225) | Thầy Trần Quyết Thắng | 0913081697 |
+| Kỹ thuật sản xuất thông minh | TS. Tống Thị Lý (0965801688) | Thầy Trần Quyết Thắng | 0913081697 |
+| Vi mạch bán dẫn (dự kiến) | TS. Phạm Xuân Thành (0973963903) | Thầy Nguyễn Vũ Thắng | 0986350910 |
+
+ [Theo dõi fanpage của Trường Điện - Điện tử để cập nhật đầy đủ và nhanh chóng các thông báo quan trọng, theo dõi các hoạt động Sinh viên và hỗ trợ sinh viên, giao lưu và hỏi đáp]
 
 
 HaUI

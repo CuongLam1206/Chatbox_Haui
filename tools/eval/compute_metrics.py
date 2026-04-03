@@ -35,16 +35,25 @@ def llm_judge_batch(cases: list[dict]) -> list[dict]:
 
     results = []
     for case in cases:
-        prompt = f"""Đánh giá chất lượng câu trả lời của chatbot.
+        prompt = f"""Đánh giá chất lượng câu trả lời của chatbot trường đại học.
 
 Câu hỏi: {case['question']}
 Đáp án chuẩn: {case['ground_truth']}
 Câu trả lời chatbot: {case['predicted']}
 
-Trả lời JSON với hai trường:
-- "is_correct": true nếu câu trả lời đúng về mặt thực tế so với đáp án chuẩn, false nếu sai hoặc thiếu thông tin quan trọng
-- "faithfulness": điểm 0.0-1.0 đánh giá câu trả lời có bịa thêm thông tin không có trong đáp án không (1.0 = không bịa, 0.0 = toàn bịa)
-- "note": nhận xét ngắn (tiếng Việt)
+QUY TẮC CHẤM ĐIỂM:
+1. is_correct = true nếu câu trả lời ĐÚNG VỀ NỘI DUNG CHÍNH so với đáp án chuẩn. Cho phép:
+   - Diễn đạt khác nhưng cùng ý nghĩa
+   - Bổ sung thêm chi tiết hữu ích (miễn không sai)
+   - Trả lời chi tiết hơn đáp án chuẩn
+2. is_correct = false NẾU:
+   - Chatbot nói "chưa có thông tin" / "không có thông tin" nhưng đáp án chuẩn CÓ câu trả lời
+   - Chatbot trả lời SAI THỰC TẾ (số liệu sai, tên sai, quy định sai)
+   - Chatbot thiếu thông tin QUAN TRỌNG NHẤT của đáp án
+3. faithfulness: 0.0-1.0 đánh giá chatbot có bịa thông tin không (1.0 = không bịa)
+
+Trả lời JSON:
+{{"is_correct": true/false, "faithfulness": 0.0-1.0, "note": "nhận xét ngắn tiếng Việt"}}
 
 Chỉ trả về JSON, không thêm gì khác."""
         try:

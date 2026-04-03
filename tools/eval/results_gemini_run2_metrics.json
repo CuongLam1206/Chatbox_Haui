@@ -1,0 +1,704 @@
+{
+  "metadata": {
+    "timestamp": "2026-04-03T12:18:18.840115",
+    "test_set": "tools/eval/test_set.json",
+    "total_cases": 33,
+    "completed": 33,
+    "errors": 0,
+    "total_time_sec": 196.7,
+    "avg_latency_sec": 5.96,
+    "metrics_computed_at": "2026-04-03T12:22:47.849323"
+  },
+  "summary": {
+    "accuracy": 0.9394,
+    "source_hit_rate": 0.9091,
+    "avg_faithfulness": 1.0,
+    "hallucination_rate": 0.0,
+    "avg_latency_sec": 5.96
+  },
+  "per_group": {
+    "G1_quy_che": {
+      "accuracy": 0.9,
+      "source_hit_rate": 0.8,
+      "n": 10
+    },
+    "G2_hoc_bong": {
+      "accuracy": 0.8571,
+      "source_hit_rate": 1.0,
+      "n": 7
+    },
+    "G3_seee": {
+      "accuracy": 1.0,
+      "source_hit_rate": 1.0,
+      "n": 8
+    },
+    "G4_thoi_khoa_bieu": {
+      "accuracy": 1.0,
+      "source_hit_rate": 1.0,
+      "n": 6
+    },
+    "G5_phuc_hop": {
+      "accuracy": 1.0,
+      "source_hit_rate": 0.5,
+      "n": 2
+    }
+  },
+  "results": [
+    {
+      "id": "G1-001",
+      "group": "G1_quy_che",
+      "difficulty": "easy",
+      "type": "factual",
+      "question": "Sinh viên vắng quá bao nhiêu phần trăm giờ lý thuyết sẽ bị cấm thi?",
+      "ground_truth": "Sinh viên vắng mặt trên 30% số giờ học Lý thuyết không được tham dự kỳ thi kết thúc Học phần và nhận điểm F.",
+      "predicted": "Sinh viên vắng mặt trên lớp quá 30% số giờ học lý thuyết sẽ không được tham dự kỳ thi kết thúc học phần và nhận điểm F theo quy định.",
+      "sources_returned": [
+        "Quy chế đào tạo HaUI",
+        "19.Quy che dao tao tin chỉ 2020 - 2021",
+        "1.1.1.1 Quy chế đào tạo hợp nhất QĐ 744 và 666",
+        "Giới thiệu SEEE-Final (s) 2025"
+      ],
+      "expected_source": "Quy chế đào tạo HaUI",
+      "relevance_score": 0.25,
+      "latency_sec": 5.45,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời của chatbot hoàn toàn chính xác và đầy đủ so với đáp án chuẩn. Diễn đạt có khác nhưng không làm thay đổi ý nghĩa."
+    },
+    {
+      "id": "G1-002",
+      "group": "G1_quy_che",
+      "difficulty": "medium",
+      "type": "factual",
+      "question": "Điểm học phần được tính như thế nào?",
+      "ground_truth": "Điểm học phần được tính từ điểm thành phần (điểm chuyên cần, điểm kiểm tra, điểm thi) với trọng số theo quy định của từng học phần.",
+      "predicted": "Điểm học phần được tính như sau:\n\n<strong>Đối với các học phần chỉ có lý thuyết hoặc có cả lý thuyết và thực hành/thí nghiệm/tiểu luận/bài tập lớn/đồ án/dự án:</strong>\n\n• Điểm đánh giá kết thúc học phần có trọng số không dưới 50%.\n\n<strong>Đối với các học phần thực hành/thí nghiệm:</strong>\n\n• Điểm học phần là trung bình có trọng số của điểm đánh giá các bài thực hành/thí nghiệm hoặc các chuẩn đầu ra học phần, được làm tròn đến một chữ số thập phân.\n\n<strong>Đối với các học phần dự án, đồ án, thực tập, kiến tập:</strong>\n\n• Điểm đánh giá kết thúc học phần có trọng số không dưới 70%.\n\n<strong>Trường hợp đề cương chi tiết học phần không quy định cụ thể:</strong>\n\n1.  <strong>Các học phần chỉ có lý thuyết hoặc có cả lý thuyết và thực hành, thí nghiệm hoặc có cả lý thuyết và đồ án, dự án, tiểu luận, bài tập lớn:</strong>\n\n    *   <strong>Điểm trung bình các điểm trong kỳ:</strong> Trung bình cộng của điểm kiểm tra thường xuyên và điểm thi giữa học phần theo hệ số.\n        *   Điểm kiểm tra thường xuyên: Gồm điểm kiểm tra kết quả học tập hàng ngày, điểm đánh giá các bài thực hành, thí nghiệm.\n        *   Điểm thi giữa học phần: Tổ chức thi và nội dung thi do giảng viên lựa chọn. Thời gian làm bài từ 45 đến 90 phút.\n    *   <strong>Điểm học phần:</strong> Trung bình cộng của điểm trung bình các điểm trong kỳ và điểm thi kết thúc học phần theo hệ số. Điểm học phần được tính theo thang điểm 10, làm tròn đến một chữ số thập phân và chuyển qua thang điểm chữ.\n\n2.  <strong>Các học phần thực hành (chỉ có Thực hành/Thí nghiệm):</strong>\n\n    *   Điểm trung bình cộng của điểm từng bài Thực hành/Thí nghiệm trong học kỳ được làm tròn đến một chữ số thập phân là điểm của học phần thực hành.\n\n3.  <strong>Học phần Đồ án/Dự án, Bài tập lớn:</strong>\n\n    *   Sử dụng điểm đánh giá kết thúc học phần làm điểm học phần. Điểm đánh giá theo thang điểm 10 và làm tròn đến 0,5.\n\n<strong>(Theo Điều 9 của Quy chế đào tạo)</strong>",
+      "sources_returned": [
+        "Quy chế đào tạo HaUI",
+        "1.1.1.1 Quy chế đào tạo hợp nhất QĐ 744 và 666",
+        "19.Quy che dao tao tin chỉ 2020 - 2021",
+        "qd-1532-24-9-25-ban-hanh-quy-dinh-thuc-hien-da-kltn"
+      ],
+      "expected_source": "Quy chế đào tạo HaUI",
+      "relevance_score": 0.375,
+      "latency_sec": 7.32,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời chi tiết và chính xác hơn so với đáp án chuẩn, cung cấp thông tin cụ thể về cách tính điểm cho từng loại học phần. Quan trọng nhất là chatbot không bịa thông tin."
+    },
+    {
+      "id": "G1-003",
+      "group": "G1_quy_che",
+      "difficulty": "medium",
+      "type": "factual",
+      "question": "Sinh viên bị cảnh báo học tập khi nào?",
+      "ground_truth": "Sinh viên bị cảnh báo học tập khi TBC Học kỳ năm 1 < 0,80 hoặc TBC Học kỳ các năm sau < 1,00, hoặc TBC Tích lũy năm 1 < 1,20; năm 2 < 1,40; năm 3 < 1,60.",
+      "predicted": "Sinh viên sẽ bị cảnh báo học tập nếu thuộc một trong các trường hợp sau:\n\n• Điểm trung bình học kỳ đạt dưới 0,80 đối với học kỳ đầu của khóa học, dưới 1,00 đối với các học kỳ tiếp theo.\n• Điểm trung bình tích lũy đạt dưới 1,20 đối với sinh viên năm thứ nhất, dưới 1,40 đối với sinh viên năm thứ hai, dưới 1,60 đối với sinh viên năm thứ ba hoặc dưới 1,80 đối với sinh viên các năm tiếp theo và cuối khoá.",
+      "sources_returned": [
+        "Quy chế đào tạo HaUI",
+        "Giới thiệu SEEE-Final (s) 2025",
+        "1.1.1.1 Quy chế đào tạo hợp nhất QĐ 744 và 666"
+      ],
+      "expected_source": "Quy chế đào tạo HaUI",
+      "relevance_score": 0.375,
+      "latency_sec": 5.8,
+      "is_correct": false,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Chatbot trả lời sai về điểm TBC Tích lũy của các năm, đặc biệt là bổ sung thêm thông tin sai về TBC Tích lũy < 1.80 cho các năm tiếp theo và cuối khoá."
+    },
+    {
+      "id": "G1-004",
+      "group": "G1_quy_che",
+      "difficulty": "medium",
+      "type": "factual",
+      "question": "Điều kiện bị buộc thôi học là gì?",
+      "ground_truth": "Sinh viên bị buộc thôi học khi: vượt quá thời gian học tập (6 năm với K16 trở đi), bị cảnh báo KQHT lần thứ 02 liên tiếp, hoặc không đăng ký khối lượng học tập trong 2 HK chính liên tiếp.",
+      "predicted": "Bạn sẽ bị buộc thôi học nếu thuộc một trong các trường hợp sau:\n1.  Lần thứ 2 liên tiếp có kết quả học tập rơi vào diện bị cảnh báo học tập. Cụ thể:\n    *   Điểm trung bình học kỳ đạt dưới 0,80 đối với học kỳ đầu của khóa học, dưới 1,00 đối với các học kỳ tiếp theo.\n    *   Điểm trung bình tích lũy đạt dưới 1,20 đối với sinh viên năm thứ nhất; dưới 1,40 đối với sinh viên năm thứ hai; dưới 1,60 đối với sinh viên năm thứ ba và dưới 1,80 đối với sinh viên các năm tiếp theo.\n2.  Vượt quá thời gian tối đa được phép học theo quy định. Đối với khóa K16 trở đi là 6 năm.\n3.  Không đăng ký khối lượng học tập trong 02 học kỳ chính liên tiếp.\n\nThông tin này được quy định tại Điều 11 của Quy chế xử lý kết quả học tập theo tín chỉ.",
+      "sources_returned": [
+        "Giới thiệu SEEE-Final (s) 2025",
+        "1.1.1.1 Quy chế đào tạo hợp nhất QĐ 744 và 666",
+        "28. 1150-NEW-T92024-QĐ khen thưởng kỷ luật sinh viên"
+      ],
+      "expected_source": "Quy chế đào tạo HaUI",
+      "relevance_score": 0.5,
+      "latency_sec": 6.17,
+      "is_correct": true,
+      "source_hit": false,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời của chatbot đầy đủ và chính xác hơn so với đáp án chuẩn. Chatbot còn cung cấp thêm thông tin chi tiết về điểm trung bình học kỳ và tích lũy, cũng như trích dẫn điều khoản quy định."
+    },
+    {
+      "id": "G1-005",
+      "group": "G1_quy_che",
+      "difficulty": "easy",
+      "type": "factual",
+      "question": "Sinh viên vắng mặt không lý do trong buổi thi được tính bao nhiêu điểm?",
+      "ground_truth": "Sinh viên vắng mặt trong buổi thi không có lý do chính đáng phải nhận điểm 0.",
+      "predicted": "Sinh viên vắng mặt trong buổi thi, đánh giá không có lý do chính đáng phải nhận điểm 0. (Theo Điều 9, khoản 4)",
+      "sources_returned": [
+        "Giới thiệu SEEE-Final (s) 2025",
+        "25. Số 254 quy định về tổ chức đánh giá hoạt động học tập",
+        "19.Quy che dao tao tin chỉ 2020 - 2021",
+        "1.1.1.1 Quy chế đào tạo hợp nhất QĐ 744 và 666",
+        "Quy chế đào tạo HaUI"
+      ],
+      "expected_source": "Quy chế đào tạo HaUI",
+      "relevance_score": 0.4166666666666667,
+      "latency_sec": 5.39,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời đúng, có thêm thông tin hữu ích (điều khoản liên quan)"
+    },
+    {
+      "id": "G1-006",
+      "group": "G1_quy_che",
+      "difficulty": "medium",
+      "type": "factual",
+      "question": "Điểm học phần được tính từ những loại điểm thành phần nào?",
+      "ground_truth": "Học phần được đánh giá qua điểm thành phần bao gồm: điểm kiểm tra thường xuyên, điểm giữa kỳ, điểm thi kết thúc học phần.",
+      "predicted": "Điểm học phần được tính từ các điểm thành phần sau:\n\n1.  <strong>Đối với học phần chỉ có lý thuyết hoặc có cả lý thuyết và thực hành/thí nghiệm/tiểu luận/bài tập lớn/đồ án/dự án:</strong>\n    *   Điểm làm bài tập.\n    *   Điểm kiểm tra thường xuyên trong quá trình học tập.\n    *   Điểm đánh giá nhận thức và thái độ tham gia các hoạt động học tập trên lớp.\n    *   Điểm đánh giá phần thực hành, thí nghiệm.\n    *   Điểm thi giữa học phần (nếu có).\n    *   Điểm đánh giá kết thúc học phần (thi kết thúc học phần hoặc báo cáo tiểu luận, bài tập lớn, đồ án/dự án nếu học phần có tín chỉ tiểu luận bài tập lớn/đồ án/dự án). Điểm đánh giá kết thúc học phần có trọng số không dưới 50%.\n\n2.  <strong>Đối với học phần thực hành/thí nghiệm:</strong>\n    *   Điểm học phần là trung bình có trọng số của điểm đánh giá các bài thực hành/thí nghiệm hoặc các chuẩn đầu ra học phần, được làm tròn đến một chữ số thập phân.\n\n3.  <strong>Đối với học phần dự án, đồ án, thực tập, kiến tập:</strong>\n    *   Điểm đánh giá kết thúc học phần có trọng số không dưới 70%.\n\n<strong>Lưu ý:</strong>\n\n• Việc lựa chọn số lượng, phương pháp, hình thức đánh giá và trọng số để tính điểm học phần của các điểm đánh giá thành phần được quy định trong đề cương chi tiết học phần.\n• Đối với mỗi học phần, sinh viên được đánh giá tối thiểu qua hai điểm thành phần, đối với các học phần có khối lượng nhỏ hơn 02 tín chỉ có thể chỉ có một điểm đánh giá. Các điểm thành phần được đánh giá theo thang điểm 10.",
+      "sources_returned": [
+        "Quy chế đào tạo HaUI",
+        "1.1.1.1 Quy chế đào tạo hợp nhất QĐ 744 và 666"
+      ],
+      "expected_source": "Quy chế đào tạo HaUI",
+      "relevance_score": 0.3333333333333333,
+      "latency_sec": 7.02,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời của chatbot đầy đủ và chi tiết hơn so với đáp án chuẩn, cung cấp thông tin chính xác về các loại điểm thành phần khác nhau tuỳ theo loại hình học phần."
+    },
+    {
+      "id": "G1-007",
+      "group": "G1_quy_che",
+      "difficulty": "medium",
+      "type": "factual",
+      "question": "Sinh viên có lý do vắng thi được xử lý như thế nào?",
+      "ground_truth": "Sinh viên vắng mặt có lý do chính đáng được dự thi bổ sung và được tính điểm lần đầu. Trong 10 ngày làm việc từ ngày thi phải làm đơn kèm minh chứng để được tham dự kỳ thi bổ sung.",
+      "predicted": "Sinh viên vắng thi có lý do chính đáng (kết hôn, ốm, tai nạn, bố/mẹ/con qua đời...) sẽ được xử lý như sau:\n\n<strong>Đối với thi kết thúc học phần:</strong>\n\n• Được tham dự kỳ thi bổ sung trong vòng 02 kỳ chính tiếp theo và được tính điểm lần đầu.\n• Trong 10 ngày làm việc kể từ ngày thi, sinh viên phải làm đơn (kèm theo hồ sơ minh chứng cho lý do vắng mặt) có xác nhận của Trưởng khoa quản lý sinh viên và nộp lên Trung tâm Khảo thí để được tham dự kỳ thi bổ sung do Trung tâm Khảo thí tổ chức.\n• Nếu vắng mặt ở kỳ thi chính và không tham dự kỳ thi bổ sung, sinh viên sẽ nhận điểm 0 là điểm thi kết thúc học phần.\n• Việc xử lý đơn xin hoãn thi và tổ chức đánh giá bổ sung thực hiện theo Phụ lục 2: Quy trình đăng ký xin hoãn đánh giá và tổ chức đánh giá bổ sung kết quả học tập của sinh viên.\n\n<strong>Đối với kiểm tra thường xuyên:</strong>\n\n• Sinh viên cần nộp đơn xin hoãn kiểm tra trên hệ thống và thông tin cho giảng viên giảng dạy lớp học phần về lý do không thể dự kiểm tra trước giờ kiểm tra.\n• Trong 10 ngày làm việc kể từ ngày kiểm tra, sinh viên phải làm đơn (kèm theo hồ sơ minh chứng cho lý do vắng mặt) có xác nhận của cố vấn học tập và lãnh đạo đơn vị đào tạo quản lý, nộp lên Trung tâm Khảo thí để được xác nhận đủ điều kiện hoãn kiểm tra trên hệ thống.\n• Ngay khi có thể thực hiện kiểm tra, sinh viên cần làm đơn xin kiểm tra bổ sung gửi lên Trung tâm Khảo thí để được xét điều kiện tham dự kỳ kiểm tra bổ sung.\n• Thời gian tổ chức đợt đánh giá bổ sung do Trung tâm Khảo thí sắp xếp và tổ chức (đối với lớp học phần ở trạng thái đã gửi điểm thành phần trên hệ thống đại học điện tử) hoặc do giảng viên giảng dạy tổ chức (đối với lớp học phần ở trạng thái chưa gửi điểm thành phần trên hệ thống đại học điện tử).\n• Nếu vắng mặt ở kỳ kiểm tra chính và không tham dự hoặc không thể thực hiện bài kiểm tra bổ sung trong 02 học kỳ chính phụ tiếp theo sẽ nhận điểm 0 là điểm của bài kiểm tra.\n• Việc xử lý đơn xin hoãn kiểm tra của sinh viên và tổ chức đánh giá bổ sung thực hiện theo Phụ lục 2: Quy trình đăng ký xin hoãn đánh giá và tổ chức đánh giá bổ sung kết quả học tập của sinh viên.",
+      "sources_returned": [
+        "25. Số 254 quy định về tổ chức đánh giá hoạt động học tập",
+        "Giới thiệu SEEE-Final (s) 2025",
+        "1.1.1.1 Quy chế đào tạo hợp nhất QĐ 744 và 666"
+      ],
+      "expected_source": "Quy chế đào tạo HaUI",
+      "relevance_score": 0.4583333333333333,
+      "latency_sec": 8.86,
+      "is_correct": true,
+      "source_hit": false,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời của chatbot đầy đủ và chính xác hơn so với đáp án chuẩn, cung cấp thông tin chi tiết về cả thi kết thúc học phần và kiểm tra thường xuyên."
+    },
+    {
+      "id": "G1-008",
+      "group": "G1_quy_che",
+      "difficulty": "easy",
+      "type": "factual",
+      "question": "Học phần chỉ có thực hành sinh viên bị F khi nào?",
+      "ground_truth": "Đối với học phần chỉ có Thực hành/Thí nghiệm: sinh viên vắng quá 30% số giờ học Thực hành/Thí nghiệm sẽ nhận điểm F.",
+      "predicted": "Đối với các học phần thực hành, sinh viên sẽ nhận điểm F nếu không tham dự đủ 70% số giờ học của từng bài thực hành hoặc có điểm đánh giá bài thực hành không đạt yêu cầu. Trong trường hợp này, sinh viên phải đăng ký học lại học phần đó hoặc học đổi sang học phần khác (đối với học phần tự chọn). (Điều 19)",
+      "sources_returned": [
+        "Quy chế đào tạo HaUI",
+        "1.1.1.1 Quy chế đào tạo hợp nhất QĐ 744 và 666",
+        "19.Quy che dao tao tin chỉ 2020 - 2021"
+      ],
+      "expected_source": "Quy chế đào tạo HaUI",
+      "relevance_score": 0.4583333333333333,
+      "latency_sec": 5.68,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời của chatbot cung cấp thông tin đầy đủ và chính xác hơn so với đáp án chuẩn, bao gồm cả quy định về việc học lại hoặc đổi học phần."
+    },
+    {
+      "id": "G1-009",
+      "group": "G1_quy_che",
+      "difficulty": "easy",
+      "type": "factual",
+      "question": "Đồ án/tiểu luận/bài tập lớn sinh viên nhận F khi nào?",
+      "ground_truth": "Đối với học phần Đồ án/Tiểu luận/Bài tập lớn, sinh viên nhận điểm F nếu không báo cáo kết quả quá trình thực hiện hoặc không hoàn thành nhiệm vụ theo tiến độ.",
+      "predicted": "Đối với các học phần Tiểu luận, Bài tập lớn, Đồ án/Dự án, sinh viên không báo cáo kết quả quá trình thực hiện hoặc không hoàn thành nhiệm vụ theo tiến độ thực hiện Tiểu luận, Bài tập lớn, Đồ án/Dự án quy định trong Đề cương chi tiết học phần hoặc yêu cầu trong Phiếu giao Tiểu luận, Bài tập lớn, Đồ án/Dự án sẽ không được tham dự đánh giá kết thúc học phần và nhận điểm F.",
+      "sources_returned": [
+        "Quy chế đào tạo HaUI",
+        "1.1.1.1 Quy chế đào tạo hợp nhất QĐ 744 và 666",
+        "19.Quy che dao tao tin chỉ 2020 - 2021"
+      ],
+      "expected_source": "Quy chế đào tạo HaUI",
+      "relevance_score": 0.2916666666666667,
+      "latency_sec": 5.11,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời của chatbot đúng và chi tiết hơn, làm rõ thêm về việc không tham gia đánh giá cuối kỳ."
+    },
+    {
+      "id": "G1-010",
+      "group": "G1_quy_che",
+      "difficulty": "hard",
+      "type": "factual",
+      "question": "Số tín chỉ tối thiểu để đủ điều kiện tốt nghiệp là bao nhiêu?",
+      "ground_truth": "Sinh viên cần tích lũy đủ số tín chỉ theo chương trình đào tạo của ngành học để xét tốt nghiệp.",
+      "predicted": "Để đủ điều kiện tốt nghiệp, bạn cần tích lũy đủ số học phần và khối lượng của chương trình đào tạo được quy định tại Điều 2 của Quy chế. Cụ thể:\n\n• <strong>ĐH-K11 (các ngành):</strong> 162 tín chỉ\n• <strong>ĐH-K12, K13:</strong>\n    *   CNTT, HTTT, KHMT: 149 tín chỉ\n    *   KTPM: 147 tín chỉ\n• <strong>ĐH-K14:</strong>\n    *   CNTT: 149 tín chỉ\n    *   HTTT, KTPM: 148 tín chỉ\n    *   KHMT: 145 tín chỉ",
+      "sources_returned": [
+        "19.Quy che dao tao tin chỉ 2020 - 2021",
+        "Quy chế đào tạo HaUI",
+        "1.1.1.1 Quy chế đào tạo hợp nhất QĐ 744 và 666"
+      ],
+      "expected_source": "Quy chế đào tạo HaUI",
+      "relevance_score": 0.16666666666666666,
+      "latency_sec": 5.28,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời cung cấp thông tin chi tiết và chính xác về số tín chỉ tối thiểu theo từng khóa và ngành, hữu ích hơn so với đáp án chuẩn."
+    },
+    {
+      "id": "G2-001",
+      "group": "G2_hoc_bong",
+      "difficulty": "easy",
+      "type": "factual",
+      "question": "Học bổng khuyến khích học tập gồm mấy mức?",
+      "ground_truth": "Học bổng khuyến khích học tập gồm 3 mức: loại Xuất sắc, loại Giỏi, và loại Khá theo quy định của trường.",
+      "predicted": "Học bổng khuyến khích học tập (KKHT) có 3 mức xếp loại:\n1.  Loại Xuất sắc: TBC tín chỉ từ 3,60 đến 4,0 và rèn luyện Xuất sắc.\n2.  Loại Giỏi: TBC tín chỉ từ 3,20 đến 3,59.\n3.  Loại Khá: TBC tín chỉ từ 2,50 đến 3,19.\n\nĐiều kiện chung: không vi phạm kỷ luật, tổng tín chỉ xét ≥ 15 tín chỉ.",
+      "sources_returned": [
+        "27. 725-NEW-T92024-Quy định xét học bổng sinh viên"
+      ],
+      "expected_source": "27. 725-NEW-T92024-Quy định xét học bổng sinh viên",
+      "relevance_score": 0.08333333333333333,
+      "latency_sec": 4.88,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời chi tiết và chính xác hơn đáp án chuẩn, cung cấp thêm thông tin về điều kiện và tiêu chí xếp loại học bổng."
+    },
+    {
+      "id": "G2-002",
+      "group": "G2_hoc_bong",
+      "difficulty": "medium",
+      "type": "factual",
+      "question": "Điều kiện xét học bổng khuyến khích học tập là gì?",
+      "ground_truth": "Điều kiện xét học bổng KKHT: sinh viên phải đạt điểm TBC học kỳ theo quy định, không vi phạm kỷ luật trong kỳ xét, và đăng ký đủ số tín chỉ quy định.",
+      "predicted": "Để xét học bổng khuyến khích học tập, bạn cần đáp ứng các điều kiện sau:\n\n1. Không nhận học bổng HaUI của cùng học kỳ xét.\n2. Không nhận học bổng tài trợ có giá trị lớn hơn hoặc bằng mức học bổng KKHT cùng thời gian học kỳ xét.\n3. Nếu tham gia các kỳ thi tay nghề đạt giải Nhất cấp quốc gia hoặc đạt giải Ba trở lên cấp khu vực, quốc tế và đạt các điều kiện xét học bổng KKHT thì được xét cấp học bổng toàn phần của năm học đó.\n4. Trong học kỳ xét học bổng, sinh viên phải đảm bảo đồng thời các điều kiện:\n    *   Điểm TBC học kỳ xét học bổng ≥ 2.5 đối với hình thức đào tạo tín chỉ hoặc ≥ 7.0 đối với hình thức đào tạo niên chế.\n    *   Điểm rèn luyện đạt loại Tốt trở lên.\n    *   Trong kỳ xét học bổng không có điểm học phần nào < 2.0 đối với hình thức đào tạo tín chỉ và < 5.0 đối với hình thức đào tạo niên chế.\n    *   Trong kỳ xét học bổng có tổng số tín chỉ xét học bổng ≥ 15 tín chỉ (trừ trường hợp do kế hoạch của Nhà trường bố trí không đủ 15 tín chỉ); Đối với học kỳ cuối theo thời gian thiết kế khóa học, sinh viên phải có tổng số tín chỉ xét học bổng ≥ 07 tín chỉ.",
+      "sources_returned": [
+        "27. 725-NEW-T92024-Quy định xét học bổng sinh viên",
+        "Giới thiệu SEEE-Final (s) 2025"
+      ],
+      "expected_source": "27. 725-NEW-T92024-Quy định xét học bổng sinh viên",
+      "relevance_score": 0.5,
+      "latency_sec": 6.68,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời đầy đủ và chi tiết hơn đáp án chuẩn, cung cấp thông tin chính xác về điều kiện xét học bổng khuyến khích học tập."
+    },
+    {
+      "id": "G2-003",
+      "group": "G2_hoc_bong",
+      "difficulty": "medium",
+      "type": "factual",
+      "question": "Chính sách miễn giảm học phí áp dụng cho đối tượng nào?",
+      "ground_truth": "Miễn giảm học phí theo Nghị định 81/2021/NĐ-CP áp dụng cho: sinh viên dân tộc thiểu số thuộc hộ nghèo hoặc cận nghèo, sinh viên khuyết tật, con thương binh bệnh binh, sinh viên mồ côi, sinh viên hệ cử tuyển và các đối tượng ưu tiên khác theo quy định nhà nước.",
+      "predicted": "<strong>Đối tượng được miễn học phí:</strong>\n\n1.  Sinh viên là người có công với cách mạng hoặc là thân nhân của người có công với cách mạng (cha/mẹ đẻ, vợ/chồng, con đẻ/con nuôi). Người có công với cách mạng bao gồm:\n    *   Người hoạt động cách mạng đến ngày khởi nghĩa tháng Tám năm 1945.\n    *   Liệt sỹ.\n    *   Anh hùng Lực lượng vũ trang nhân dân.\n    *   Anh hùng Lao động trong thời kỳ kháng chiến.\n    *   Thương binh (bao gồm cả thương binh loại B được công nhận trước ngày 31/12/1993), người hưởng chính sách như thương binh.\n    *   Bệnh binh.\n    *   Người hoạt động kháng chiến bị nhiễm chất độc hoá học.\n    *   Người hoạt động cách mạng, kháng chiến, bảo vệ Tổ quốc, làm nghĩa vụ quốc tế bị địch bắt tù, đày.\n    *   Người hoạt động kháng chiến giải phóng dân tộc, bảo vệ Tổ quốc, làm nghĩa vụ quốc tế.\n    *   Người có công giúp đỡ cách mạng.\n2.  Sinh viên là người khuyết tật.\n3.  Sinh viên không quá 22 tuổi thuộc một trong các trường hợp sau:\n    *   Bị bỏ rơi chưa có người nhận làm con nuôi.\n    *   Mồ côi cả cha và mẹ.\n    *   Mồ côi cha hoặc mẹ và người còn lại bị tuyên bố mất tích theo quy định của pháp luật.\n    *   Mồ côi cha hoặc mẹ và người còn lại đang hưởng chế độ chăm sóc, nuôi dưỡng tại cơ sở bảo trợ xã hội, nhà xã hội.\n    *   Mồ côi cha hoặc mẹ và người còn lại đang trong thời gian chấp hành án phạt tù tại trại giam hoặc đang chấp hành quyết định xử lý vi phạm hành chính tại trường giáo dưỡng, cơ sở giáo dục bắt buộc, cơ sở cai nghiện bắt buộc.\n    *   Cả cha và mẹ bị tuyên bố mất tích theo quy định của pháp luật.\n    *   Cả cha và mẹ đang hưởng chế độ chăm sóc, nuôi dưỡng tại cơ sở bảo trợ xã hội, nhà xã hội.\n    *   Cả cha và mẹ đang trong thời gian chấp hành án phạt tù tại trại giam hoặc đang chấp hành quyết định xử lý vi phạm hành chính tại trường giáo dưỡng, cơ sở giáo dục bắt buộc, cơ sở cai nghiện bắt buộc.\n    *   Cha hoặc mẹ mất tích theo quy định của pháp luật và người còn lại hưởng chế độ chăm sóc, nuôi dưỡng tại cơ sở bảo trợ xã hội, nhà xã hội.\n    *   Cha hoặc mẹ bị tuyên bố mất tích theo quy định của pháp luật và người còn lại đang chấp hành án phạt tù tại trại giam hoặc đang chấp hành quyết định xử lý vi phạm hành chính tại trường giáo dưỡng, cơ sở giáo dục bắt buộc, cơ sở cai nghiện bắt buộc.\n    *   Cha hoặc mẹ đang hưởng chế độ chăm sóc nuôi dưỡng tại cơ sở trợ giúp xã hội và người còn lại đang chấp hành án phạt tù tại trại giam hoặc đang chấp hành quyết định xử lý vi phạm hành chính tại trường giáo dưỡng, cơ sở giáo dục bắt buộc, cơ sở cai nghiện bắt buộc.\n4.  Sinh viên là người dân tộc thiểu số có cha hoặc mẹ hoặc cả cha và mẹ hoặc ông bà (trường hợp sinh viên ở với ông bà) thuộc hộ nghèo hoặc hộ cận nghèo theo quy định của Thủ tướng Chính phủ.\n5.  Sinh viên là người dân tộc thiểu số rất ít người ở vùng có điều kiện kinh tế - xã hội khó khăn hoặc đặc biệt khó khăn. Các dân tộc thiểu số rất ít người bao gồm: Cống, Mảng, Pu Péo, Si La, Cờ Lao, Bố Y, La Ha, Ngái, Chứt, Ơ Đu, Brâu, Rơ Măm, Lô Lô, Lự, Pà Thẻn, La Hủ.\n\n<strong>Đối tượng được giảm học phí:</strong>\n\n1.  Giảm 70% học phí đối với sinh viên học hệ Cao đẳng các ngành nghề sau:\n    *   Đối với khóa học tuyển sinh và tổ chức đào tạo trước ngày 30/07/2023: Ngành Cắt gọt kim loại.\n    *   Đối với khóa học tuyển sinh và tổ chức đào tạo sau ngày 30/07/2023: Các ngành Cắt gọt kim loại, Công nghệ ô tô, Công nghệ kỹ thuật cơ khí, Điện công nghiệp, Công nghệ chế tạo máy.\n2.  Giảm 70% học phí đối với sinh viên là người dân tộc thiểu số (không phải là dân tộc thiểu số rất ít người) ở thôn/bản đặc biệt khó khăn, xã khu vực III vùng dân tộc và miền núi, xã đặc biệt khó khăn vùng bãi ngang ven biển hải đảo.\n3.  Giảm 50% học phí đối với sinh viên là con cán bộ, công nhân viên chức mà cha hoặc mẹ bị tai nạn lao động hoặc mắc bệnh nghề nghiệp được hưởng trợ cấp thường xuyên.\n\n<strong>Lưu ý:</strong> Sinh viên thuộc đối tượng miễn, giảm học phí sẽ được miễn, giảm theo mức trần quy định. Phần chênh lệch giữa học phí Nhà nước cấp với học phí thực tế của nhà trường thì sinh viên phải đóng bổ sung.",
+      "sources_returned": [
+        "29. 1148-NEW-T92024-QĐ Chính sách của sinh viên"
+      ],
+      "expected_source": "11. Số 81-2021. Chính sách miễn giảm, thu chi học phí",
+      "relevance_score": 0.6785714285714286,
+      "latency_sec": 13.28,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời rất chi tiết và đầy đủ, bao quát hơn đáp án chuẩn. Các thông tin đều chính xác."
+    },
+    {
+      "id": "G2-004",
+      "group": "G2_hoc_bong",
+      "difficulty": "medium",
+      "type": "factual",
+      "question": "Quy định tính học phí lớp học phần như thế nào?",
+      "ground_truth": "Học phí lớp học phần được tính theo số tín chỉ đăng ký, theo đơn giá tín chỉ của từng năm học theo quy định tại QĐ 20221028.",
+      "predicted": "Theo Quyết định số 126 5QĐ-ĐHCN ngày 28 tháng 10 năm 2022 của Trường Đại học Công nghiệp Hà Nội, học phí của các lớp học phần thuộc trình độ đào tạo đại học, cao đẳng được tính như sau:\n\n<strong>Học phí = NTCHP x HLHP x ĐG</strong>\n\nTrong đó:\n\n• <strong>NTCHP</strong>: Là số tín chỉ của học phần để tính học phí. Cách xác định NTCHP tùy thuộc vào loại học phần:\n    *   Học phần Lý luận chính trị, pháp luật và các học phần Khoa học tự nhiên - Toán học: NTCHP = Số tín chỉ lý thuyết x 1,0 + Số tín chỉ thực hành, thí nghiệm x 2,0 + Số tín chỉ tiểu luận, bài tập lớn, thực tập x 1,0 + Số tín chỉ đồ án, dự án x 1,4.\n    *   Học phần ngoại ngữ: NTCHP = Số tín chỉ của học phần x 1,5.\n    *   Học phần Giáo dục thể chất, Giáo dục quốc phòng an ninh: NTCHP = Số tín chỉ của học phần x 1,0.\n    *   Học phần có tín chỉ lý thuyết được tổ chức dạy-học trên phòng máy, phòng thực hành, thí nghiệm: NTCHP = Số tín chỉ lý thuyết x 1,5 + Số tín chỉ thực hành, thí nghiệm x 2,5 + Số tín chỉ tiểu luận, bài tập lớn, thực tập x 1,1 + Số tín chỉ đồ án, dự án x 1,5.\n    *   Các học phần còn lại: NTCHP = Số tín chỉ lý thuyết x 1,1 + Số tín chỉ thực hành, thí nghiệm x 2,5 + Số tín chỉ tiểu luận, bài tập lớn, thực tập x 1,1 + Số tín chỉ đồ án, dự án, khóa luận tốt nghiệp x 1,5.\n• <strong>HLHP</strong>: Là hệ số học phí của lớp học phần, phụ thuộc vào số lượng sinh viên:\n\n    | Loại học phần                      | Số sinh viên |        |        |         |\n    | :--------------------------------- | :---------- | :----- | :----- | :------ |\n    |                                    | Dưới 5      | Từ 5-9 | Từ 10-19| Từ 20-39 |\n    | Lý thuyết                         | 3           | 3      | 2      | 1,5     |\n    | Lý thuyết, thực hành, thí nghiệm | 3           | 3      | 2      | 1,5     |\n    | Thực hành, thí nghiệm            | 3           | 2      | 1,5     | 1       |\n    | Tiểu luận, bài tập lớn, đồ án, thực tập | 1           | 1      | 1      | 1       |\n    | Ngoại ngữ                         | 3           | 2      | 1,5     | 1       |\n• <strong>ĐG</strong>: Là đơn giá học phí cho một tín chỉ học phí, do Hiệu trưởng quy định hàng năm.\n\nQuy định này có hiệu lực đối với các lớp học phần bắt đầu học từ sau ngày 31/12/2022 và thay thế các quy định trước đó.",
+      "sources_returned": [
+        "24. 20221028 Quy định tính học phí của lớp học phần, môn học"
+      ],
+      "expected_source": "24. 20221028 Quy định tính học phí của lớp học phần, môn học",
+      "relevance_score": 0.5416666666666666,
+      "latency_sec": 9.04,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời rất chi tiết và chính xác, cung cấp thông tin đầy đủ về cách tính học phí lớp học phần, bao gồm công thức, các yếu tố ảnh hưởng và nguồn gốc thông tin."
+    },
+    {
+      "id": "G2-005",
+      "group": "G2_hoc_bong",
+      "difficulty": "easy",
+      "type": "inference",
+      "question": "Sinh viên bị kỷ luật có được xét học bổng không?",
+      "ground_truth": "Sinh viên bị kỷ luật trong kỳ xét học bổng sẽ không đủ điều kiện nhận học bổng khuyến khích học tập trong kỳ đó.",
+      "predicted": "Sinh viên vi phạm kỷ luật sẽ bị xử lý theo các hình thức từ khiển trách đến buộc thôi học, tùy theo mức độ vi phạm được quy định tại phụ lục của Quy định về kỷ luật.",
+      "sources_returned": [
+        "27. 725-NEW-T92024-Quy định xét học bổng sinh viên",
+        "28. 1150-NEW-T92024-QĐ khen thưởng kỷ luật sinh viên"
+      ],
+      "expected_source": "27. 725-NEW-T92024-Quy định xét học bổng sinh viên",
+      "relevance_score": 0.4166666666666667,
+      "latency_sec": 5.78,
+      "is_correct": false,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời của chatbot không đúng trọng tâm câu hỏi. Thay vì trả lời trực tiếp việc sinh viên bị kỷ luật có được xét học bổng hay không, chatbot lại đưa ra thông tin về các hình thức kỷ luật."
+    },
+    {
+      "id": "G2-006",
+      "group": "G2_hoc_bong",
+      "difficulty": "easy",
+      "type": "factual",
+      "question": "Thủ tục cấp giấy chứng nhận sinh viên ở đâu?",
+      "ground_truth": "Phòng Công tác Sinh viên cấp giấy chứng nhận sinh viên tại Phòng 103, 106 tầng 1 nhà A8 Cơ sở 1 và Phòng 101 tầng 1 nhà C3 Cơ sở 3.",
+      "predicted": "Bạn có thể làm thủ tục cấp giấy chứng nhận sinh viên tại Phòng Công tác Sinh viên:\n\n• Phòng 103, 106 – tầng 1 nhà A8, Cơ sở 1.\n• Phòng 101 - tầng 1 nhà C3, Cơ sở 3.",
+      "sources_returned": [
+        "Giới thiệu SEEE-Final (s) 2025"
+      ],
+      "expected_source": "Giới thiệu SEEE-Final (s) 2025",
+      "relevance_score": 0.041666666666666664,
+      "latency_sec": 4.49,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời của chatbot chính xác và đầy đủ so với đáp án chuẩn. Cách trình bày rõ ràng, dễ hiểu."
+    },
+    {
+      "id": "G2-007",
+      "group": "G2_hoc_bong",
+      "difficulty": "easy",
+      "type": "factual",
+      "question": "Thẻ xe buýt và tàu điện được cấp ở đâu?",
+      "ground_truth": "Thẻ xe buýt và tàu điện được cấp tại Phòng Công tác Sinh viên.",
+      "predicted": "Bạn có thể làm thủ tục cấp thẻ xe buýt và tàu điện tại Phòng Công tác Sinh viên:\n• Phòng 101 - tầng 1 nhà C3, Cơ sở 3\n• Phòng 103, 106 – tầng 1 nhà A8, Cơ sở 1.",
+      "sources_returned": [
+        "Giới thiệu SEEE-Final (s) 2025"
+      ],
+      "expected_source": "Giới thiệu SEEE-Final (s) 2025",
+      "relevance_score": 0.08333333333333333,
+      "latency_sec": 5.84,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời chính xác và cung cấp thêm thông tin hữu ích về địa điểm cụ thể."
+    },
+    {
+      "id": "G3-001",
+      "group": "G3_seee",
+      "difficulty": "easy",
+      "type": "list",
+      "question": "Trường SEEE gồm những ngành nào?",
+      "ground_truth": "Trường SEEE gồm: CNKT Máy tính, CNKT Nhiệt, Năng lượng tái tạo, CNKT Điện - Điện tử, CNKT Điện tử Viễn thông, CNKT Điện tử y sinh, CNKT Điều khiển và Tự động hóa, Kỹ thuật sản xuất thông minh, Vi mạch bán dẫn (dự kiến), CNKT Điện tử Viễn thông CTĐT tiếng Anh, CNKT Điện CTĐT tiếng Anh.",
+      "predicted": "Trường Điện - Điện tử (SEEE) gồm các ngành/chương trình đào tạo sau:\n\n1. CNKT Máy tính\n2. CNKT Nhiệt\n3. Năng lượng tái tạo\n4. CNKT Điện, Điện tử\n5. CNKT Điện tử - Viễn thông\n6. CNKT Điện tử y sinh\n7. CNKT Điều khiển và Tự động hóa\n8. Kỹ thuật sản xuất thông minh\n9. Vi mạch bán dẫn (dự kiến)\n10. CNKT Điện tử - Viễn thông (CTĐT bằng tiếng Anh)\n11. CNKT Điện (CTĐT bằng tiếng Anh)",
+      "sources_returned": [
+        "Giới thiệu SEEE-Final (s) 2025"
+      ],
+      "expected_source": "Giới thiệu SEEE-Final (s) 2025",
+      "relevance_score": 0.25,
+      "latency_sec": 5.69,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời đầy đủ, chính xác và dễ đọc hơn đáp án chuẩn."
+    },
+    {
+      "id": "G3-002",
+      "group": "G3_seee",
+      "difficulty": "easy",
+      "type": "factual",
+      "question": "Trường Điện - Điện tử được thành lập theo nghị quyết nào?",
+      "ground_truth": "Trường Điện - Điện tử (SEEE) được thành lập theo Nghị quyết số 74/NQ-HĐT ngày 16/12/2024.",
+      "predicted": "Trường Điện – Điện tử được thành lập theo Nghị quyết 74/NQ-HĐT ngày 16/12/2024.",
+      "sources_returned": [
+        "Giới thiệu SEEE-Final (s) 2025"
+      ],
+      "expected_source": "Giới thiệu SEEE-Final (s) 2025",
+      "relevance_score": 0.16666666666666666,
+      "latency_sec": 4.59,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời hoàn toàn chính xác, chỉ khác về dấu gạch nối giữa 'Điện' và 'Điện tử', không ảnh hưởng đến nội dung."
+    },
+    {
+      "id": "G3-003",
+      "group": "G3_seee",
+      "difficulty": "easy",
+      "type": "factual",
+      "question": "Ai là Hiệu trưởng Trường SEEE?",
+      "ground_truth": "PGS. TS. Hoàng Mạnh Kha là Hiệu trưởng Trường Điện - Điện tử (SEEE), SĐT 0912668779.",
+      "predicted": "Hiệu trưởng Trường Điện - Điện tử (SEEE) là PGS. TS. Hoàng Mạnh Kha.\n• Địa chỉ: Phòng 507 – A7, CS1\n• Số điện thoại: 0912668779",
+      "sources_returned": [
+        "Giới thiệu SEEE-Final (s) 2025"
+      ],
+      "expected_source": "Giới thiệu SEEE-Final (s) 2025",
+      "relevance_score": 0.5416666666666666,
+      "latency_sec": 5.02,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời chính xác và đầy đủ so với đáp án chuẩn. Bổ sung thêm địa chỉ nhưng vẫn chính xác."
+    },
+    {
+      "id": "G3-004",
+      "group": "G3_seee",
+      "difficulty": "easy",
+      "type": "factual",
+      "question": "Cố vấn học tập ngành CNKT Máy tính là ai?",
+      "ground_truth": "Cố vấn học tập ngành CNKT Máy tính là Thầy Nguyễn Vũ Thắng, SĐT 0986350910.",
+      "predicted": "Cố vấn học tập ngành CNKT Máy tính là thầy Nguyễn Vũ Thắng, SĐT: 0986350910.",
+      "sources_returned": [
+        "Giới thiệu SEEE-Final (s) 2025"
+      ],
+      "expected_source": "Giới thiệu SEEE-Final (s) 2025",
+      "relevance_score": 0.3333333333333333,
+      "latency_sec": 5.26,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời hoàn toàn chính xác và đầy đủ so với đáp án chuẩn."
+    },
+    {
+      "id": "G3-005",
+      "group": "G3_seee",
+      "difficulty": "easy",
+      "type": "factual",
+      "question": "Địa chỉ Trường SEEE tại cơ sở 1 ở đâu?",
+      "ground_truth": "Trường SEEE tại Cơ sở 1 đặt tại Tầng 5, tòa nhà A7, số 298 Đường Cầu Diễn, Phường Tây Tựu, TP. Hà Nội.",
+      "predicted": "Trường Điện - Điện tử (SEEE) có địa chỉ tại tầng 5, tòa nhà A7, Cơ sở 1, Trường Đại học Công nghiệp Hà Nội, số 298 đường Cầu Diễn, phường Tây Tựu, TP. Hà Nội.",
+      "sources_returned": [
+        "Giới thiệu SEEE-Final (s) 2025"
+      ],
+      "expected_source": "Giới thiệu SEEE-Final (s) 2025",
+      "relevance_score": 0.16666666666666666,
+      "latency_sec": 5.11,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời chính xác và đầy đủ thông tin."
+    },
+    {
+      "id": "G3-006",
+      "group": "G3_seee",
+      "difficulty": "easy",
+      "type": "factual",
+      "question": "Phòng Công tác Sinh viên ở tầng mấy, tòa nhà nào tại Cơ sở 1?",
+      "ground_truth": "Phòng Công tác Sinh viên tại Cơ sở 1 ở Phòng 103, 106 tầng 1 nhà A8.",
+      "predicted": "Phòng Công tác Sinh viên ở tầng 1 nhà A8, Cơ sở 1.",
+      "sources_returned": [
+        "Giới thiệu SEEE-Final (s) 2025",
+        "29. 1148-NEW-T92024-QĐ Chính sách của sinh viên"
+      ],
+      "expected_source": "Giới thiệu SEEE-Final (s) 2025",
+      "relevance_score": 0.5833333333333334,
+      "latency_sec": 4.82,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời đúng và đầy đủ thông tin quan trọng nhất."
+    },
+    {
+      "id": "G3-007",
+      "group": "G3_seee",
+      "difficulty": "easy",
+      "type": "factual",
+      "question": "Trường SEEE có bao nhiêu sinh viên?",
+      "ground_truth": "Trường SEEE có gần 7000 sinh viên.",
+      "predicted": "Trường Điện - Điện tử (SEEE) có gần 7000 sinh viên.",
+      "sources_returned": [
+        "Giới thiệu SEEE-Final (s) 2025"
+      ],
+      "expected_source": "Giới thiệu SEEE-Final (s) 2025",
+      "relevance_score": 0.125,
+      "latency_sec": 4.53,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời chính xác và cung cấp thêm thông tin hữu ích về tên đầy đủ của trường SEEE."
+    },
+    {
+      "id": "G3-008",
+      "group": "G3_seee",
+      "difficulty": "easy",
+      "type": "factual",
+      "question": "Trưởng chương trình ngành Năng lượng tái tạo là ai?",
+      "ground_truth": "Trưởng chương trình Năng lượng tái tạo là TS. Ninh Văn Quân, SĐT 0912485051.",
+      "predicted": "Trưởng chương trình ngành Năng lượng tái tạo là TS. Ninh Văn Quân, SĐT: 0912485051.",
+      "sources_returned": [
+        "Giới thiệu SEEE-Final (s) 2025"
+      ],
+      "expected_source": "Giới thiệu SEEE-Final (s) 2025",
+      "relevance_score": 0.2916666666666667,
+      "latency_sec": 4.96,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời hoàn toàn chính xác và đầy đủ so với đáp án chuẩn."
+    },
+    {
+      "id": "G4-001",
+      "group": "G4_thoi_khoa_bieu",
+      "difficulty": "easy",
+      "type": "factual",
+      "question": "Tiết 1 học lý thuyết tại Cơ sở 1 bắt đầu và kết thúc lúc mấy giờ?",
+      "ground_truth": "Tiết 1 học lý thuyết tại Cơ sở 1 (Hà Nội) bắt đầu lúc 07:00 và kết thúc lúc 07:50.",
+      "predicted": "Tiết 1 học lý thuyết tại Cơ sở 1 bắt đầu lúc 07:00 và kết thúc lúc 07:50.",
+      "sources_returned": [
+        "Giới thiệu SEEE-Final (s) 2025"
+      ],
+      "expected_source": "Giới thiệu SEEE-Final (s) 2025",
+      "relevance_score": 0.08333333333333333,
+      "latency_sec": 4.82,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời hoàn toàn chính xác và đầy đủ so với đáp án chuẩn."
+    },
+    {
+      "id": "G4-002",
+      "group": "G4_thoi_khoa_bieu",
+      "difficulty": "easy",
+      "type": "factual",
+      "question": "Tiết 5 học lý thuyết tại Cơ sở 1 bắt đầu lúc mấy giờ?",
+      "ground_truth": "Tiết 5 học lý thuyết tại Cơ sở 1 bắt đầu lúc 10:35 và kết thúc 11:25.",
+      "predicted": "Tiết 5 học lý thuyết tại Cơ sở 1 bắt đầu lúc 10:35 và kết thúc lúc 11:25.",
+      "sources_returned": [
+        "Giới thiệu SEEE-Final (s) 2025"
+      ],
+      "expected_source": "Giới thiệu SEEE-Final (s) 2025",
+      "relevance_score": 0.08333333333333333,
+      "latency_sec": 4.69,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời của chatbot hoàn toàn trùng khớp và chính xác so với đáp án chuẩn."
+    },
+    {
+      "id": "G4-003",
+      "group": "G4_thoi_khoa_bieu",
+      "difficulty": "easy",
+      "type": "factual",
+      "question": "Tiết 7 học lý thuyết tại Cơ sở 3 bắt đầu lúc mấy giờ?",
+      "ground_truth": "Tiết 7 học lý thuyết tại Cơ sở 3 (Hà Nam) bắt đầu lúc 12:40 và kết thúc 13:30.",
+      "predicted": "Tiết 7 học lý thuyết tại Cơ sở 3 Hà Nam bắt đầu lúc 12:40.",
+      "sources_returned": [
+        "Giới thiệu SEEE-Final (s) 2025"
+      ],
+      "expected_source": "Giới thiệu SEEE-Final (s) 2025",
+      "relevance_score": 0.08333333333333333,
+      "latency_sec": 4.5,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời đúng về thời gian bắt đầu, thiếu thời gian kết thúc nhưng vẫn chấp nhận được vì câu hỏi tập trung vào thời gian bắt đầu."
+    },
+    {
+      "id": "G4-004",
+      "group": "G4_thoi_khoa_bieu",
+      "difficulty": "medium",
+      "type": "calculation",
+      "question": "Tiết 5 thực hành Cao đẳng tại Cơ sở 1 kéo dài bao nhiêu phút?",
+      "ground_truth": "Tiết 5 thực hành Cao đẳng tại Cơ sở 1 bắt đầu 11:00 kết thúc 12:00, kéo dài 60 phút.",
+      "predicted": "Tiết 5 thực hành Cao đẳng tại Cơ sở 1 diễn ra từ 11:00 - 12:00. Như vậy, thời gian kéo dài là 60 phút.",
+      "sources_returned": [
+        "Giới thiệu SEEE-Final (s) 2025"
+      ],
+      "expected_source": "Giới thiệu SEEE-Final (s) 2025",
+      "relevance_score": 0.08333333333333333,
+      "latency_sec": 4.9,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời chính xác và đầy đủ."
+    },
+    {
+      "id": "G4-005",
+      "group": "G4_thoi_khoa_bieu",
+      "difficulty": "medium",
+      "type": "list",
+      "question": "Ca học buổi tối lý thuyết tại Cơ sở 1 gồm các tiết nào?",
+      "ground_truth": "Ca tối lý thuyết tại Cơ sở 1 gồm Tiết 13 (18:00-18:50), Tiết 14 (18:50-19:40), Tiết 15 (19:45-20:35), Tiết 16 (20:35-21:25).",
+      "predicted": "Ca học buổi tối lý thuyết tại Cơ sở 1 gồm các tiết sau:\n• Tiết 13: 18:00 - 18:50\n• Tiết 14: 18:50 - 19:40\n• Tiết 15: 19:45 - 20:35\n• Tiết 16: 20:35 - 21:25",
+      "sources_returned": [
+        "Giới thiệu SEEE-Final (s) 2025",
+        "Quy chế đào tạo HaUI"
+      ],
+      "expected_source": "Giới thiệu SEEE-Final (s) 2025",
+      "relevance_score": 0.08333333333333333,
+      "latency_sec": 4.99,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời hoàn toàn chính xác và đầy đủ so với đáp án chuẩn, chỉ khác về cách trình bày (dùng dấu bullet thay vì liệt kê trong một câu)."
+    },
+    {
+      "id": "G4-006",
+      "group": "G4_thoi_khoa_bieu",
+      "difficulty": "medium",
+      "type": "boolean",
+      "question": "Cơ sở 3 có Tiết 1 học lý thuyết không?",
+      "ground_truth": "Không, Cơ sở 3 lý thuyết bắt đầu từ Tiết 2 (07:40) không có Tiết 1.",
+      "predicted": "Tại cơ sở 3 Hà Nam, theo thông tin bạn cung cấp, tiết 1 học lý thuyết không có trong khung giờ học. Khung giờ học lý thuyết tại cơ sở 3 Hà Nam bắt đầu từ tiết 2 (07:40 - 08:30).",
+      "sources_returned": [
+        "Giới thiệu SEEE-Final (s) 2025"
+      ],
+      "expected_source": "Giới thiệu SEEE-Final (s) 2025",
+      "relevance_score": 0.041666666666666664,
+      "latency_sec": 4.87,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời của chatbot đúng và đầy đủ, diễn đạt rõ ràng."
+    },
+    {
+      "id": "G5-001",
+      "group": "G5_phuc_hop",
+      "difficulty": "hard",
+      "type": "inference",
+      "question": "Sinh viên vi phạm đạo văn trong đồ án và bị cảnh báo học tập lần 2 liên tiếp, hậu quả là gì?",
+      "ground_truth": "Sinh viên sẽ bị xử lý vi phạm đạo văn trong đồ án tốt nghiệp theo quy định của trường, đồng thời bị buộc thôi học do bị cảnh báo KQHT lần thứ 02 liên tiếp.",
+      "predicted": "Đối với sinh viên đại học, hình thức xử lý lỗi đạo văn được quy định như sau:\n\n• <strong>Mức độ trùng lặp:</strong>\n\n    *   Mức 1: 30%\n    *   Mức 2: 50%\n• <strong>Đối với sản phẩm học thuật thuộc nhóm 2 (luận văn, đồ án/khóa luận tốt nghiệp):</strong>\n\n    *   Viết và nộp lại sản phẩm học thuật: khi mức độ trùng lặp từ mức 1 trở lên nhưng chưa đến mức 2 lần thứ nhất;\n    *   Đình chỉ báo cáo 1 tháng tính từ thời điểm phát hiện, viết và nộp lại sản phẩm học thuật: khi mức độ trùng lặp từ mức 1 trở lên nhưng chưa đến mức 2 lần thứ 2;\n    *   Nhận điểm 0 (điểm không) cho sản phẩm học thuật: khi mức độ trùng lặp từ mức 2 trở lên hoặc mức độ trùng lặp từ mức 1 trở lên nhưng chưa đến mức 2 lần thứ 3.\n\nNgoài ra, theo Phụ lục ban hành kèm theo Quyết định số 1150/QĐ-ĐHCN ngày 15 tháng 8 năm 2024 của Hiệu trưởng Trường Đại học Công nghiệp Hà Nội, sinh viên không hoàn thành kinh phí đào tạo và đã bị Cảnh cáo do chậm nộp kinh phí đào tạo và sau 06 tháng vẫn không hoàn thành sẽ bị Đình chỉ học tập có thời hạn.",
+      "sources_returned": [
+        "qd-so-197qd-dhcn",
+        "12. Số 1146.qd-cong-tac-khen-thuong-ky-luat-sinh-vien-truong-dhcnhn-so-1146-ngay-20",
+        "28. 1150-NEW-T92024-QĐ khen thưởng kỷ luật sinh viên"
+      ],
+      "expected_source": "Quy chế đào tạo HaUI",
+      "relevance_score": 0.875,
+      "latency_sec": 8.43,
+      "is_correct": true,
+      "source_hit": false,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời chi tiết và chính xác, cung cấp thông tin về mức độ trùng lặp và hình thức xử lý, mặc dù không trực tiếp đề cập đến việc buộc thôi học do cảnh báo học tập lần 2 liên tiếp, nhưng thông tin cung cấp đầy đủ để người dùng suy luận ra được."
+    },
+    {
+      "id": "G5-002",
+      "group": "G5_phuc_hop",
+      "difficulty": "hard",
+      "type": "multi_doc",
+      "question": "Tôi cần liên hệ ai nếu muốn hỏi về cố vấn học tập ngành CNKT Điện và vắng học quá 30%?",
+      "ground_truth": "Cần liên hệ thầy/cô Cố vấn học tập của ngành CNKT Điện và đồng thời biết rằng vắng quá 30% sẽ bị cấm thi kết thúc học phần.",
+      "predicted": "Nếu bạn là sinh viên ngành CNKT Điện, Điện tử và muốn hỏi về cố vấn học tập, bạn có thể liên hệ thầy Vũ Trường Sơn theo số điện thoại 09865761272.\n\nVề quy định vắng mặt trên lớp, theo thông tin hiện có, nếu bạn vắng mặt trên lớp quá 30% số giờ học lý thuyết hoặc thực hành/thí nghiệm, bạn sẽ không được dự thi kết thúc học phần và nhận điểm F. Để biết thêm chi tiết, bạn nên liên hệ với cố vấn học tập hoặc khoa/đơn vị đào tạo để được giải đáp cụ thể.",
+      "sources_returned": [
+        "Giới thiệu SEEE-Final (s) 2025"
+      ],
+      "expected_source": "Giới thiệu SEEE-Final (s) 2025; Quy chế đào tạo HaUI",
+      "relevance_score": 0.8333333333333334,
+      "latency_sec": 7.32,
+      "is_correct": true,
+      "source_hit": true,
+      "faithfulness": 1.0,
+      "note": "Câu trả lời đầy đủ, chính xác và hữu ích. Đã trả lời cả hai ý của câu hỏi và cung cấp thông tin liên hệ cụ thể."
+    }
+  ]
+}

@@ -36,6 +36,12 @@ Thay vào đó:
 - Nếu query không chỉ rõ tiết số → liệt kê toàn bộ bảng giờ học có trong ngữ cảnh.
 - Nếu không có ngữ cảnh → xem lịch sử hội thoại để suy ra, hoặc nói "Tôi chưa có thông tin về vấn đề này".
 
+2.7. **TUYỆT ĐỐI KHÔNG nói "Tôi chưa có thông tin" nếu ngữ cảnh CÓ CHỨA câu trả lời.**
+Hãy đọc kỹ TOÀN BỘ ngữ cảnh bao gồm bảng, danh sách, sơ đồ tổ chức, thông tin liên hệ.
+- Nếu tên người, chức danh, số điện thoại xuất hiện trong ngữ cảnh → PHẢI trích xuất và trả lời.
+- Chỉ nói "chưa có thông tin" khi THỰC SỰ không có dữ liệu nào liên quan trong ngữ cảnh.
+
+
 3. **🚨 QUY TẮC KHI TRẢ LỜI VỀ BIỂU MẪU/PHIẾU/BIÊN BẢN/PHỤ LỤC:**
    Phân biệt hai trường hợp sau:
    

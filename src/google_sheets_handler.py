@@ -30,8 +30,21 @@ class GoogleSheetsLogger:
             return
 
         try:
-            # Handle potential escaped newlines in private key from .env
-            formatted_key = self.private_key.replace('\\n', '\n') if self.private_key else ""
+            # Handle potential escaped newlines in private key from env vars
+            formatted_key = self.private_key if self.private_key else ""
+            # Strip surrounding quotes if present
+            formatted_key = formatted_key.strip().strip('"').strip("'")
+            # Replace literal \n with actual newlines
+            formatted_key = formatted_key.replace('\\n', '\n')
+            # Ensure the key has proper PEM markers
+            if 'BEGIN PRIVATE KEY' in formatted_key and '\n' not in formatted_key.split('-----')[2]:
+                # Key is all on one line without newlines — split it properly
+                parts = formatted_key.split('-----')
+                if len(parts) >= 5:
+                    key_body = parts[2].strip()
+                    # Insert newlines every 64 chars
+                    key_lines = [key_body[i:i+64] for i in range(0, len(key_body), 64)]
+                    formatted_key = '-----BEGIN PRIVATE KEY-----\n' + '\n'.join(key_lines) + '\n-----END PRIVATE KEY-----\n'
             
             # Create credentials info dict
             info = {
