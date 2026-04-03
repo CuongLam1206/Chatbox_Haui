@@ -87,6 +87,45 @@ def get_drive_links_for_sources(sources: list[str]) -> dict[str, str]:
 
 
 # ══════════════════════════════════════════════════════════════
+# Google Sheets Logging + Facebook Profile
+# ══════════════════════════════════════════════════════════════
+gs_logger = None
+_user_names = {}
+
+
+def _init_google_sheets():
+    global gs_logger
+    try:
+        from src.google_sheets_handler import GoogleSheetsLogger
+        gs_logger = GoogleSheetsLogger()
+    except Exception as e:
+        print(f"[GoogleSheets] Init failed: {e}")
+
+
+def fetch_fb_user_name(user_id):
+    global _user_names
+    if user_id in _user_names:
+        return _user_names[user_id]
+    try:
+        import requests as req
+        url = f"https://graph.facebook.com/v19.0/{user_id}"
+        params = {"fields": "first_name,last_name", "access_token": FB_PAGE_ACCESS_TOKEN}
+        resp = req.get(url, params=params, timeout=5)
+        if resp.status_code == 200:
+            data = resp.json()
+            full_name = (data.get("last_name", "") + " " + data.get("first_name", "")).strip()
+            if full_name:
+                _user_names[user_id] = full_name
+                print(f"[FB] Name for {user_id}: {full_name}")
+                return full_name
+    except Exception as e:
+        print(f"[FB] Profile error: {e}")
+    fallback = f"User_{user_id[-4:]}"
+    _user_names[user_id] = fallback
+    return fallback
+
+
+# ══════════════════════════════════════════════════════════════
 # Chatbot init (fully deferred — no heavy imports at module level)
 # ══════════════════════════════════════════════════════════════
 workflow = None
@@ -130,12 +169,13 @@ async def startup_event():
 
 async def _background_init():
     """Initialize chatbot in background so port binds fast."""
-    print("⏳ Starting background initialization...")
+    print("Starting background initialization...")
     try:
         await get_chatbot()
-        print("✅ Chatbot system ready!")
+        _init_google_sheets()
+        print("Chatbot system ready!")
     except Exception as e:
-        print(f"❌ Background init failed: {e}")
+        print(f"Background init failed: {e}")
 
 
 @app.get("/health")
@@ -183,6 +223,9 @@ async def process_and_reply(sender_id: str, message_text: str):
     import re as _re
     import html as _html
 
+    # Fetch user name from Facebook
+    user_name = fetch_fb_user_name(sender_id)
+
     wf, conv_mgr = await get_chatbot()
 
     try:
@@ -191,14 +234,26 @@ async def process_and_reply(sender_id: str, message_text: str):
         result = wf.run(message_text, session_id=session_id, chat_history=chat_history)
         answer = result["answer"]
 
-        conv_mgr.add_message(session_id, "user", message_text)
+        # Log to MongoDB
+        conv_mgr.add_message(session_id, "user", message_text, metadata={"user_name": user_name})
         conv_mgr.add_message(session_id, "assistant", answer, sources=result.get("sources"))
 
-        # HTML → plain text
+        # Log to Google Sheets
+        if gs_logger:
+            gs_logger.append_log(
+                user_name=user_name,
+                user_id=sender_id,
+                question=message_text,
+                answer=answer,
+                sources=result.get("sources"),
+                relevance=result.get("relevance_score", 0.0),
+            )
+
+        # HTML to plain text
         plain = _html.unescape(answer)
         plain = _re.sub(r"<br\s*/?>", "\n", plain, flags=_re.IGNORECASE)
         plain = _re.sub(r"</?p\s*>", "\n", plain, flags=_re.IGNORECASE)
-        plain = _re.sub(r"<li\s*>", "\n• ", plain, flags=_re.IGNORECASE)
+        plain = _re.sub(r"<li\s*>", "\n- ", plain, flags=_re.IGNORECASE)
         plain = _re.sub(r"<[^>]+>", "", plain)
         plain = _re.sub(r"\n{3,}", "\n\n", plain).strip()
 
@@ -209,14 +264,14 @@ async def process_and_reply(sender_id: str, message_text: str):
             lines = []
             for src in result["sources"]:
                 if src in drive_links:
-                    lines.append(f"• {src}\n  🔗 {drive_links[src]}")
+                    lines.append(f"- {src}\n  Link: {drive_links[src]}")
                 else:
-                    lines.append(f"• {src}")
-            _send_fb(sender_id, "📚 Nguồn tham khảo:\n" + "\n".join(lines))
+                    lines.append(f"- {src}")
+            _send_fb(sender_id, "Nguon tham khao:\n" + "\n".join(lines))
 
     except Exception as e:
         print(f"Error: {e}")
-        _send_fb(sender_id, "Xin lỗi, tôi gặp sự cố. Vui lòng thử lại sau.")
+        _send_fb(sender_id, "Xin loi, toi gap su co. Vui long thu lai sau.")
 
 
 def _send_fb(recipient_id: str, text: str):
