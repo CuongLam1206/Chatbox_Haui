@@ -41,6 +41,24 @@ Hãy đọc kỹ TOÀN BỘ ngữ cảnh bao gồm bảng, danh sách, sơ đồ
 - Nếu tên người, chức danh, số điện thoại xuất hiện trong ngữ cảnh → PHẢI trích xuất và trả lời.
 - Chỉ nói "chưa có thông tin" khi THỰC SỰ không có dữ liệu nào liên quan trong ngữ cảnh.
 
+2.8. **ƯU TIÊN TRẢ LỜI TRỰC TIẾP:**
+- Luôn đưa ra **KẾT LUẬN CHÍNH** (Có/Không/Được/Không được/Đúng/Sai...) ngay dòng đầu tiên nếu câu hỏi là dạng xác nhận.
+- Nếu câu hỏi gồm nhiều vế (do hệ thống tách truy vấn), hãy đánh số thứ tự (1, 2...) để trả lời rõ ràng từng vế.
+- Tuyệt đối không giải thích lan man về các hình thức xử lý nếu câu hỏi chỉ hỏi về "có được hưởng quyền lợi X không".
+
+2.9. **XỬ LÝ MÂU THUẪN:** Nếu các đoạn ngữ cảnh có thông tin mâu thuẫn nhau, hãy ưu tiên thông tin từ văn bản có Ngày ban hành mới nhất hoặc Quyết định có số hiệu lớn hơn.
+
+2.10. **KIỂM TRA ĐỘ PHỦ Ý (COVERAGE):**
+- Nếu ngữ cảnh chứa nhiều ý khác nhau liên quan đến câu hỏi phức hợp (ví dụ: Đạo văn GIẢI QUYẾT kèm theo Cảnh báo học tập) → PHẢI trả lời đủ cả 2 nội dung. 
+- TUYỆT ĐỐI không được sa đà vào trích dẫn 1 phần (như bảng đạo văn) mà bỏ quên vế quan trọng còn lại (hình thức kỷ luật buộc thôi học).
+- Nếu tài liệu chỉ đề cập ngưỡng năm 1, 2, 3 → **CHỈ liệt kê đúng năm 1, 2, 3**. TUYỆT ĐỐI không tự suy luận ngưỡng cho năm 4 trở đi nếu văn bản không ghi rõ.
+
+2.11. **XỬ LÝ THỜI KHÓA BIỂU / BẢNG GIỜ HỌC:**
+- Khi sinh viên hỏi về một **LOẠI HÌNH CỤ THỂ** (Lý thuyết hoặc Thực hành) tại một **CƠ SỞ CỤ THỂ**:
+  - Phải đối chiếu đúng cột/hàng của loại hình đó.
+  - Ví dụ: Nếu câu hỏi là "Cơ sở 3 có Tiết 1 học LÝ THUYẾT không?", và bảng ghi Lý thuyết bắt đầu từ Tiết 2 → Trả lời "Không có" (kể cả khi cột Thực hành có Tiết 1).
+  - TUYỆT ĐỐI không nhầm lẫn giữa các ca học lý thuyết và thực hành.
+
 
 3. **🚨 QUY TẮC KHI TRẢ LỜI VỀ BIỂU MẪU/PHIẾU/BIÊN BẢN/PHỤ LỤC:**
    Phân biệt hai trường hợp sau:
@@ -125,6 +143,7 @@ Ngữ cảnh (Tài liệu HaUI):
 {context}
 
 Câu hỏi hiện tại: {question}
+Hướng dẫn: Trả lời trực tiếp, ngắn gọn ý chính trước, chi tiết sau.
 Câu trả lời:"""
         
         prompt = ChatPromptTemplate.from_template(system_prompt)
@@ -138,7 +157,6 @@ Câu trả lời:"""
         # Split by common separators to isolate the main content
         lines = text.split('\n')
         cleaned_lines = []
-        skip_next = False
         
         for i, line in enumerate(lines):
             # Skip lines containing unwanted patterns
@@ -183,14 +201,6 @@ Câu trả lời:"""
     def generate(self, question: str, context: str, chat_history: list = None) -> str:
         """
         Generate answer from context
-        
-        Args:
-            question: User question
-            context: Retrieved context
-            chat_history: Optional chat history
-            
-        Returns:
-            Generated answer
         """
         raw_output = self.chain.invoke({
             "question": question,
@@ -225,22 +235,11 @@ Câu trả lời:"""
         text = re.sub(r'^-\s+', '• ', text, flags=re.MULTILINE)
         text = re.sub(r'^\*\s+', '• ', text, flags=re.MULTILINE)
         
-        # Preserve tables (don't touch | characters in tables)
-        # Keep line breaks for readability
-        
         return text
     
     def generate_from_documents(self, question: str, documents: list, chat_history: list = None) -> tuple[str, list]:
         """
         Generate answer from document list
-        
-        Args:
-            question: User question
-            documents: List of relevant documents
-            chat_history: Optional chat history
-            
-        Returns:
-            Tuple of (answer, source_references)
         """
         if not documents:
             return "Tôi không tìm thấy thông tin liên quan để trả lời câu hỏi này.", []

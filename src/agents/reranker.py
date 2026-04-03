@@ -20,9 +20,13 @@ class DocumentReranker:
             ("system", """Bạn là chuyên gia thẩm định văn bản cấp cao của HaUI.
 Nhiệm vụ: Chấm điểm độ liên quan (0-10) của các đoạn văn bản đối với câu hỏi.
 
-Đặc biệt lưu ý: 
-- Nếu câu hỏi yêu cầu "Mẫu", "Phụ lục", "Phiếu" hoặc "Danh sách" và tài liệu chứa TIÊU ĐỀ hoặc NỘI DUNG tương ứng (Ví dụ: "Phụ lục 03", "Danh sách giao đề tài..."), hãy chấm 10 ĐIỂM ngay lập tức.
-- Tuyệt đối không được bỏ qua các biểu mẫu hành chính.
+Quy tắc chấm điểm ưu tiên:
+1. **TRỰC TIẾP (10đ)**: Đoạn văn trả lời trực tiếp câu hỏi (VD: Hỏi "có được không?" -> Đoạn văn ghi "Không được").
+2. **ĐIỀU KIỆN (9-10đ)**: Nếu hỏi về "Điều kiện", "Tiêu chuẩn", "Đối tượng", hãy ưu tiên các đoạn có từ khóa "Điều kiện xét", "Tiêu chuẩn xét", "Đối tượng áp dụng".
+3. **MIỄN TRỪ/KỶ LUẬT (9-10đ)**: Nếu hỏi về "Kỷ luật" ảnh hưởng đến "Học bổng/Thi", hãy ưu tiên đoạn văn nằm trong quy định về Học bổng/Thi mà có nhắc đến từ "Kỷ luật".
+4. **THỰC THỂ (10đ)**: Trùng khớp tên Phụ lục, tên mẫu phiếu, tên chương, tên điều (VD: "Phụ lục 03", "Điều 9").
+5. **GẦN ĐÚNG (5-7đ)**: Đoạn văn nói về cùng chủ đề nhưng không trả lời trực tiếp.
+6. **KHÔNG LIÊN QUAN (0đ)**: Lạc đề hoàn toàn.
 
 Định dạng trả về: CHỈ trả về dãy số điểm cách nhau bởi dấu phẩy, KHÔNG ghi chú, KHÔNG đánh số thứ tự.
 Ví dụ: 10,8,0,5"""),

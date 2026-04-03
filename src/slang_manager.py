@@ -49,3 +49,23 @@ class SlangManager:
         
         lines = [f"- {short}: {full}" for short, full in self.mappings.items()]
         return "\n".join(lines)
+
+    def replace_slang(self, text: str) -> str:
+        """
+        Replace known slang/abbreviations in text with full formal terms
+        """
+        if not self.mappings:
+            return text
+            
+        import re
+        processed_text = text
+        # Sort keys by length descending to replace longest matches first (e.g., 'CNKT' before 'CN')
+        sorted_keys = sorted(self.mappings.keys(), key=len, reverse=True)
+        
+        for short in sorted_keys:
+            full = self.mappings[short]
+            # Use regex for word boundary to avoid partial replacements (e.g., 'CN' in 'CNKT')
+            pattern = re.compile(re.escape(short), re.IGNORECASE)
+            processed_text = pattern.sub(full, processed_text)
+            
+        return processed_text

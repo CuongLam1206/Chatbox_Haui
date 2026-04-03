@@ -72,19 +72,31 @@ class AgenticRAG:
         
         if is_appendix_query:
             # Use original question to search for specific appendix
-            search_query = question
-            print(f"[Retrieval] Appendix query detected, using original: {search_query}")
+            search_queries = [question]
+            print(f"[Retrieval] Appendix query detected, using original: {question}")
         else:
-            # Rewrite query for better search results, using history to resolve pronouns
-            search_query = self.rewriter.rewrite(question, chat_history)
-            print(f"[Retrieval] Search query: {search_query}")
+            # Rewrite query into one or more search strings
+            search_queries = self.rewriter.rewrite(question, chat_history)
+            print(f"[Retrieval] Search queries: {search_queries}")
         
-        # Default k
-        k = 10
+        # Default k per query
+        k = 8
+        all_documents = []
+        seen_contents = set()
         
-        print(f"\n[Retrieval] Searching for: {question[:100]}... (k={k})")
-        # Use hybrid retriever (Vector + BM25) for better keyword matching
-        documents = self.retriever.invoke(search_query)
+        print(f"\n[Retrieval] Processing {len(search_queries)} search queries...")
+        
+        for q in search_queries:
+            # Use hybrid retriever (Vector + BM25)
+            query_docs = self.retriever.invoke(q)
+            for doc in query_docs:
+                # Deduplicate by content to save space
+                content_hash = hash(doc.page_content)
+                if content_hash not in seen_contents:
+                    all_documents.append(doc)
+                    seen_contents.add(content_hash)
+        
+        documents = all_documents
         
         # For appendix queries, filter by exact article number in metadata
         if is_appendix_query:
@@ -109,8 +121,10 @@ class AgenticRAG:
                 else:
                     print(f"[Retrieval] No exact metadata match, using semantic results")
         
+        # Limit total documents to 15 to stay within reasonable context
+        documents = documents[:15]
         
-        print(f"[Retrieval] Found {len(documents)} documents")
+        print(f"[Retrieval] Found {len(documents)} unique documents")
         for i, doc in enumerate(documents):
             source = doc.metadata.get('source', 'Unknown')
             ret_type = doc.metadata.get('retrieval_source', 'Unknown')
@@ -132,15 +146,24 @@ class AgenticRAG:
             ("học phần" in _q or "phương pháp" in _q or "hình thức" in _q) and
             "học phí" not in _q  # phân biệt với "đánh giá miễn học phí"
         )
+        # Case 3: "Học bổng" + "Kỷ luật" / "Điều kiện" → inject Article 4 from Quy định học bổng (725)
+        is_scholarship_condition_query = (
+            ("học bổng" in _q) and
+            ("điều kiện" in _q or "kỷ luật" in _q or "xét" in _q)
+        )
 
-        def _inject_articles(search_text, article_filter, label):
+        def _inject_articles(search_text, article_filter, label, source_filter=None):
             try:
+                filters = {"article": article_filter}
+                if source_filter:
+                    filters["filename"] = {"$like": f"%{source_filter}%"}
+                
                 injected = self.vector_store.vectorstore.similarity_search(
-                    search_text, k=4, filter={"article": article_filter}
+                    search_text, k=4, filter=filters
                 )
                 if injected:
-                    existing_ids = {id(d) for d in documents}
-                    new_docs = [d for d in injected if id(d) not in existing_ids]
+                    existing_hashes = {hash(d.page_content) for d in documents}
+                    new_docs = [d for d in injected if hash(d.page_content) not in existing_hashes]
                     if new_docs:
                         print(f"[Retrieval] {label} — injected {len(new_docs)} targeted articles to front")
                         return new_docs + documents
@@ -158,6 +181,13 @@ class AgenticRAG:
                 "điểm thành phần đánh giá học phần thường xuyên giữa kỳ kết thúc",
                 {"$in": ["9"]},
                 "Grading-method query"
+            )
+        if is_scholarship_condition_query:
+            documents = _inject_articles(
+                "điều kiện xét cấp học bổng khuyến khích học tập kỷ luật",
+                {"$in": ["4"]},
+                "Scholarship-condition query",
+                source_filter="725"
             )
         # ────────────────────────────────────────────────────────────────────────
 
@@ -225,7 +255,7 @@ class AgenticRAG:
             return state
             
         print(f"[Reranking] Re-evaluating {len(documents)} relevant documents...")
-        reranked_docs = self.reranker.rerank(question, documents)
+        reranked_docs = self.reranker.rerank(question, documents, top_k=10)
         
         state["documents"] = reranked_docs
         return state

@@ -17,9 +17,12 @@ class LearnSlang(BaseModel):
     definition: str = Field(description="The full formal definition")
 
 
+from typing import List
+
 class QueryRewriter:
     """
-    Rewrite student queries into formal academic language for better retrieval
+    Rewrite student queries into formal academic language for better retrieval.
+    Supports decomposing complex queries into multiple search terms.
     """
     
     def __init__(self):
@@ -27,66 +30,63 @@ class QueryRewriter:
         self.slang_manager = SlangManager()
         llm = get_llm(temperature=0)
         
-        # Rewriting prompt
-        system_prompt = """Bạn là chuyên gia tối ưu hóa câu hỏi cho Trợ lý ảo thông minh HaUI.
-        
-Nhiệm vụ: Phân tích câu hỏi của sinh viên và chuyển đổi thành một chuỗi TỪ KHÓA TÌM KIẾMM TỐI ƯU. 
+        # Decomposition & Rewriting prompt
+        system_prompt = """Bạn là chuyên gia phân tích và tối ưu hóa truy vấn cho hệ thống RAG của Đại học Công nghiệp Hà Nội (HaUI).
 
-Yêu cầu:
-1. Nếu có NHIỀU câu hỏi trong một lượt (VD: "A là gì? có những B nào?"), hãy KẾT HỢP thành một search query BAO QUÁT.
-2. Ưu tiên các thực thể (Ví dụ: tên Phụ lục, tên mẫu phiếu, tên chương, tên điều).
-3. Kết hợp các thuật ngữ chính thức của HaUI.
-4. **GIẢI MÃ THAM CHIẾU TỪ LỊCH SỬ HỘI THOẠI:** Nếu câu hỏi hiện tại rất ngắn hoặc thiếu chủ đề, BUỘC PHẢI tra lịch sử để điền đầy đủ.
-   **QUAN TRỌNG:** Nếu câu hỏi hiện tại có SỐ TIẾT MỚI (khác với lịch sử) → LUÔN dùng số tiết MỚI đó, không dùng số tiết cũ.
-   VD1: Lịch sử="Tiết 5 lý thuyết bắt đầu lúc nào?", Câu hỏi="kết thúc lúc nào" → Output: "Tiết 5 lý thuyết kết thúc lúc nào CS1 CS3"
-   VD2: Lịch sử="kết thúc lúc nào", Câu hỏi="tiết 1" → Output: "Tiết 1 lý thuyết kết thúc lúc nào CS1 CS3"
-   VD3: Lịch sử="Học bổng loại giỏi điều kiện gì", Câu hỏi="xuất sắc" → Output: "Học bổng KKHT loại xuất sắc điều kiện GPA"
-   VD4: Lịch sử="tiết 5 bắt đầu 10:35... kết thúc 11:25", Câu hỏi="còn tiết 2 thì sao" → Output: "Tiết 2 lý thuyết kết thúc lúc nào CS1 CS3"
-5. GIỮ NGUYÊN cấu trúc quan hệ giữa các phần câu hỏi (định nghĩa, phân loại, liệt kê).
-6. Chỉ trả về chuỗi từ khóa, không giải thích gì thêm.
+Nhiệm vụ: Phân tích câu hỏi của sinh viên và chuyển đổi thành một DANH SÁCH các chuỗi từ khóa tìm kiếm tối ưu.
+
+Quy tắc:
+1. Nếu câu hỏi đơn giản: Trả về một chuỗi từ khóa duy nhất.
+2. Nếu câu hỏi PHỨC HỢP (chứa nhiều vế, nhiều ý hỏi khác nhau): TÁCH thành các chuỗi từ khóa riêng biệt hoàn chỉnh.
+   Mỗi vế phải là một câu hỏi độc lập có đầy đủ chủ ngữ "sinh viên HaUI".
+3. Sử dụng lịch sử hội thoại để giải mã các đại từ hoặc ý ẩn ý.
+4. Ưu tiên thực thể chính thức: tên Điều, tên Phụ lục, tên Quy định.
+5. Chỉ trả về danh sách các câu search, mỗi câu trên một dòng. Không đánh số, không giải thích.
 
 Ví dụ:
-Câu hỏi: "cho mình xin mẫu phụ lục 03"
-Output: Phụ lục 03 Danh sách giao đề tài thực hiện ĐA/KLTN HaUI
+Câu hỏi: "Sinh viên vi phạm đạo văn đồ án và bị cảnh báo học tập lần 2 liên tiếp thì sao?"
+Output:
+quy định xử lý kỷ luật sinh viên đạo văn đồ án tốt nghiệp HaUI
+hệ quả sinh viên bị cảnh báo kết quả học tập lần thứ 2 liên tiếp buộc thôi học HaUI
 
-Câu hỏi: "Học phần là gì? có những loại học phần nào"
-Output: Học phần định nghĩa phân loại các loại học phần
+Câu hỏi: "địa chỉ SEEE và số điện thoại hiệu trưởng"
+Output:
+địa chỉ văn phòng Trường Điện Điện tử SEEE HaUI
+họ tên số điện thoại Hiệu trưởng Trường SEEE HaUI
 
-Câu hỏi: "điều kiện tốt nghiệp và cách tính điểm"
-Output: điều kiện tốt nghiệp cách tính điểm trung bình
+Câu hỏi: "tiết 5 lý thuyết ở CS1 bắt đầu lúc nào" (Lịch sử: đang hỏi về giờ học)
+Output:
+giờ bắt đầu tiết 5 lý thuyết cơ sở 1 HaUI
 
 Lịch sử hội thoại:
 {chat_history}
 
 Câu hỏi hiện tại: {question}
 Output:"""
-
+        
         prompt = ChatPromptTemplate.from_template(system_prompt)
         
-        self.rewriter = prompt | llm | StrOutputParser()
+        self.chain = prompt | llm | StrOutputParser()
     
-    def rewrite(self, question: str, chat_history: list = None) -> str:
+    def rewrite(self, question: str, chat_history: list = None) -> List[str]:
         """
-        Rewrite the query
+        Rewrite query to formal language and decompose if necessary
         """
-        custom_slang = self.slang_manager.get_formatted_slang()
-        return self.rewriter.invoke({
-            "question": question,
-            "custom_slang": custom_slang,
+        # Step 1: Replace slang if any
+        refined_q = self.slang_manager.replace_slang(question)
+        
+        # Step 2: LLM Rewriting & Decomposition
+        response = self.chain.invoke({
+            "question": refined_q,
             "chat_history": chat_history or []
         })
-    
-    def extract_new_slang(self, question: str) -> tuple[str, str]:
-        """
-        Extract a new abbreviation definition from natural language
-        """
-        llm = get_llm(temperature=0)
-        extractor = llm.with_structured_output(LearnSlang)
         
-        prompt = ChatPromptTemplate.from_template(
-            "Trích xuất từ viết tắt và định nghĩa đầy đủ từ câu sau: {question}"
-        )
+        # Parse lines into list
+        queries = [q.strip() for q in response.split('\n') if q.strip()]
         
-        chain = prompt | extractor
-        result = chain.invoke({"question": question})
-        return result.abbreviation, result.definition
+        # Fallback if empty
+        if not queries:
+            queries = [refined_q]
+            
+        print(f"[Rewriter] Decomposed into {len(queries)} queries: {queries}")
+        return queries
