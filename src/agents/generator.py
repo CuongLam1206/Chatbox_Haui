@@ -112,25 +112,20 @@ Hãy đọc kỹ TOÀN BỘ ngữ cảnh bao gồm bảng, danh sách, sơ đồ
    
    → Áp dụng CÙNG quy tắc cho MỌI phụ lục (03, 04, 05, 06, 07, 08, 09...)!
 
-   C) Nếu ngữ cảnh chứa **DỮ LIỆU CÓ CẤU TRÚC** (sơ đồ tổ chức, danh sách liên hệ, bảng giờ học, danh sách chương trình đào tạo) và sinh viên hỏi về nội dung đó:
-      - PHẢI LIỆT KÊ ĐẦY ĐỦ toàn bộ thông tin có trong ngữ cảnh (tên, SĐT, chức vụ, giờ học...).
-      - KHÔNG được chỉ nói "xem Slide X" hay tóm tắt chung chung.
+   C) Nếu ngữ cảnh chứa **DỮ LIỆU CÓ CẤU TRÚC** (sơ đồ tổ chức, danh sách liên hệ, bảng giờ học) và sinh viên hỏi về nội dung đó:
+      - **ƯU TIÊN TÌM ĐÍCH DANH:** Nếu người dùng hỏi đích danh một cá nhân (VD: "Thầy A là ai"), thì CHỈ trả lời về cá nhân đó. KHÔNG liệt kê những người khác trong cùng bảng.
+      - **LIỆT KÊ TẬP THỂ:** Chỉ liệt kê toàn bộ danh sách khi người dùng hỏi chung chung (VD: "danh sách giảng viên khoa X", "cơ cấu tổ chức trường Y").
+      - Khi liệt kê tập thể: PHẢI LIỆT KÊ ĐẦY ĐỦ toàn bộ thông tin có trong ngữ cảnh.
       - Trình bày dạng danh sách hoặc bảng cho dễ đọc.
-      - Ví dụ: hỏi "cơ cấu tổ chức SEEE" → liệt kê đầy đủ Ban Giám hiệu, các Khoa, tên người phụ trách, SĐT.
-      - Ví dụ: hỏi "giờ học cơ sở 1" → liệt kê đầy đủ bảng tiết học Ca sáng/chiều/tối.
 
 4. Nếu là câu hỏi nối tiếp, hãy dựa vào lịch sử hội thoại để trả lời một cách tự nhiên.
 
 5. **TRÍCH DẪN NGUỒN CHÍNH XÁC:**
    - BẮT BUỘC trích dẫn Số Quyết định (QĐ) + Ngày ban hành khi trả lời về quy định/quy chế
    - Ví dụ: "Theo Quyết định số 1532/QĐ-ĐHCN ngày 24/9/2024..."
-   - Nếu có NHIỀU văn bản liên quan → Ưu tiên VĂN BẢN MỚI NHẤT (so sánh ngày ban hành)
-   - Có thể đề cập văn bản cũ nếu vẫn còn hiệu lực, nhưng nhấn mạnh văn bản nào mới nhất
 
 6. **KHÔNG đề cập số Điều/Khoản/Phụ lục trong nội dung câu trả lời** (Ví dụ: TRÁNH viết "theo Điều 15", "xem Phụ lục III", "Điều 1 quy định...", "theo khoản 2"):
    - Thay vào đó: LIỆT KÊ TRỰC TIẾP nội dung/đối tượng/điều kiện đó ra.
-   - Sai: "Đối tượng miễn giảm được quy định tại Điều 15 và Điều 16 của Nghị định này."
-   - Đúng: "Các đối tượng được miễn học phí gồm: người dân tộc thiểu số hộ nghèo, con em thương binh liệt sĩ, người khuyết tật, sinh viên mồ côi..."
    - Ngoại lệ: Nếu sinh viên HỎI CỤ THỂ về số điều/khoản thì mới nhắc.
 
 7. Nếu KHÔNG TÌM THẤY thông tin, hãy lịch sự đề nghị sinh viên liên hệ Khoa/Đơn vị đào tạo.
@@ -159,13 +154,14 @@ Câu trả lời:"""
         cleaned_lines = []
         
         for i, line in enumerate(lines):
-            # Skip lines containing unwanted patterns
-            if any(pattern in line for pattern in [
+            # Skip lines containing unwanted patterns (including variants without accents)
+            if any(pattern.lower() in line.lower() for pattern in [
                 '📚',
                 'Nguồn tham khảo',
+                'Nguon tham khao',
                 'Độ liên quan:',
+                'Do lien quan:',
                 'Đây là **Phụ lục',
-                'Bạn có thể sao chép',
                 'Dưới đây là',
                 'Hãy điền',
                 'Hy vọng',
