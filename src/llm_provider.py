@@ -1,6 +1,8 @@
 """
-LLM Provider with automatic fallbacks
+LLM Provider with automatic fallbacks and retry logic for rate limits
 """
+import time
+import functools
 from langchain_openai import ChatOpenAI
 from langchain_groq import ChatGroq
 from core.config import (
@@ -9,6 +11,76 @@ from core.config import (
     OLLAMA_BASE_URL, OLLAMA_MODEL, GROQ_MODEL, OPENROUTER_MODEL, GEMINI_MODEL,
     LLM_MODEL, TEMPERATURE
 )
+
+# ── Rate Limit Retry Wrapper ──────────────────────────────────────────────
+MAX_RETRIES = 5
+BASE_DELAY = 2  # seconds
+MAX_DELAY = 30  # seconds
+
+
+def _is_rate_limit_error(exc):
+    """Check if exception is a rate limit (429) error."""
+    err_str = str(exc).lower()
+    return any(keyword in err_str for keyword in [
+        "429", "rate limit", "resource exhausted", "quota",
+        "too many requests", "resourceexhausted"
+    ])
+
+
+class RetryLLMWrapper:
+    """
+    Wraps a LangChain LLM/ChatModel to add automatic retry with exponential
+    backoff when rate-limited (HTTP 429).
+    Transparently proxies all attributes so agents see no difference.
+    """
+
+    def __init__(self, llm, max_retries=MAX_RETRIES, base_delay=BASE_DELAY):
+        self._llm = llm
+        self._max_retries = max_retries
+        self._base_delay = base_delay
+
+    # -- Proxy attribute access to the inner LLM --
+    def __getattr__(self, name):
+        attr = getattr(self._llm, name)
+        # Wrap callable methods that hit the API
+        if callable(attr) and name in ("invoke", "ainvoke", "generate", "agenerate",
+                                        "predict", "apredict", "batch", "abatch"):
+            return self._wrap_with_retry(attr, name)
+        return attr
+
+    def _wrap_with_retry(self, method, method_name):
+        @functools.wraps(method)
+        def wrapper(*args, **kwargs):
+            last_exc = None
+            for attempt in range(1, self._max_retries + 1):
+                try:
+                    return method(*args, **kwargs)
+                except Exception as exc:
+                    if _is_rate_limit_error(exc):
+                        delay = min(self._base_delay * (2 ** (attempt - 1)), MAX_DELAY)
+                        print(f"[LLM Retry] Rate limited on {method_name} "
+                              f"(attempt {attempt}/{self._max_retries}). "
+                              f"Waiting {delay}s...")
+                        time.sleep(delay)
+                        last_exc = exc
+                    else:
+                        raise  # Non-rate-limit errors bubble up immediately
+            print(f"[LLM Retry] All {self._max_retries} retries exhausted for {method_name}.")
+            raise last_exc
+        return wrapper
+
+    # -- Support pipe operator (prompt | llm) used by LangChain --
+    def __or__(self, other):
+        return self._llm.__or__(other)
+
+    def __ror__(self, other):
+        return self._llm.__ror__(other)
+
+    # -- Support with_structured_output for Router/Grader --
+    def with_structured_output(self, schema, **kwargs):
+        structured = self._llm.with_structured_output(schema, **kwargs)
+        return RetryLLMWrapper(structured, self._max_retries, self._base_delay)
+# ──────────────────────────────────────────────────────────────────────────
 
 # Lazy import for optional providers
 def _get_ollama():
@@ -30,12 +102,13 @@ def get_llm(temperature=TEMPERATURE):
     if USE_GEMINI and GEMINI_API_KEY:
         from langchain_google_genai import ChatGoogleGenerativeAI
         print(f"[LLM] Using Gemini: {GEMINI_MODEL}")
-        return ChatGoogleGenerativeAI(
+        llm = ChatGoogleGenerativeAI(
             model=GEMINI_MODEL,
             temperature=temperature,
             google_api_key=GEMINI_API_KEY,
             convert_system_message_to_human=True
         )
+        return RetryLLMWrapper(llm)
 
     # 1. Use OpenRouter if enabled
     if USE_OPENROUTER and OPENROUTER_API_KEY:

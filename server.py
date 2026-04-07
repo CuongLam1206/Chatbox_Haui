@@ -2,10 +2,12 @@
 FastAPI Server for Render Deployment
 Backend only — Facebook Messenger webhook.
 Deferred imports to ensure fast port binding.
+Includes concurrency control (Semaphore) for rate-limited LLM APIs.
 """
 import os
 import sys
 import asyncio
+import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
@@ -23,6 +25,16 @@ PORT = int(os.getenv("PORT", 10000))
 FB_PAGE_ACCESS_TOKEN = os.getenv("FB_PAGE_ACCESS_TOKEN")
 FB_VERIFY_TOKEN = os.getenv("FB_VERIFY_TOKEN")
 FB_GRAPH_API_URL = "https://graph.facebook.com/v19.0/me/messages"
+
+# ══════════════════════════════════════════════════════════════
+# Concurrency Control
+# ══════════════════════════════════════════════════════════════
+# Limit concurrent LLM processing to avoid Gemini rate limits.
+# Free tier: 15 RPM → each message ~3-4 calls → safe at 3 concurrent.
+MAX_CONCURRENT_CHATS = int(os.getenv("MAX_CONCURRENT_CHATS", "3"))
+chat_semaphore = asyncio.Semaphore(MAX_CONCURRENT_CHATS)
+_active_requests = 0
+_queue_waiters = 0
 
 DOCUMENTS_DIR = Path(__file__).parent / "data" / "documents"
 LINK_FILE = DOCUMENTS_DIR / "Link_nguon.md"
@@ -184,6 +196,9 @@ async def health_check():
         "status": "healthy",
         "chatbot_loaded": workflow is not None,
         "init_started": _init_started,
+        "active_requests": _active_requests,
+        "max_concurrent": MAX_CONCURRENT_CHATS,
+        "queue_waiters": _queue_waiters,
     }
 
 
@@ -218,60 +233,116 @@ async def handle_messages(request: Request, background_tasks: BackgroundTasks):
     raise HTTPException(status_code=404)
 
 
+def _send_typing_on(recipient_id: str):
+    """Send typing indicator to show bot is processing."""
+    import requests as req
+    try:
+        req.post(
+            FB_GRAPH_API_URL,
+            params={"access_token": FB_PAGE_ACCESS_TOKEN},
+            headers={"Content-Type": "application/json"},
+            json={"recipient": {"id": recipient_id}, "sender_action": "typing_on"},
+            timeout=5,
+        )
+    except Exception:
+        pass  # Non-critical — don't break the flow
+
+
 async def process_and_reply(sender_id: str, message_text: str):
     import requests
     import re as _re
     import html as _html
 
-    # Fetch user name from Facebook
-    user_name = fetch_fb_user_name(sender_id)
+    global _active_requests, _queue_waiters
 
-    wf, conv_mgr = await get_chatbot()
+    # Show typing indicator immediately
+    _send_typing_on(sender_id)
 
-    try:
-        session_id = f"fb_{sender_id}"
-        chat_history = conv_mgr.get_history(session_id, limit=10)
-        result = wf.run(message_text, session_id=session_id, chat_history=chat_history)
-        answer = result["answer"]
+    # ── Concurrency gate ──────────────────────────────────────────────
+    # If semaphore is full, notify user they're in queue
+    if chat_semaphore.locked():
+        _queue_waiters += 1
+        position = _queue_waiters
+        print(f"[Queue] {sender_id} queued (position ~{position}, "
+              f"active={_active_requests}/{MAX_CONCURRENT_CHATS})")
+        _send_fb(sender_id,
+                 f"Hệ thống đang xử lý nhiều yêu cầu. "
+                 f"Tin nhắn của bạn đang được xếp hàng, vui lòng đợi trong giây lát...")
 
-        # Log to MongoDB
-        conv_mgr.add_message(session_id, "user", message_text, metadata={"user_name": user_name})
-        conv_mgr.add_message(session_id, "assistant", answer, sources=result.get("sources"))
+    start_time = time.time()
 
-        # Log to Google Sheets
-        if gs_logger:
-            gs_logger.append_log(
-                user_name=user_name,
-                user_id=sender_id,
-                question=message_text,
-                answer=answer,
-                sources=result.get("sources"),
-                relevance=result.get("relevance_score", 0.0),
-            )
+    async with chat_semaphore:
+        _active_requests += 1
+        if _queue_waiters > 0:
+            _queue_waiters -= 1
+        _send_typing_on(sender_id)  # Refresh typing indicator after queue wait
 
-        # HTML to plain text
-        plain = _html.unescape(answer)
-        plain = _re.sub(r"<br\s*/?>", "\n", plain, flags=_re.IGNORECASE)
-        plain = _re.sub(r"</?p\s*>", "\n", plain, flags=_re.IGNORECASE)
-        plain = _re.sub(r"<li\s*>", "\n- ", plain, flags=_re.IGNORECASE)
-        plain = _re.sub(r"<[^>]+>", "", plain)
-        plain = _re.sub(r"\n{3,}", "\n\n", plain).strip()
+        print(f"[Processing] {sender_id} started "
+              f"(active={_active_requests}/{MAX_CONCURRENT_CHATS})")
 
-        _send_fb(sender_id, plain)
+        # Fetch user name from Facebook
+        user_name = fetch_fb_user_name(sender_id)
 
-        if result.get("sources"):
-            drive_links = get_drive_links_for_sources(result["sources"])
-            lines = []
-            for src in result["sources"]:
-                if src in drive_links:
-                    lines.append(f"- {src}\n  Link: {drive_links[src]}")
-                else:
-                    lines.append(f"- {src}")
-            _send_fb(sender_id, "Nguon tham khao:\n" + "\n".join(lines))
+        wf, conv_mgr = await get_chatbot()
 
-    except Exception as e:
-        print(f"Error: {e}")
-        _send_fb(sender_id, "Xin loi, toi gap su co. Vui long thu lai sau.")
+        try:
+            session_id = f"fb_{sender_id}"
+            chat_history = conv_mgr.get_history(session_id, limit=10)
+
+            # Run workflow in thread pool (it's synchronous + contains blocking LLM calls)
+            from concurrent.futures import ThreadPoolExecutor
+            loop = asyncio.get_event_loop()
+            with ThreadPoolExecutor() as pool:
+                result = await loop.run_in_executor(
+                    pool, lambda: wf.run(message_text, session_id=session_id, chat_history=chat_history)
+                )
+
+            answer = result["answer"]
+            elapsed = time.time() - start_time
+
+            # Log to MongoDB
+            conv_mgr.add_message(session_id, "user", message_text, metadata={"user_name": user_name})
+            conv_mgr.add_message(session_id, "assistant", answer, sources=result.get("sources"))
+
+            # Log to Google Sheets
+            if gs_logger:
+                gs_logger.append_log(
+                    user_name=user_name,
+                    user_id=sender_id,
+                    question=message_text,
+                    answer=answer,
+                    sources=result.get("sources"),
+                    relevance=result.get("relevance_score", 0.0),
+                )
+
+            # HTML to plain text
+            plain = _html.unescape(answer)
+            plain = _re.sub(r"<br\s*/?>", "\n", plain, flags=_re.IGNORECASE)
+            plain = _re.sub(r"</?p\s*>", "\n", plain, flags=_re.IGNORECASE)
+            plain = _re.sub(r"<li\s*>", "\n- ", plain, flags=_re.IGNORECASE)
+            plain = _re.sub(r"<[^>]+>", "", plain)
+            plain = _re.sub(r"\n{3,}", "\n\n", plain).strip()
+
+            _send_fb(sender_id, plain)
+
+            if result.get("sources"):
+                drive_links = get_drive_links_for_sources(result["sources"])
+                lines = []
+                for src in result["sources"]:
+                    if src in drive_links:
+                        lines.append(f"- {src}\n  Link: {drive_links[src]}")
+                    else:
+                        lines.append(f"- {src}")
+                _send_fb(sender_id, "Nguon tham khao:\n" + "\n".join(lines))
+
+            print(f"[Done] {sender_id} replied in {elapsed:.1f}s")
+
+        except Exception as e:
+            print(f"Error processing {sender_id}: {e}")
+            _send_fb(sender_id, "Xin loi, toi gap su co. Vui long thu lai sau.")
+
+        finally:
+            _active_requests -= 1
 
 
 def _send_fb(recipient_id: str, text: str):
