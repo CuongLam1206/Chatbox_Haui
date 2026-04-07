@@ -1,24 +1,24 @@
 # Agentic RAG Chatbot - HaUI Smart Assistant
 
-Hệ thống chatbot thông minh sử dụng **Agentic RAG** (Retrieval-Augmented Generation) để trả lời câu hỏi về quy định đào tạo tại Trường Đại học Công nghiệp Hà Nội.
+An intelligent chatbot system utilizing **Agentic RAG** (Retrieval-Augmented Generation) to answer queries regarding training regulations at Hanoi University of Industry (HaUI).
 
-## 🎯 Tổng Quan
+## 🎯 Overview
 
-### **Đặc điểm nổi bật:**
-- ✅ **Agentic RAG**: Tự động phân loại query, rewrite, grade documents, rerank
-- ✅ **Semantic Chunking**: Chia tài liệu theo Điều, Phụ lục để bảo toàn context
-- ✅ **Hybrid Search**: Kết hợp Vector Search (50%) + BM25 (50%)
-- ✅ **Metadata Filtering**: Filter chính xác theo article number hoặc thông qua intent injection
-- ✅ **Multi-Model Support**: Gemini, OpenAI, Groq, OpenRouter, Ollama (local)
-- ✅ **Auto-Update**: Tự động detect & index documents mới bằng hệ thống Tracker MD5
-- ✅ **Deployment**: Giao diện Gradio thân thiện và Backend hỗ trợ webhook Facebook Messenger
+### **Key Features:**
+- ✅ **Agentic RAG**: Automatically routes queries, rewrites questions, grades documents, and reranks results.
+- ✅ **Semantic Chunking**: Splits documents by Article and Appendix to preserve complete context.
+- ✅ **Hybrid Search**: Combines Vector Search (50%) + BM25 (50%).
+- ✅ **Metadata Filtering**: Exact filtering by article number or via hardcoded intent injection.
+- ✅ **Multi-Model Support**: Gemini, OpenAI, Groq, OpenRouter, and Ollama (local).
+- ✅ **Auto-Update**: Automatically detects & indexes new documents using an MD5 hash tracker.
+- ✅ **Deployment**: Friendly Gradio web interface and a FastAPI backend supporting Facebook Messenger webhooks.
 
 ### **Use Cases:**
-- 📚 Tra cứu quy định, quy chế đào tạo
-- 📋 Lấy thông tin phụ lục, biểu mẫu (đầy đủ, không tóm tắt)
-- 💬 Hỏi đáp về điều kiện tốt nghiệp, học phần, đồ án
-- 🔍 Tìm kiếm thông tin từ nhiều tài liệu
-- 🤖 Hỗ trợ học thuật ngữ sinh viên (tự lưu cấu trúc viết tắt/slang mới)
+- 📚 Look up university training regulations and policies.
+- 📋 Extract full appendices and administrative forms (complete extraction, no summarization).
+- 💬 Q&A regarding graduation requirements, courses, and final projects.
+- 🔍 Search for information across multiple documents simultaneously.
+- 🤖 Learn student slang and save custom abbreviations dynamically from the chat context.
 
 ---
 
@@ -71,34 +71,34 @@ graph TB
 ### **1. Core Agents** (`src/agents/`)
 
 #### **Router** (`router.py`)
-- **Chức năng**: Phân loại query vào 1 trong 6 routes
+- **Function**: Classifies the query into 1 of 6 specific routes.
 - **Routes**:
-  - `greeting`: Câu chào hỏi đơn giản
-  - `out_of_scope`: Câu hỏi nằm ngoài đời sống sinh viên HaUI
-  - `learn`: Học và ghi nhớ các quy tắc viết tắt mới từ ngữ cảnh
-  - `general`: Hội thoại phiếm hoặc truy vấn lịch sử cuộc trò chuyện
-  - `document_generation`: Hỏi đáp yêu cầu xuất phụ lục cụ thể
-  - `vectorstore`: RAG thông thường cho mọi quy chế, quy định
+  - `greeting`: Simple greetings and small talk.
+  - `out_of_scope`: Queries unrelated to HaUI student life.
+  - `learn`: Learn and memorize new custom abbreviations from the context.
+  - `general`: General conversation or chat history queries.
+  - `document_generation`: Requests to output specific appendices or forms.
+  - `vectorstore`: Standard RAG for all regulations and policies.
 
 #### **Rewriter** (`rewriter.py`)
-- **Chức năng**: Cải thiện query, phân tách câu hỏi đa phức hợp và bổ sung context
-- **Ví dụ**: "nó là gì?" → "Điều kiện xét tốt nghiệp là gì?"
-- **Khi nào dùng**: General queries (bị vô hiệu hóa với document queries)
+- **Function**: Optimizes the query, decomposes complex questions, and adds chat history context.
+- **Example**: "What is it?" → "What are the requirements for graduation?"
+- **Usage**: General queries (bypassed for document generation queries).
 
 #### **Grader** (`grader.py`)
-- **Chức năng**: Đánh giá độ liên quan của từng document được nạp.
-- **Tính năng**: Chạy the Batch LLM Grading giúp tiết kiệm tokens
-- **Output**: Chỉ số các index phù hợp hoặc rơi vào fallback top 1
-- **Skip**: Document generation queries (vì đã có filter metadata)
+- **Function**: Evaluates the relevance of each retrieved document.
+- **Feature**: Utilizes Batch LLM Grading to save tokens and speed up API calls.
+- **Output**: Indices of relevant documents or falls back to the top 1 result.
+- **Skip**: Skipped for document generation queries (handled by metadata filtering).
 
 #### **Reranker** (`reranker.py`)
-- **Chức năng**: Sắp xếp lại documents theo độ chính xác từ chuyên gia văn bản
-- **Model**: LLM-based với prompt chi tiết
-- **Skip**: Bỏ qua nếu Grader cảnh báo mức độ relevance thấp hoặc đi vào fallback
+- **Function**: Re-sorts documents based on high-precision rules defined by an expert prompt.
+- **Model**: LLM-based zero-shot ranking.
+- **Skip**: Skipped if the Grader warns of low general relevance.
 
 #### **Generator** (`generator.py`)
-- **Chức năng**: Tổng hợp câu trả lời từ documents đáp ứng rule HaUI
-- **Bảo mật RAG**: Cơ chế xử lý thời khóa biểu gắt gao, chống bù đắp (hallucination)
+- **Function**: Synthesizes the final answer using retrieved contexts aligned with HaUI's rules.
+- **RAG Security**: Strict prompt engineering for timetable scheduling and hallucination prevention.
 
 ---
 
@@ -106,7 +106,7 @@ graph TB
 
 **Semantic Chunking by Article/Appendix:**
 
-Hệ thống có regex phức tạp giúp bắt chính xác "Điều" hoặc "Phụ lục":
+The system utilizes complex regex patterns to accurately identify "Article" (Điều) or "Appendix" (Phụ lục):
 ```python
 pattern = r'^(?:#{1,3}\s+)?(?:\*\*)?(?:Điều|Phụ lục|Slide)\s+(\d+)'
 ```
@@ -136,37 +136,37 @@ results = ensemble_retriever.invoke(query, k=12)
 ```
 
 **Adaptive Control:**
-- Sử dụng cấu hình mặc định (RETRIEVAL_K = 12) cho toàn bộ truy vấn.
-- Thêm Intent Injection nhúng code cứng để bootstrap trả bài vào top 1 đối với các key query như học bổng, vị trí phòng ban (VD: SEEE).
+- Uses a default configuration (`RETRIEVAL_K = 12`) for the entire pipeline.
+- Integrates hardcoded Intent Injections to bootstrap critical resources (like scholarships and location/department info) directly to the top.
 
 ---
 
 ### **4. Workflow** (`src/workflow.py`)
 
-**Hệ thống xử lý tuần tự (Agentic Workflow):**
+**Procedural Agentic Workflow:**
 
-Khác với các project gốc từ LangGraph, hệ thống này được thiết kế procedural 100% qua python thuần bằng luồng điều kiện (if/elif) nhằm mục đích control mượt luồng Agent:
+Unlike generic projects utilizing overhead frameworks like LangGraph, this system is engineered 100% procedurally in pure Python using deterministic `if/elif` logic. This ensures a fast, decoupled, and highly controlled Agent execution flow:
 
 ```python
 def run(self, question: str, session_id: str = None, chat_history: list = None):
-    # 1. Phân loại truy vấn
+    # 1. Query Routing
     route = self.router.route(question, history)
     
-    # Các kịch bản rẽ nhánh không qua RAG (Tối ưu độ trễ)
+    # Non-RAG fast paths (Latency Optimization)
     if route == "greeting": return [...]
     elif route == "out_of_scope": return [...]
     elif route == "learn": return [...]
     elif route == "general": return [...]
     
-    # 2. Truy xuất
+    # 2. Document Retrieval
     documents = self.retrieve(state)
     
-    # 3. Phân mức & Rerank (Skip hoàn toàn LLM overhead nếu mục đích chỉ lấy nội dung Biểu mẫu)
+    # 3. Grading & Reranking (Skipped entirely to save LLM overhead for direct forms)
     if not is_document_query:
         documents = self.grade_documents(state)
         documents = self.rerank_documents(state)
         
-    # 4. Tạo kết quả & Auto-Retry
+    # 4. Generation & Auto-Retry
     while retry_count <= MAX_RETRIES:
         answer = self.generate_answer(state)
         if ENABLE_HALLUCINATION_CHECK and self.check_hallucination(answer):
@@ -180,30 +180,30 @@ def run(self, question: str, session_id: str = None, chat_history: list = None):
 ```
 agentic_chatbot/
 ├── src/
-│   ├── agents/           # Thành phần Agent thông minh
+│   ├── agents/           # Intelligent Agent components
 │   │   ├── router.py          # Query router
 │   │   ├── rewriter.py        # Query rewriter
 │   │   ├── grader.py          # Document grader
 │   │   ├── reranker.py        # Document reranker
-│   │   ├── generator.py       # Answer generator chung
-│   │   ├── document_generator.py # Trích xuất thông tin form/phụ lục
-│   │   └── hallucination_check.py # Kiểm tra ảo giác LLM
-│   ├── workflow.py       # Module cấu hình Workflow
-│   ├── vector_store.py   # Quản lý Hybrid retrieval (Chroma + BM25)
-│   ├── legal_chunker.py  # Thuật toán cắt luật pháp Việt Nam
+│   │   ├── generator.py       # General answer generator
+│   │   ├── document_generator.py # Form/Appendix exact extractor
+│   │   └── hallucination_check.py # LLM hallucination validator
+│   ├── workflow.py       # Procedural manual workflow logic
+│   ├── vector_store.py   # Hybrid retrieval manager (Chroma + BM25)
+│   ├── legal_chunker.py  # Vietnamese legal document split algorithms
 │   ├── document_loader.py# Multi-format index loader
-│   ├── llm_provider.py   # Wrap LLM Auto-Retry + Fallback
-│   └── slang_manager.py  # Quản lý Data từ viết tắt
+│   ├── llm_provider.py   # LLM wrapper with Auto-Retry + Fallbacks
+│   └── slang_manager.py  # Abbreviation database manager
 ├── data/
-│   ├── documents/        # File tài liệu Markdown
-│   └── last_update.json  # Hash tracker để Update file System
-├── vector_db/            # Vector Database Lưu trữ cục bộ
+│   ├── documents/        # Source Markdown documents
+│   └── last_update.json  # Hash tracker for system updates
+├── vector_db/            # Local Vector Database 
 ├── core/
-│   ├── initialize.py     # Setup script nạp Embeddings (Chạy đầu tiên)
-│   └── config.py         # File load cấu hình tập trung
-├── demo.py               # Giao diện kiểm thử hệ thống (Gradio UI)
-├── server.py             # Máy chủ Deploy ứng dụng Facebook Messenger
-├── requirements.txt      # Module Dependencies
+│   ├── initialize.py     # Initialization script to load embeddings (Run first)
+│   └── config.py         # Centralized configuration settings
+├── demo.py               # Gradio UI for dev testing
+├── server.py             # Production FastAPI server (Facebook Messenger Webhook)
+├── requirements.txt      # Python dependencies
 └── README.md             # This file
 ```
 
@@ -229,54 +229,54 @@ pip install -r requirements.txt
 
 ### **2. Configuration**
 
-Khởi tạo cấu hình qua file `.env`:
+Initialize your configuration by creating a `.env` file:
 
 ```env
-# Chọn Model qua cờ kích hoạt (Boolean)
+# Select Model via Boolean Flags
 USE_GEMINI=true
 USE_GROQ=false
 USE_OLLAMA=false
 USE_OPENROUTER=false
 
-# Gemini setup (Recommended cho Production)
+# Gemini setup (Recommended for Production)
 GEMINI_API_KEY=AIzaSy...
 GEMINI_MODEL=gemini-2.0-flash
 
-# Hoặc thiết lập sử dụng Ollama:
+# Or configure Ollama for local runs:
 OLLAMA_BASE_URL=http://localhost:11434
 OLLAMA_MODEL=qwen2.5:7b
 
-# Cấu hình CSDL hội thoại (MongoDB cho Session Chat)
+# Conversation Database Configuration (MongoDB for Session Chat)
 MONGODB_URI=mongodb://localhost:27017/
 MONGODB_DATABASE=agentic_rag_db
 ```
 
 ### **3. Initialize System**
 
-Nạp Embedding và Chunk Dữ liệu vào Database. **Chạy qua core module**:
+Load the embedding model and chunk your document data into the database. **Execute via the core module**:
 
 ```bash
 python core/initialize.py
 ```
 
-Lệnh này sẽ làm các việc sau:
-- Khởi chạy load các file từ `data/documents/`
-- Chạy module semantic chunker cho nội dung
-- Embed và lưu nội dung vào Vector DB
-- Kéo từ khoá để làm index cho BM25
+This command will:
+- Read and load all files from `data/documents/`
+- Process contents using the semantic legal chunker
+- Embed and save contents into the local Vector DB
+- Extract keywords to build the BM25 index
 
 ### **4. Run Chatbot**
 
-**Mode 1: Giao diện web Gradio (Developer Test)**
+**Mode 1: Gradio Web Interface (Developer Testing)**
 ```bash
 python demo.py
 ```
-Truy cập tại giao diện: `http://localhost:7860`
+Access the interface at: `http://localhost:7860`
 
 **Mode 2: FastAPI Webhook Backend (Production)**
 ```bash
 python server.py
-# Server sẽ lắng nghe ở Port 10000 cho nền tảng nhắn tin
+# Server will listen on Port 10000 for messaging platforms
 ```
 
 ---
@@ -285,27 +285,27 @@ python server.py
 
 | Parameter | Default | Description |
 |-----------|---------|-------------|
-| `CHUNK_SIZE` | 2000 | Baseline ký tự tối đa / 1 cụm. |
-| `CHUNK_OVERLAP` | 200 | Số lượng ký tự chồng chéo. |
-| `RETRIEVAL_K` | 12 | Tổng số văn bản kéo từ DB mỗi query. |
-| `ENSEMBLE_WEIGHTS` | [0.5, 0.5] | Trọng số Hybrid: Chroma(Vector) - Langchain BM25. |
+| `CHUNK_SIZE` | 2000 | Baseline maximum characters per chunk. |
+| `CHUNK_OVERLAP` | 200 | Number of overlapping characters between chunks. |
+| `RETRIEVAL_K` | 12 | Total number of documents pulled from DB per query. |
+| `ENSEMBLE_WEIGHTS` | [0.5, 0.5] | Hybrid weighting: Chroma(Vector) - Langchain BM25. |
 
 ---
 
 ## 📚 Adding Documents
 
-### **Auto-detect thông qua Watcher**
+### **Auto-detect via Tracker**
 
 ```bash
-# Thực hiện việc quăng File vô thư mục:
+# Simply drop the files into the designated folder:
 data/documents/
 
-# Chạy lệnh UI hoặc webhook đều sẽ tự phát hiện file mới thông qua tracker.json
+# Running either the UI or the webhook will auto-detect new files via tracker.json
 python demo.py
 ```
 
 ### **Supported Formats:**
-- ✅ Markdown (`.md`) - Tối ưu nhất để tận dụng Regex Article parsing
+- ✅ Markdown (`.md`) - Highly recommended to fully utilize Regex Article parsing.
 - ✅ PDF (`.pdf`)
 - ✅ Word (`.docx`, `.doc`)
 - ✅ Text (`.txt`)
@@ -317,7 +317,7 @@ python demo.py
 1. Fork repository
 2. Create feature branch
 3. Make changes
-4. Test thoroughly bằng Gradio
+4. Test thoroughly using Gradio
 5. Submit pull request
 
 ---
@@ -328,4 +328,4 @@ MIT License - See LICENSE file for details
 ---
 
 ## 👥 Contact
-- **Institution**: Trường Đại học Công nghiệp Hà Nội Trang Sinh Viên
+- **Institution**: Hanoi University of Industry
