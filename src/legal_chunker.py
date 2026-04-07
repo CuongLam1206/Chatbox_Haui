@@ -68,19 +68,26 @@ class LegalDocumentChunker:
             # for _, name in chapter_map:
             #     print(f"    - {name}")
         
-        # === BƯỚC 2: Tìm Điều/Phụ lục markers ===
+        # === BƯỚC 2: Tìm Điều/Phụ lục/Slide markers ===
         # Match multiple formats of article/section markers (CASE-INSENSITIVE):
         # - **Điều 1.** / **ĐIỀU 1.** (bold format)
         # - ### Điều 1. (markdown heading from Gemini OCR)
         # - ## **Phụ lục 07** / **PHỤ LỤC 1** (appendix)
-        # - Điều 1. (plain text, start of line)
-        article_pattern = r'^(?:#{1,3}\s+)?(?:\*\*)?(?:Điều|Phụ lục)\s+(\d+)'
+        # - ## Slide 15 / ## Slide 16 (presentation slides)
+        # - ## **Tiêu đề** (general markdown headers)
+        article_pattern = r'^(?:#{1,3}\s+)?(?:\*\*)?(?:Điều|Phụ lục|Slide)\s+(\d+)'
         matches = list(re.finditer(article_pattern, text, re.MULTILINE | re.IGNORECASE))
         
-        # Nếu không tìm thấy Điều/Phụ lục, thử tìm section headings: ## 1. TIÊU ĐỀ
+        # Nếu không tìm thấy các marker đặc biệt, thử tìm bất kỳ tiêu đề Markdown nào (## Tiêu đề)
+        if not matches:
+            markdown_header_pattern = r'^##\s+.*$'
+            matches = list(re.finditer(markdown_header_pattern, text, re.MULTILINE))
+        
+        # Nếu vẫn không tìm thấy, thử tìm section headings: ## 1. TIÊU ĐỀ
         if not matches:
             section_pattern = r'^#{1,3}\s+(\d+)\.\s+[A-ZĐÀÁẢÃẠÈÉẺẼẸÌÍỈĨỊÒÓỎÕỌÙÚỦŨỤÝỲỶỸỴÊÔƠƯĂ]'
             matches = list(re.finditer(section_pattern, text, re.MULTILINE))
+        
         if not matches:
             # No articles found, treat as simple document
             print(f"  [!] No article markers found in {metadata.get('filename', 'document')}, using fallback")

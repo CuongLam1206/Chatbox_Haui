@@ -179,30 +179,20 @@ def run(self, question: str, session_id: str = None, chat_history: list = None):
 
 ```
 agentic_chatbot/
-├── src/
-│   ├── agents/           # Intelligent Agent components
-│   │   ├── router.py          # Query router
-│   │   ├── rewriter.py        # Query rewriter
-│   │   ├── grader.py          # Document grader
-│   │   ├── reranker.py        # Document reranker
-│   │   ├── generator.py       # General answer generator
-│   │   ├── document_generator.py # Form/Appendix exact extractor
-│   │   └── hallucination_check.py # LLM hallucination validator
+├── src/                  # Intelligent Agent components
+│   ├── agents/           # Core query resolving agents
 │   ├── workflow.py       # Procedural manual workflow logic
 │   ├── vector_store.py   # Hybrid retrieval manager (Chroma + BM25)
 │   ├── legal_chunker.py  # Vietnamese legal document split algorithms
 │   ├── document_loader.py# Multi-format index loader
 │   ├── llm_provider.py   # LLM wrapper with Auto-Retry + Fallbacks
 │   └── slang_manager.py  # Abbreviation database manager
-├── data/
-│   ├── documents/        # Source Markdown documents
-│   └── last_update.json  # Hash tracker for system updates
+├── core/                 # Initialization and configuration settings
+├── data/                 # Source Markdown documents & hash tracker
 ├── vector_db/            # Local Vector Database 
-├── core/
-│   ├── initialize.py     # Initialization script to load embeddings (Run first)
-│   └── config.py         # Centralized configuration settings
+├── docs/                 # Documentation (Setup, Deploy, JD, CV, Metrics)
 ├── demo.py               # Gradio UI for dev testing
-├── server.py             # Production FastAPI server (Facebook Messenger Webhook)
+├── server.py             # FastAPI server (Facebook Messenger Webhook)
 ├── requirements.txt      # Python dependencies
 └── README.md             # This file
 ```
