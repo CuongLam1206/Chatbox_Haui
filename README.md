@@ -7,17 +7,18 @@ Hệ thống chatbot thông minh sử dụng **Agentic RAG** (Retrieval-Augmente
 ### **Đặc điểm nổi bật:**
 - ✅ **Agentic RAG**: Tự động phân loại query, rewrite, grade documents, rerank
 - ✅ **Semantic Chunking**: Chia tài liệu theo Điều, Phụ lục để bảo toàn context
-- ✅ **Hybrid Search**: Kết hợp Vector Search (70%) + BM25 (30%)
-- ✅ **Metadata Filtering**: Filter chính xác theo article number
-- ✅ **Multi-Model Support**: OpenAI GPT, Ollama (local), Gemini
-- ✅ **Auto-Update**: Tự động detect & index documents mới
-- ✅ **Gradio UI**: Giao diện web thân thiện
+- ✅ **Hybrid Search**: Kết hợp Vector Search (50%) + BM25 (50%)
+- ✅ **Metadata Filtering**: Filter chính xác theo article number hoặc thông qua intent injection
+- ✅ **Multi-Model Support**: Gemini, OpenAI, Groq, OpenRouter, Ollama (local)
+- ✅ **Auto-Update**: Tự động detect & index documents mới bằng hệ thống Tracker MD5
+- ✅ **Deployment**: Giao diện Gradio thân thiện và Backend hỗ trợ webhook Facebook Messenger
 
 ### **Use Cases:**
 - 📚 Tra cứu quy định, quy chế đào tạo
 - 📋 Lấy thông tin phụ lục, biểu mẫu (đầy đủ, không tóm tắt)
 - 💬 Hỏi đáp về điều kiện tốt nghiệp, học phần, đồ án
 - 🔍 Tìm kiếm thông tin từ nhiều tài liệu
+- 🤖 Hỗ trợ học thuật ngữ sinh viên (tự lưu cấu trúc viết tắt/slang mới)
 
 ---
 
@@ -25,20 +26,22 @@ Hệ thống chatbot thông minh sử dụng **Agentic RAG** (Retrieval-Augmente
 
 ```mermaid
 graph TB
-    User[👤 User] --> UI[Gradio UI]
+    User[👤 User] --> UI[Gradio UI / Messenger FB]
     UI --> Router{Router Agent}
     
     Router -->|greeting| Greeting[Greeting Response]
     Router -->|out_of_scope| OOS[Out of Scope Response]
+    Router -->|learn| Learn[Save Slang/Abbreviation]
+    Router -->|general| General[Conversational Response]
     Router -->|document_generation| DocGen[Document Generation Path]
     Router -->|vectorstore| RAG[General RAG Path]
     
-    DocGen --> Retrieve1[Retrieval<br/>Original Query<br/>k=5]
+    DocGen --> Retrieve1[Retrieval<br/>Original Query<br/>k=12]
     RAG --> Rewrite[Query Rewriter<br/>Context-aware]
-    Rewrite --> Retrieve2[Retrieval<br/>Rewritten Query<br/>k=10]
+    Rewrite --> Retrieve2[Retrieval<br/>Rewritten Query<br/>k=12]
     
     Retrieve1 --> Filter[Metadata Filter<br/>article='07']
-    Retrieve2 --> Grade[Document Grader<br/>LLM-based]
+    Retrieve2 --> Grade[Document Grader<br/>LLM Batch Grading]
     
     Filter --> DirectExtract[Direct Content<br/>Extraction]
     Grade --> Rerank[Reranker<br/>Cross-encoder]
@@ -68,35 +71,34 @@ graph TB
 ### **1. Core Agents** (`src/agents/`)
 
 #### **Router** (`router.py`)
-- **Chức năng**: Phân loại query vào 1 trong 4 routes
+- **Chức năng**: Phân loại query vào 1 trong 6 routes
 - **Routes**:
-  - `greeting`: Câu chào, cảm ơn
-  - `out_of_scope`: Ngoài phạm vi (không liên quan đào tạo)
-  - `document_generation`: Hỏi về phụ lục, biểu mẫu
-  - `vectorstore`: Câu hỏi thông thường
-- **Model**: LLM with structured output
+  - `greeting`: Câu chào hỏi đơn giản
+  - `out_of_scope`: Câu hỏi nằm ngoài đời sống sinh viên HaUI
+  - `learn`: Học và ghi nhớ các quy tắc viết tắt mới từ ngữ cảnh
+  - `general`: Hội thoại phiếm hoặc truy vấn lịch sử cuộc trò chuyện
+  - `document_generation`: Hỏi đáp yêu cầu xuất phụ lục cụ thể
+  - `vectorstore`: RAG thông thường cho mọi quy chế, quy định
 
 #### **Rewriter** (`rewriter.py`)
-- **Chức năng**: Cải thiện query bằng cách thêm context từ chat history
+- **Chức năng**: Cải thiện query, phân tách câu hỏi đa phức hợp và bổ sung context
 - **Ví dụ**: "nó là gì?" → "Điều kiện xét tốt nghiệp là gì?"
-- **Khi nào dùng**: General queries (không dùng cho document queries)
+- **Khi nào dùng**: General queries (bị vô hiệu hóa với document queries)
 
 #### **Grader** (`grader.py`)
-- **Chức năng**: Đánh giá độ liên quan của từng document
-- **Criteria**: Direct relevance, indirect relevance
-- **Output**: Binary (yes/no) + confidence score
-- **Skip**: Document generation queries
+- **Chức năng**: Đánh giá độ liên quan của từng document được nạp.
+- **Tính năng**: Chạy the Batch LLM Grading giúp tiết kiệm tokens
+- **Output**: Chỉ số các index phù hợp hoặc rơi vào fallback top 1
+- **Skip**: Document generation queries (vì đã có filter metadata)
 
 #### **Reranker** (`reranker.py`)
-- **Chức năng**: Sắp xếp lại documents theo độ chính xác
-- **Model**: Cross-encoder (ms-marco-MiniLM)
-- **Skip**: Document generation queries
+- **Chức năng**: Sắp xếp lại documents theo độ chính xác từ chuyên gia văn bản
+- **Model**: LLM-based với prompt chi tiết
+- **Skip**: Bỏ qua nếu Grader cảnh báo mức độ relevance thấp hoặc đi vào fallback
 
 #### **Generator** (`generator.py`)
-- **Chức năng**: Tổng hợp câu trả lời từ documents
-- **2 modes**:
-  - **Document queries**: Direct extraction (no LLM)
-  - **General queries**: LLM synthesis
+- **Chức năng**: Tổng hợp câu trả lời từ documents đáp ứng rule HaUI
+- **Bảo mật RAG**: Cơ chế xử lý thời khóa biểu gắt gao, chống bù đắp (hallucination)
 
 ---
 
@@ -104,11 +106,9 @@ graph TB
 
 **Semantic Chunking by Article/Appendix:**
 
+Hệ thống có regex phức tạp giúp bắt chính xác "Điều" hoặc "Phụ lục":
 ```python
-# Pattern match both formats:
-# - **Điều 1.** (no ##)
-# - ## **Phụ lục 07 – ...** (with ##)
-pattern = r'(?m)^(?:##\s+)?\*\*(?:Điều|Phụ lục)\s+(\d+)'
+pattern = r'^(?:#{1,3}\s+)?(?:\*\*)?(?:Điều|Phụ lục|Slide)\s+(\d+)'
 ```
 
 **Chunk Structure:**
@@ -118,16 +118,12 @@ Document(
     metadata={
         'chunk_type': 'article',
         'article': '07',  # For filtering
+        'chapter': 'Chương II: ...',
         'complete': True,
-        'source': 'qd-1532-24-9-25-ban-hanh-quy-dinh-thuc-hien-da-kltn.md'
+        'source': 'qd-1532-24-9-25.md'
     }
 )
 ```
-
-**Benefits:**
-- ✅ Giữ nguyên context pháp lý
-- ✅ Không cắt giữa bảng, danh sách
-- ✅ Metadata cho exact matching
 
 ---
 
@@ -135,129 +131,47 @@ Document(
 
 **Hybrid Search:**
 ```python
-# 70% Vector (semantic) + 30% BM25 (keyword)
-results = ensemble_retriever.invoke(query, k=10)
+# 50% Vector (semantic) + 50% BM25 (keyword)
+results = ensemble_retriever.invoke(query, k=12)
 ```
 
-**Vector Search:**
-- **Model**: `dangvantuan/vietnamese-embedding`
-- **Dimension**: 768
-- **DB**: ChromaDB
-- **Metric**: Cosine similarity
-
-**BM25 Search:**
-- **Algorithm**: TF-IDF based
-- **Use case**: Exact keyword matching
-
-**Adaptive k:**
-- Document queries: k=5 (precision)
-- General queries: k=10 (recall)
+**Adaptive Control:**
+- Sử dụng cấu hình mặc định (RETRIEVAL_K = 12) cho toàn bộ truy vấn.
+- Thêm Intent Injection nhúng code cứng để bootstrap trả bài vào top 1 đối với các key query như học bổng, vị trí phòng ban (VD: SEEE).
 
 ---
 
 ### **4. Workflow** (`src/workflow.py`)
 
-**LangGraph State Machine:**
+**Hệ thống xử lý tuần tự (Agentic Workflow):**
+
+Khác với các project gốc từ LangGraph, hệ thống này được thiết kế procedural 100% qua python thuần bằng luồng điều kiện (if/elif) nhằm mục đích control mượt luồng Agent:
 
 ```python
-workflow = StateGraph(GraphState)
-
-# Add nodes
-workflow.add_node("route", route_query)
-workflow.add_node("retrieve", retrieve)
-workflow.add_node("grade", grade_documents)
-workflow.add_node("rerank", rerank_documents)
-workflow.add_node("generate", generate)
-
-# Conditional edges
-workflow.add_conditional_edges(
-    "route",
-    lambda state: state["route"],
-    {
-        "greeting": "generate",
-        "out_of_scope": "generate",
-        "document_generation": "retrieve",
-        "vectorstore": "retrieve",
-    }
-)
+def run(self, question: str, session_id: str = None, chat_history: list = None):
+    # 1. Phân loại truy vấn
+    route = self.router.route(question, history)
+    
+    # Các kịch bản rẽ nhánh không qua RAG (Tối ưu độ trễ)
+    if route == "greeting": return [...]
+    elif route == "out_of_scope": return [...]
+    elif route == "learn": return [...]
+    elif route == "general": return [...]
+    
+    # 2. Truy xuất
+    documents = self.retrieve(state)
+    
+    # 3. Phân mức & Rerank (Skip hoàn toàn LLM overhead nếu mục đích chỉ lấy nội dung Biểu mẫu)
+    if not is_document_query:
+        documents = self.grade_documents(state)
+        documents = self.rerank_documents(state)
+        
+    # 4. Tạo kết quả & Auto-Retry
+    while retry_count <= MAX_RETRIES:
+        answer = self.generate_answer(state)
+        if ENABLE_HALLUCINATION_CHECK and self.check_hallucination(answer):
+            break
 ```
-
----
-
-## 🔄 Detailed Workflows
-
-### **Workflow 1: Document Generation (Phụ lục, Biểu mẫu)**
-
-```
-User Query: "Phụ lục 07"
-    ↓
-1. [Router] → document_generation
-    ↓
-2. [Retrieval]
-   - Use ORIGINAL query (no rewrite)
-   - Search: k=5 (small for precision)
-   - Hybrid: Vector + BM25
-    ↓
-3. [Metadata Filter]
-   - Extract: appendix_num = "07"
-   - Filter: doc.metadata['article'] == '07'
-   - Result: Only Phụ lục 07 chunks
-    ↓
-4. [Generation]
-   - Mode: Direct extraction
-   - Action: Concatenate chunks
-   - Output: Full appendix content
-    ↓
-Response: Complete Phụ lục 07 (3 sections + 7-column table)
-```
-
-**Key decisions:**
-- ❌ No query rewriting (preserve exact keywords)
-- ❌ No grading (trust retrieval quality)
-- ❌ No LLM synthesis (preserve 100% info)
-- ✅ Metadata-based exact matching
-
----
-
-### **Workflow 2: General Q&A**
-
-```
-User Query: "Điều kiện xét tốt nghiệp là gì?"
-    ↓
-1. [Router] → vectorstore
-    ↓
-2. [Rewriter]
-   - Add context from history
-   - Output: "Điều kiện xét tốt nghiệp sinh viên đại học?"
-    ↓
-3. [Retrieval]
-   - Use REWRITTEN query
-   - Search: k=10 (larger for recall)
-   - Hybrid: Vector + BM25
-    ↓
-4. [Grader]
-   - LLM evaluates each doc
-   - Criteria: Direct/indirect relevance
-   - Filter: Keep relevant docs
-    ↓
-5. [Reranker]
-   - Cross-encoder scoring
-   - Sort by relevance
-   - Top N docs
-    ↓
-6. [Generator]
-   - Mode: LLM synthesis
-   - Prompt: Context + Question
-   - Output: Natural language answer
-    ↓
-Response: Concise, accurate answer
-```
-
-**Key decisions:**
-- ✅ Query rewriting (improve recall)
-- ✅ Grading (filter noise)
-- ✅ Reranking (precision)
-- ✅ LLM synthesis (natural response)
 
 ---
 
@@ -266,28 +180,30 @@ Response: Concise, accurate answer
 ```
 agentic_chatbot/
 ├── src/
-│   ├── agents/           # Agentic components
+│   ├── agents/           # Thành phần Agent thông minh
 │   │   ├── router.py          # Query router
 │   │   ├── rewriter.py        # Query rewriter
 │   │   ├── grader.py          # Document grader
 │   │   ├── reranker.py        # Document reranker
-│   │   ├── generator.py       # General answer generator
-│   │   └── document_generator.py  # Document extractor
-│   ├── workflow.py       # LangGraph state machine
-│   ├── vector_store.py   # Hybrid retrieval
-│   ├── legal_chunker.py  # Semantic chunking
-│   ├── document_loader.py    # Multi-format loader
-│   ├── document_parser.py    # DOCX/PDF parser
-│   ├── llm_provider.py       # Multi-model support
-│   └── ...
+│   │   ├── generator.py       # Answer generator chung
+│   │   ├── document_generator.py # Trích xuất thông tin form/phụ lục
+│   │   └── hallucination_check.py # Kiểm tra ảo giác LLM
+│   ├── workflow.py       # Module cấu hình Workflow
+│   ├── vector_store.py   # Quản lý Hybrid retrieval (Chroma + BM25)
+│   ├── legal_chunker.py  # Thuật toán cắt luật pháp Việt Nam
+│   ├── document_loader.py# Multi-format index loader
+│   ├── llm_provider.py   # Wrap LLM Auto-Retry + Fallback
+│   └── slang_manager.py  # Quản lý Data từ viết tắt
 ├── data/
-│   ├── documents/        # Markdown documents
-│   └── last_update.json  # Update tracker
-├── vector_db/            # ChromaDB storage
-├── demo.py               # Gradio UI
-├── initialize.py         # Setup script
-├── config.py             # Configuration
-├── requirements.txt      # Dependencies
+│   ├── documents/        # File tài liệu Markdown
+│   └── last_update.json  # Hash tracker để Update file System
+├── vector_db/            # Vector Database Lưu trữ cục bộ
+├── core/
+│   ├── initialize.py     # Setup script nạp Embeddings (Chạy đầu tiên)
+│   └── config.py         # File load cấu hình tập trung
+├── demo.py               # Giao diện kiểm thử hệ thống (Gradio UI)
+├── server.py             # Máy chủ Deploy ứng dụng Facebook Messenger
+├── requirements.txt      # Module Dependencies
 └── README.md             # This file
 ```
 
@@ -313,144 +229,86 @@ pip install -r requirements.txt
 
 ### **2. Configuration**
 
-Create `.env` file:
+Khởi tạo cấu hình qua file `.env`:
 
 ```env
-# LLM Provider (choose one)
-LLM_PROVIDER=openai  # or: ollama, gemini
+# Chọn Model qua cờ kích hoạt (Boolean)
+USE_GEMINI=true
+USE_GROQ=false
+USE_OLLAMA=false
+USE_OPENROUTER=false
 
-# OpenAI (if using)
-OPENAI_API_KEY=sk-...
-OPENAI_MODEL=gpt-4o-mini
+# Gemini setup (Recommended cho Production)
+GEMINI_API_KEY=AIzaSy...
+GEMINI_MODEL=gemini-2.0-flash
 
-# Ollama (if using)
+# Hoặc thiết lập sử dụng Ollama:
 OLLAMA_BASE_URL=http://localhost:11434
 OLLAMA_MODEL=qwen2.5:7b
 
-# MongoDB (conversation history)
-MONGO_URI=mongodb://localhost:27017/
+# Cấu hình CSDL hội thoại (MongoDB cho Session Chat)
+MONGODB_URI=mongodb://localhost:27017/
+MONGODB_DATABASE=agentic_rag_db
 ```
 
 ### **3. Initialize System**
 
+Nạp Embedding và Chunk Dữ liệu vào Database. **Chạy qua core module**:
+
 ```bash
-python initialize.py
+python core/initialize.py
 ```
 
-This will:
-- Load documents from `data/documents/`
-- Chunk using semantic legal chunker
-- Build vector embeddings (ChromaDB)
-- Create BM25 index
+Lệnh này sẽ làm các việc sau:
+- Khởi chạy load các file từ `data/documents/`
+- Chạy module semantic chunker cho nội dung
+- Embed và lưu nội dung vào Vector DB
+- Kéo từ khoá để làm index cho BM25
 
 ### **4. Run Chatbot**
 
+**Mode 1: Giao diện web Gradio (Developer Test)**
 ```bash
 python demo.py
 ```
+Truy cập tại giao diện: `http://localhost:7860`
 
-Access at: `http://localhost:7860`
+**Mode 2: FastAPI Webhook Backend (Production)**
+```bash
+python server.py
+# Server sẽ lắng nghe ở Port 10000 cho nền tảng nhắn tin
+```
 
 ---
 
-## 🔧 Configuration
-
-### **Key Parameters** (`config.py`)
+## 🔧 Configuration Parameters (`core/config.py`)
 
 | Parameter | Default | Description |
 |-----------|---------|-------------|
-| `CHUNK_SIZE` | 2000 | Max chars per chunk |
-| `CHUNK_OVERLAP` | 200 | Overlap between chunks |
-| `RETRIEVAL_K` | 10 | Top-k documents |
-| `ENSEMBLE_WEIGHTS` | [0.7, 0.3] | Vector vs BM25 |
-
-### **Model Selection**
-
-**OpenAI** (Recommended for production):
-```env
-LLM_PROVIDER=openai
-OPENAI_MODEL=gpt-4o-mini  # Fast & cheap
-```
-
-**Ollama** (Free, local):
-```env
-LLM_PROVIDER=ollama
-OLLAMA_MODEL=qwen2.5:7b  # Good for Vietnamese
-```
+| `CHUNK_SIZE` | 2000 | Baseline ký tự tối đa / 1 cụm. |
+| `CHUNK_OVERLAP` | 200 | Số lượng ký tự chồng chéo. |
+| `RETRIEVAL_K` | 12 | Tổng số văn bản kéo từ DB mỗi query. |
+| `ENSEMBLE_WEIGHTS` | [0.5, 0.5] | Trọng số Hybrid: Chroma(Vector) - Langchain BM25. |
 
 ---
 
 ## 📚 Adding Documents
 
-### **Method 1: Auto-detect**
+### **Auto-detect thông qua Watcher**
 
 ```bash
-# Add markdown files to:
+# Thực hiện việc quăng File vô thư mục:
 data/documents/
 
-# System auto-detects on next run
+# Chạy lệnh UI hoặc webhook đều sẽ tự phát hiện file mới thông qua tracker.json
 python demo.py
-```
-
-### **Method 2: Manual**
-
-```bash
-python add_document.py path/to/document.md
 ```
 
 ### **Supported Formats:**
-- ✅ Markdown (`.md`) - Recommended
+- ✅ Markdown (`.md`) - Tối ưu nhất để tận dụng Regex Article parsing
 - ✅ PDF (`.pdf`)
 - ✅ Word (`.docx`, `.doc`)
 - ✅ Text (`.txt`)
-
----
-
-## 🛠️ Troubleshooting
-
-### **Issue: Retrieval không tìm thấy documents**
-
-**Solution:**
-```bash
-# Rebuild vector database
-del data\last_update.json
-rmdir /s /q vector_db
-python demo.py
-```
-
-### **Issue: LLM tóm tắt thông tin**
-
-**Check:**
-- Query có chứa "phụ lục", "biên bản"? → Dùng document generation path
-- Không → Dùng general RAG (có thể tóm tắt)
-
-### **Issue: Chunker không detect Phụ lục**
-
-**Debug:**
-```python
-# Check pattern trong legal_chunker.py
-pattern = r'(?m)^(?:##\s+)?\*\*(?:Điều|Phụ lục)\s+(\d+)'
-```
-
----
-
-## 📊 Performance
-
-### **Metrics:**
-
-| Query Type | Accuracy | Speed | Completeness |
-|------------|----------|-------|--------------|
-| Document (Phụ lục) | 100% | ~2s | 100% |
-| General Q&A | ~95% | ~3s | ~95% |
-| Out-of-scope | ~98% | ~1s | N/A |
-
-### **Optimizations:**
-
-- ✅ Semantic chunking (context preservation)
-- ✅ Hybrid search (semantic + keyword)
-- ✅ Metadata filtering (exact matching)
-- ✅ Skip grading for document queries (speed)
-- ✅ Adaptive k (precision vs recall)
 
 ---
 
@@ -459,29 +317,15 @@ pattern = r'(?m)^(?:##\s+)?\*\*(?:Điều|Phụ lục)\s+(\d+)'
 1. Fork repository
 2. Create feature branch
 3. Make changes
-4. Test thoroughly
+4. Test thoroughly bằng Gradio
 5. Submit pull request
 
 ---
 
 ## 📄 License
-
 MIT License - See LICENSE file for details
 
 ---
 
 ## 👥 Contact
-
-- **Developer**: [Your Name]
-- **Institution**: Trường Đại học Công nghiệp Hà Nội
-- **Email**: [your-email]
-
----
-
-## 🙏 Acknowledgments
-
-- **LangChain** - RAG framework
-- **LangGraph** - Agentic workflow
-- **ChromaDB** - Vector database
-- **Gradio** - UI framework
-- **Ollama** - Local LLM runtime
+- **Institution**: Trường Đại học Công nghiệp Hà Nội Trang Sinh Viên
