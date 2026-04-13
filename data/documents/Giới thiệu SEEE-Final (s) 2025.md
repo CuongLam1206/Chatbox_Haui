@@ -164,233 +164,115 @@ TS. Quách Đức Cường
 Địa chỉ: Phòng 507 – A7, CS1
 Số điện thoại: 0918793004
 
-## Slide 10
-**CNKT Máy tính**
+## Bảng tổng hợp toàn bộ nhân sự theo ngành — Trường Điện - Điện tử (SEEE)
 
-TS. Vũ Trung Kiên
-Trưởng chương trình
-SĐT: 0989646848
+Bảng dưới đây liệt kê tất cả Trưởng chương trình, Điều phối chương trình và Cố vấn học tập của từng ngành thuộc Trường Điện - Điện tử (SEEE), đơn vị trực thuộc Đại học Công nghiệp Hà Nội.
 
-TS. Đinh Thị Kim Phương
-Điều phối chương trình
-SĐT: 0388378898
+| Ngành | Họ tên | Chức vụ | SĐT |
+|---|---|---|---|
+| CNKT Máy tính | TS. Vũ Trung Kiên | Trưởng chương trình | 0989646848 |
+| CNKT Máy tính | TS. Đinh Thị Kim Phương | Điều phối chương trình | 0388378898 |
+| CNKT Máy tính | Cô Phạm Thị Quỳnh Trang | Điều phối chương trình | 0987987118 |
+| CNKT Máy tính | Thầy Nguyễn Vũ Thắng | Cố vấn học tập | 0986350910 |
+| CNKT Nhiệt | TS. Nguyễn Vũ Linh | Trưởng chương trình | 0905266696 |
+| CNKT Nhiệt | Thầy Nguyễn Xuân Bình | Điều phối chương trình | 0912869205 |
+| CNKT Nhiệt | Cô Nguyễn Thị Việt Linh | Điều phối chương trình | 0976830999 |
+| CNKT Nhiệt | Thầy Nguyễn Vũ Thắng | Cố vấn học tập | 0986350910 |
+| Năng lượng tái tạo | TS. Ninh Văn Quân | Trưởng chương trình | 0912485051 |
+| Năng lượng tái tạo | TS. Lê Anh Tuấn | Điều phối chương trình | 0985179699 |
+| Năng lượng tái tạo | TS. Nguyễn Công Cường | Điều phối chương trình | 0934631694 |
+| Năng lượng tái tạo | Thầy Nguyễn Vũ Thắng | Cố vấn học tập | 0986350910 |
+| CNKT Điện, Điện tử | TS. Nguyễn Mạnh Quân | Trưởng chương trình | 0936428889 |
+| CNKT Điện, Điện tử | TS. Nguyễn Văn Hùng | Điều phối chương trình | 0986763077 |
+| CNKT Điện, Điện tử | Cô Hà Thị Hoài Thu | Điều phối chương trình | 0983671807 |
+| CNKT Điện, Điện tử | TS. Trần Thùy Vân | Điều phối chương trình | 0987871888 |
+| CNKT Điện, Điện tử | Cô Trần Thị Hồng Thắm | Điều phối chương trình | 0904979590 |
+| CNKT Điện, Điện tử | Thầy Vũ Trường Sơn | Cố vấn học tập | 09865761272 |
+| CNKT Điện tử - Viễn thông | TS. Bồ Quốc Bảo | Trưởng chương trình | 0936779989 |
+| CNKT Điện tử - Viễn thông | TS. Trần Đình Hùng | Điều phối chương trình | 0987891228 |
+| CNKT Điện tử - Viễn thông | Cô Phan Thị Thu Hằng | Điều phối chương trình | 0936278809 |
+| CNKT Điện tử - Viễn thông | TS. Trần Văn Tùng | Điều phối chương trình | 0912842071 |
+| CNKT Điện tử - Viễn thông | Cô Bùi Thị Thu Hiền | Điều phối chương trình | 0982839009 |
+| CNKT Điện tử - Viễn thông | Cô Nguyễn Thị Uyên | Cố vấn học tập | 0973357113 |
+| CNKT Điện tử y sinh | TS. Nguyễn Đắc Hải | Trưởng chương trình | 0979456234 |
+| CNKT Điện tử y sinh | Cô Nguyễn Thị Thu Hà | Điều phối chương trình | 0987909424 |
+| CNKT Điện tử y sinh | Thầy Nguyễn Tuấn Anh | Điều phối chương trình | 0916083605 |
+| CNKT Điện tử y sinh | Cô Nguyễn Thị Uyên | Cố vấn học tập | 0973357113 |
+| CNKT Điều khiển và Tự động hóa | TS. Bùi Văn Huy | Trưởng chương trình | 0977642225 |
+| CNKT Điều khiển và Tự động hóa | TS. Hà Thị Kim Duyên | Điều phối chương trình | 0988901420 |
+| CNKT Điều khiển và Tự động hóa | Thầy Nguyễn Đức Quang | Điều phối chương trình | 0904412562 |
+| CNKT Điều khiển và Tự động hóa | Thầy Trần Đức Hiệp | Điều phối chương trình | 0902126579 |
+| CNKT Điều khiển và Tự động hóa | Thầy Trần Quyết Thắng | Cố vấn học tập | 0913081697 |
+| Kỹ thuật sản xuất thông minh | TS. Tống Thị Lý | Trưởng chương trình | 0965801688 |
+| Kỹ thuật sản xuất thông minh | Cô Vũ Thị Yến | Điều phối chương trình | 0986051052 |
+| Kỹ thuật sản xuất thông minh | Thầy Hà Văn Phương | Điều phối chương trình | 0916945669 |
+| Kỹ thuật sản xuất thông minh | Thầy Trần Quyết Thắng | Cố vấn học tập | 0913081697 |
+| Vi mạch bán dẫn (dự kiến) | TS. Phạm Xuân Thành | Trưởng chương trình | 0973963903 |
+| Vi mạch bán dẫn (dự kiến) | TS. Đinh Thị Kim Phương | Điều phối chương trình | 0388378898 |
+| Vi mạch bán dẫn (dự kiến) | TS. Phạm Thanh Sơn | Điều phối chương trình | 0986973589 |
+| Vi mạch bán dẫn (dự kiến) | Thầy Nguyễn Vũ Thắng | Cố vấn học tập | 0986350910 |
 
-Cô Phạm Thị Quỳnh Trang
-Điều phối chương trình
-SĐT: 0987987118
+## Chi tiết nhân sự từng ngành — Trường SEEE
 
-Thầy Nguyễn Vũ Thắng
-Cố vấn học tập
-SĐT: 0986350910
+### Ngành CNKT Máy tính
+- Trưởng chương trình: TS. Vũ Trung Kiên, SĐT: 0989646848
+- Điều phối chương trình: TS. Đinh Thị Kim Phương, SĐT: 0388378898
+- Điều phối chương trình: Cô Phạm Thị Quỳnh Trang, SĐT: 0987987118
+- Cố vấn học tập: Thầy Nguyễn Vũ Thắng, SĐT: 0986350910
 
-## Slide 11: 
-**CNKT Nhiệt**
+### Ngành CNKT Nhiệt
+- Trưởng chương trình: TS. Nguyễn Vũ Linh, SĐT: 0905266696
+- Điều phối chương trình: Thầy Nguyễn Xuân Bình, SĐT: 0912869205
+- Điều phối chương trình: Cô Nguyễn Thị Việt Linh, SĐT: 0976830999
+- Cố vấn học tập: Thầy Nguyễn Vũ Thắng, SĐT: 0986350910
 
-TS. Nguyễn Vũ Linh
-Trưởng chương trình
-SĐT: 0905266696
+### Ngành Năng lượng tái tạo
+- Trưởng chương trình: TS. Ninh Văn Quân, SĐT: 0912485051
+- Điều phối chương trình: TS. Lê Anh Tuấn, SĐT: 0985179699
+- Điều phối chương trình: TS. Nguyễn Công Cường, SĐT: 0934631694
+- Cố vấn học tập: Thầy Nguyễn Vũ Thắng, SĐT: 0986350910
 
-Thầy Nguyễn Xuân Bình
-Điều phối chương trình
-SĐT: 0912869205
+### Ngành CNKT Điện, Điện tử
+- Trưởng chương trình: TS. Nguyễn Mạnh Quân, SĐT: 0936428889
+- Điều phối chương trình: TS. Nguyễn Văn Hùng, SĐT: 0986763077
+- Điều phối chương trình: Cô Hà Thị Hoài Thu, SĐT: 0983671807
+- Điều phối chương trình: TS. Trần Thùy Vân, SĐT: 0987871888
+- Điều phối chương trình: Cô Trần Thị Hồng Thắm, SĐT: 0904979590
+- Cố vấn học tập: Thầy Vũ Trường Sơn, SĐT: 09865761272
 
-Cô Nguyễn Thị Việt Linh
-Điều phối chương trình
-SĐT: 0976830999
+### Ngành CNKT Điện tử - Viễn thông
+- Trưởng chương trình: TS. Bồ Quốc Bảo, SĐT: 0936779989
+- Điều phối chương trình: TS. Trần Đình Hùng, SĐT: 0987891228
+- Điều phối chương trình: Cô Phan Thị Thu Hằng, SĐT: 0936278809
+- Điều phối chương trình: TS. Trần Văn Tùng, SĐT: 0912842071
+- Điều phối chương trình: Cô Bùi Thị Thu Hiền, SĐT: 0982839009
+- Cố vấn học tập: Cô Nguyễn Thị Uyên, SĐT: 0973357113
 
-Thầy Nguyễn Vũ Thắng
-Cố vấn học tập
-SĐT: 0986350910
+### Ngành CNKT Điện tử y sinh
+- Trưởng chương trình: TS. Nguyễn Đắc Hải, SĐT: 0979456234
+- Điều phối chương trình: Cô Nguyễn Thị Thu Hà, SĐT: 0987909424
+- Điều phối chương trình: Thầy Nguyễn Tuấn Anh, SĐT: 0916083605
+- Cố vấn học tập: Cô Nguyễn Thị Uyên, SĐT: 0973357113
 
-## Slide 12: Năng lượng tái tạo
-**Năng lượng tái tạo**
+### Ngành CNKT Điều khiển và Tự động hóa
+- Trưởng chương trình: TS. Bùi Văn Huy, SĐT: 0977642225
+- Điều phối chương trình: TS. Hà Thị Kim Duyên, SĐT: 0988901420
+- Điều phối chương trình: Thầy Nguyễn Đức Quang, SĐT: 0904412562
+- Điều phối chương trình: Thầy Trần Đức Hiệp, SĐT: 0902126579
+- Cố vấn học tập: Thầy Trần Quyết Thắng, SĐT: 0913081697
 
-TS. Ninh Văn Quân
-Trưởng chương trình
-SĐT:
-0912485051
+### Ngành Kỹ thuật sản xuất thông minh
+- Trưởng chương trình: TS. Tống Thị Lý, SĐT: 0965801688
+- Điều phối chương trình: Cô Vũ Thị Yến, SĐT: 0986051052
+- Điều phối chương trình: Thầy Hà Văn Phương, SĐT: 0916945669
+- Cố vấn học tập: Thầy Trần Quyết Thắng, SĐT: 0913081697
 
-TS. Lê Anh Tuấn
-Điều phối chương trình
-SĐT:
-0985179699
+### Ngành Vi mạch bán dẫn (dự kiến)
+- Trưởng chương trình: TS. Phạm Xuân Thành, SĐT: 0973963903
+- Điều phối chương trình: TS. Đinh Thị Kim Phương, SĐT: 0388378898
+- Điều phối chương trình: TS. Phạm Thanh Sơn, SĐT: 0986973589
+- Cố vấn học tập: Thầy Nguyễn Vũ Thắng, SĐT: 0986350910
 
-TS. Nguyễn Công Cường
-Điều phối chương trình
-SĐT:
-0934631694
-
-Thầy Nguyễn Vũ Thắng
-Cố vấn học tập
-SĐT:
-0986350910
-
-## Slide 13: CNKT Điện, Điện tử
-CNKT Điện, Điện tử
-
-TS. Nguyễn Mạnh Quân
-Trưởng chương trình
-SĐT:
-0936428889
-
-TS. Nguyễn Văn Hùng
-Điều phối chương trình
-SĐT:
-0986763077
-
-Cô Hà Thị Hoài Thu
-Điều phối chương trình
-SĐT:
-0983671807
-
-TS. Trần Thùy Vân
-Điều phối chương trình
-SĐT:
-0987871888
-
-Cô Trần Thị Hồng Thắm
-Điều phối chương trình
-SĐT:
-0904979590
-
-Thầy Vũ Trường Sơn
-Cố vấn học tập
-SĐT:
-09865761272
-
-## Slide 14: CNKT Điện tử - Viễn thông
-CNKT Điện tử - Viễn thông
-
-TS. Bồ Quốc Bảo
-Trưởng chương trình
-SĐT:
-0936779989
-
-TS. Trần Đình Hùng
-Điều phối chương trình
-SĐT:
-0987891228
-
-Cô Phan Thị Thu Hằng
-Điều phối chương trình
-SĐT:
-0936278809
-
-TS. Trần Văn Tùng
-Điều phối chương trình
-SĐT:
-0912842071
-
-Cô Bùi Thị Thu Hiền
-Điều phối chương trình
-SĐT:
-0982839009
-
-Cô Nguyễn Thị Uyên
-Cố vấn học tập
-SĐT:
-0973357113
-
-## Slide 15: CNKT Điện tử y sinh
-
-CNKT Điện tử y sinh
-
-TS. Nguyễn Đắc Hải
-Trưởng chương trình
-SĐT:
-0979456234
-
-Cô Nguyễn Thị Thu Hà
-Điều phối chương trình
-SĐT:
-0987909424
-
-Thầy Nguyễn Tuấn Anh
-Điều phối chương trình
-SĐT:
-0916083605
-
-Cô Nguyễn Thị Uyên
-Cố vấn học tập
-SĐT:
-0973357113
-
-## Slide 16: CNKT Điều khiển và Tự động hóa
-
-CNKT Điều khiển và Tự động hóa
-
-TS. Bùi Văn Huy
-Trưởng chương trình
-SĐT:
-0977642225
-
-TS. Hà Thị Kim Duyên
-Điều phối chương trình
-SĐT:
-0988901420
-
-Thầy Nguyễn Đức Quang
-Điều phối chương trình
-SĐT:
-0904412562
-
-Thầy Trần Đức Hiệp
-Điều phối chương trình
-SĐT:
-0902126579
-
-Thầy Trần Quyết Thắng
-Cố vấn học tập
-SĐT:
-0913081697
-
-## Slide 17: [Kỹ thuật sản xuất thông minh]
-
-Kỹ thuật sản xuất thông minh
-
-TS. Tống Thị Lý
-Trưởng chương trình
-SĐT:
-0965801688
-
-Cô Vũ Thị Yến
-Điều phối chương trình
-SĐT:
-0986051052
-
-Thầy Hà Văn Phương
-Điều phối chương trình
-SĐT:
-0916945669
-
-Thầy Trần Quyết Thắng
-Cố vấn học tập
-SĐT:
-0913081697
-
-## Slide 18: [Vi mạch bán dẫn (dự kiến)]
-
-Vi mạch bán dẫn (dự kiến)
-
-TS. Đinh Thị Kim
-Điều phối chương trình
-SĐT:
-0388378898
-
-TS. Phạm Thanh Sơn
-Điều phối chương trình
-SĐT:
-0986973589
-
-TS. Phạm Xuân Thành
-Trưởng chương trình
-SĐT:
-0973963903
-
-Thầy Nguyễn Vũ Thắng
-Cố vấn học tập
-SĐT:
-0986350910
 
 ## Slide 19: 
 **2. Những điểm cần chú ý trong quy chế đào tạo**
