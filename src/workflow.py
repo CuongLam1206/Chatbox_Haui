@@ -254,6 +254,29 @@ class AgenticRAG:
                 "Plagiarism query",
                 source_filter="197"
             )
+        # Case 6: "tổ chức giảng dạy" / "yêu cầu giảng dạy" → inject Điều 8 from Quy chế
+        is_teaching_org_query = (
+            ("giảng dạy" in _q or "dạy và học" in _q or "dạy học" in _q) and
+            ("tổ chức" in _q or "yêu cầu" in _q or "quy định" in _q)
+        )
+        if is_teaching_org_query:
+            documents = _inject_articles(
+                "yêu cầu tổ chức giảng dạy học tập phát huy năng lực thanh tra giám sát",
+                {"$in": ["8"]},
+                "Teaching-org query"
+            )
+
+        # Case 7: "trực tuyến" / "online" → inject Điều 8 khoản 2 from Quy chế
+        is_online_learning_query = (
+            ("trực tuyến" in _q or "online" in _q) and
+            ("dạy" in _q or "học" in _q or "giảng" in _q)
+        )
+        if is_online_learning_query:
+            documents = _inject_articles(
+                "dạy học trực tuyến phương thức trực tuyến 30% khối lượng",
+                {"$in": ["8"]},
+                "Online-learning query"
+            )
         # ────────────────────────────────────────────────────────────────────────
 
         # ── Location query boost ─────────────────────────────────────────────────

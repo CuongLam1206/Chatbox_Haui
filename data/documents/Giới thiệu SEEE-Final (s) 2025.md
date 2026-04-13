@@ -27,10 +27,12 @@ Trường Điện - Điện tử (SEEE) gồm các ngành/chương trình đào 
 
 ## Nhân sự Ban Giám hiệu Trường Điện - Điện tử (SEEE)
 
+**Lưu ý:** Trường Điện - Điện tử (SEEE) là một đơn vị đào tạo trực thuộc Trường Đại học Công nghiệp Hà Nội (HaUI), KHÔNG PHẢI toàn trường Đại học Công nghiệp Hà Nội. Hiệu trưởng Trường SEEE là người đứng đầu đơn vị SEEE, không phải Hiệu trưởng toàn trường HaUI.
+
 | Chức danh | Họ tên | Phòng | SĐT |
 |---|---|---|---|
-| Hiệu trưởng Trường SEEE | PGS. TS. Hoàng Mạnh Kha | Phòng 507 – A7, CS1 | 0912668779 |
-| Phó Hiệu trưởng Trường SEEE | TS. Quách Đức Cường | Phòng 507 – A7, CS1 | 0918793004 |
+| Hiệu trưởng Trường Điện - Điện tử (SEEE) — đơn vị trực thuộc HaUI | PGS. TS. Hoàng Mạnh Kha | Phòng 507 – A7, CS1 | 0912668779 |
+| Phó Hiệu trưởng Trường Điện - Điện tử (SEEE) — đơn vị trực thuộc HaUI | TS. Quách Đức Cường | Phòng 507 – A7, CS1 | 0918793004 |
 
 ## Trưởng chương trình và Cố vấn học tập (CVHT) theo ngành - Trường SEEE
 
@@ -112,10 +114,10 @@ HaUI
 
 **SEEE**
 
-*   **Ban Giám Hiệu**
+*   **Ban Giám Hiệu Trường Điện - Điện tử (SEEE, đơn vị trực thuộc HaUI)**
     *   Đoàn thể
     *   Phòng Tổng Hợp
-        *   PGS.TS Hoàng Mạnh Kha
+        *   PGS.TS Hoàng Mạnh Kha (Hiệu trưởng Trường SEEE, không phải Hiệu trưởng toàn trường HaUI)
         *   0912668779
     *   Trung tâm Hợp tác Phát triển
         *   TS. Phạm Thế Vũ
@@ -146,7 +148,7 @@ HaUI
 
 ## Slide 8: [Untitled]
 
-**Hiệu Trưởng**
+**Hiệu Trưởng Trường Điện - Điện tử (SEEE)** (đơn vị trực thuộc Trường Đại học Công nghiệp Hà Nội, không phải Hiệu trưởng toàn trường HaUI)
 
 PGS. TS. Hoàng Mạnh Kha
 
@@ -155,7 +157,7 @@ Số điện thoại: 0912668779
 
 ## Slide 9: [Untitled]
 
-**Phó Hiệu Trưởng**
+**Phó Hiệu Trưởng Trường Điện - Điện tử (SEEE)** (đơn vị trực thuộc Trường Đại học Công nghiệp Hà Nội)
 
 TS. Quách Đức Cường
 
