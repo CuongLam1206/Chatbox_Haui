@@ -17,7 +17,10 @@ from src.agents.router import QueryRouter
 from src.agents.rewriter import QueryRewriter
 from src.agents.document_generator import DocumentGenerator
 from src.agents.reranker import DocumentReranker
-from core.config import RELEVANCE_THRESHOLD, MAX_RETRIES, ENABLE_HALLUCINATION_CHECK
+from src.agents.query_decomposer import QueryDecomposer
+from src.agents.hyde_retriever import HyDERetriever, estimate_query_complexity
+from src.agents.self_critique import SelfCritiqueAgent
+from core.config import RELEVANCE_THRESHOLD, MAX_RETRIES, ENABLE_HALLUCINATION_CHECK, ENABLE_HYDE, ENABLE_DECOMPOSER
 
 
 class GraphState(TypedDict):
@@ -58,7 +61,17 @@ class AgenticRAG:
         self.reranker = DocumentReranker()
         self.hallucination_checker = HallucinationChecker() if ENABLE_HALLUCINATION_CHECK else None
         
-        print("✓ Agentic RAG workflow initialized")
+        # New: Query Decomposer + HyDE Retriever (configurable)
+        self.decomposer = QueryDecomposer() if ENABLE_DECOMPOSER else None
+        self.hyde_retriever = HyDERetriever(vector_store) if ENABLE_HYDE else None
+        self.self_critique = SelfCritiqueAgent()
+        
+        mode = []
+        if ENABLE_DECOMPOSER: mode.append("QueryDecomposer")
+        if ENABLE_HYDE: mode.append("HyDE")
+        mode.append("SelfCritique")
+        mode_str = "+".join(mode) if mode else "Standard"
+        print(f"✓ Agentic RAG workflow initialized ({mode_str})")
     
     def retrieve(self, state: GraphState) -> GraphState:
         """
@@ -71,26 +84,41 @@ class AgenticRAG:
         is_appendix_query = "phụ lục" in question.lower()
         
         if is_appendix_query:
-            # Use original question to search for specific appendix
             search_queries = [question]
             print(f"[Retrieval] Appendix query detected, using original: {question}")
         else:
-            # Rewrite query into one or more search strings
-            search_queries = self.rewriter.rewrite(question, chat_history)
+            if ENABLE_DECOMPOSER and self.decomposer:
+                # Step 1: Decompose multi-domain queries
+                decomposed = self.decomposer.decompose(question)
+            else:
+                decomposed = [question]
+            # Step 2: Rewrite each sub-query
+            search_queries = []
+            for sub_q in decomposed:
+                rewritten = self.rewriter.rewrite(sub_q, chat_history)
+                search_queries.extend(rewritten)
             print(f"[Retrieval] Search queries: {search_queries}")
         
-        # Default k per query
-        k = 8
+        # Adaptive k: adjust retrieval depth by query complexity
+        complexity = estimate_query_complexity(question)
+        k_map = {"simple": 4, "medium": 7, "complex": 10}
+        k = k_map[complexity]
+        print(f"[Retrieval] complexity={complexity} → k={k} | HyDE={'on' if ENABLE_HYDE else 'off'} | Decomp={'on' if ENABLE_DECOMPOSER else 'off'}")
+        
         all_documents = []
         seen_contents = set()
         
         print(f"\n[Retrieval] Processing {len(search_queries)} search queries...")
         
+        first_hypothesis = ""  # reserved for future use
         for q in search_queries:
-            # Use hybrid retriever (Vector + BM25)
-            query_docs = self.retriever.invoke(q)
+            if ENABLE_HYDE and self.hyde_retriever:
+                # Use HyDE retriever (hypothesis + standard combined)
+                query_docs = self.hyde_retriever.retrieve(q, k=k)
+            else:
+                # Fallback: standard hybrid retriever
+                query_docs = self.retriever.invoke(q)
             for doc in query_docs:
-                # Deduplicate by content to save space
                 content_hash = hash(doc.page_content)
                 if content_hash not in seen_contents:
                     all_documents.append(doc)
@@ -154,10 +182,18 @@ class AgenticRAG:
 
         def _inject_articles(search_text, article_filter, label, source_filter=None):
             try:
-                filters = {"article": article_filter}
                 if source_filter:
-                    filters["filename"] = {"$like": f"%{source_filter}%"}
+                    # ChromaDB requires $and for multiple conditions
+                    filters = {
+                        "$and": [
+                            {"article": article_filter},
+                            {"source": {"$contains": source_filter}}
+                        ]
+                    }
+                else:
+                    filters = {"article": article_filter}
                 
+                print(f"[Retrieval] {label} — searching with filter: {filters}")
                 injected = self.vector_store.vectorstore.similarity_search(
                     search_text, k=4, filter=filters
                 )
@@ -167,6 +203,10 @@ class AgenticRAG:
                     if new_docs:
                         print(f"[Retrieval] {label} — injected {len(new_docs)} targeted articles to front")
                         return new_docs + documents
+                    else:
+                        print(f"[Retrieval] {label} — all injected docs already in results")
+                else:
+                    print(f"[Retrieval] {label} — no docs found matching filter")
             except Exception as _e:
                 print(f"[Retrieval] Article injection failed ({label}): {_e}")
             return documents
@@ -188,6 +228,31 @@ class AgenticRAG:
                 {"$in": ["4"]},
                 "Scholarship-condition query",
                 source_filter="725"
+            )
+
+        # Case 4: "đồ án tốt nghiệp" / "khóa luận" / "bảo vệ" / "trình bày" → inject Đ14 from qd-1532
+        is_thesis_query = any(kw in _q for kw in [
+            "đồ án tốt nghiệp", "khóa luận", "bảo vệ đồ án", "trình bày đồ án",
+            "hội đồng đánh giá", "đa/kltn", "kltn", "bảo vệ luận văn"
+        ])
+        if is_thesis_query:
+            documents = _inject_articles(
+                "trình bày đồ án tốt nghiệp hội đồng đánh giá thời gian phút",
+                {"$in": ["14", "12", "11", "7"]},
+                "Thesis/KLTN query",
+                source_filter="1532"
+            )
+
+        # Case 5: "đạo văn" / "trùng lặp" / "kiểm tra đạo văn" / "Turnitin" → inject Đ4 from qd-197
+        is_plagiarism_query = any(kw in _q for kw in [
+            "đạo văn", "trùng lặp", "turnitin", "kiểm tra đạo văn", "sao chép"
+        ])
+        if is_plagiarism_query:
+            documents = _inject_articles(
+                "phần mềm kiểm tra đạo văn Turnitin tỷ lệ trùng lặp mức xử lý",
+                {"$in": ["4", "5", "6"]},
+                "Plagiarism query",
+                source_filter="197"
             )
         # ────────────────────────────────────────────────────────────────────────
 
@@ -255,7 +320,7 @@ class AgenticRAG:
             return state
             
         print(f"[Reranking] Re-evaluating {len(documents)} relevant documents...")
-        reranked_docs = self.reranker.rerank(question, documents, top_k=10)
+        reranked_docs = self.reranker.rerank(question, documents, top_k=5)
         
         state["documents"] = reranked_docs
         return state
@@ -269,15 +334,11 @@ class AgenticRAG:
         chat_history = state["chat_history"]
         
         print(f"[Generation] Creating answer...")
-        
         answer, sources = self.generator.generate_from_documents(question, documents, chat_history)
         
         state["generation"] = answer
         state["sources"] = sources
-        
         print(f"[Generation] Answer: {answer[:100]}...")
-        print(f"[Generation] Sources: {', '.join(sources) if sources else 'None'}")
-        
         return state
     
     def check_hallucination(self, state: GraphState) -> GraphState:

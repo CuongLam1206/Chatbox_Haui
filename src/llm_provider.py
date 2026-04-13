@@ -3,6 +3,10 @@ LLM Provider with automatic fallbacks and retry logic for rate limits
 """
 import time
 import functools
+from typing import Any, Optional, List
+
+from langchain_core.runnables import RunnableSerializable
+from langchain_core.runnables.config import RunnableConfig
 from langchain_openai import ChatOpenAI
 from langchain_groq import ChatGroq
 from core.config import (
@@ -27,59 +31,67 @@ def _is_rate_limit_error(exc):
     ])
 
 
-class RetryLLMWrapper:
+def _retry_call(method, method_name, max_retries=MAX_RETRIES, base_delay=BASE_DELAY):
+    """Create a retry-wrapped version of a callable."""
+    @functools.wraps(method)
+    def wrapper(*args, **kwargs):
+        last_exc = None
+        for attempt in range(1, max_retries + 1):
+            try:
+                return method(*args, **kwargs)
+            except Exception as exc:
+                if _is_rate_limit_error(exc):
+                    delay = min(base_delay * (2 ** (attempt - 1)), MAX_DELAY)
+                    print(f"[LLM Retry] Rate limited on {method_name} "
+                          f"(attempt {attempt}/{max_retries}). "
+                          f"Waiting {delay}s...")
+                    time.sleep(delay)
+                    last_exc = exc
+                else:
+                    raise
+        print(f"[LLM Retry] All {max_retries} retries exhausted for {method_name}.")
+        raise last_exc
+    return wrapper
+
+
+class RetryLLMWrapper(RunnableSerializable):
     """
     Wraps a LangChain LLM/ChatModel to add automatic retry with exponential
     backoff when rate-limited (HTTP 429).
-    Transparently proxies all attributes so agents see no difference.
+    Inherits from RunnableSerializable so it works with LangChain's pipe operator.
     """
+    llm: Any = None
+    max_retries_count: int = MAX_RETRIES
+    base_delay_sec: int = BASE_DELAY
 
-    def __init__(self, llm, max_retries=MAX_RETRIES, base_delay=BASE_DELAY):
-        self._llm = llm
-        self._max_retries = max_retries
-        self._base_delay = base_delay
+    class Config:
+        arbitrary_types_allowed = True
 
-    # -- Proxy attribute access to the inner LLM --
+    def __init__(self, llm, max_retries=MAX_RETRIES, base_delay=BASE_DELAY, **kwargs):
+        super().__init__(llm=llm, max_retries_count=max_retries, base_delay_sec=base_delay, **kwargs)
+
+    def invoke(self, input: Any, config: Optional[RunnableConfig] = None, **kwargs) -> Any:
+        return _retry_call(
+            self.llm.invoke, "invoke",
+            self.max_retries_count, self.base_delay_sec
+        )(input, config=config, **kwargs)
+
+    def batch(self, inputs: List[Any], config: Optional[RunnableConfig] = None, **kwargs) -> List[Any]:
+        return _retry_call(
+            self.llm.batch, "batch",
+            self.max_retries_count, self.base_delay_sec
+        )(inputs, config=config, **kwargs)
+
+    # -- Proxy all other attributes to the inner LLM --
     def __getattr__(self, name):
-        attr = getattr(self._llm, name)
-        # Wrap callable methods that hit the API
-        if callable(attr) and name in ("invoke", "ainvoke", "generate", "agenerate",
-                                        "predict", "apredict", "batch", "abatch"):
-            return self._wrap_with_retry(attr, name)
-        return attr
-
-    def _wrap_with_retry(self, method, method_name):
-        @functools.wraps(method)
-        def wrapper(*args, **kwargs):
-            last_exc = None
-            for attempt in range(1, self._max_retries + 1):
-                try:
-                    return method(*args, **kwargs)
-                except Exception as exc:
-                    if _is_rate_limit_error(exc):
-                        delay = min(self._base_delay * (2 ** (attempt - 1)), MAX_DELAY)
-                        print(f"[LLM Retry] Rate limited on {method_name} "
-                              f"(attempt {attempt}/{self._max_retries}). "
-                              f"Waiting {delay}s...")
-                        time.sleep(delay)
-                        last_exc = exc
-                    else:
-                        raise  # Non-rate-limit errors bubble up immediately
-            print(f"[LLM Retry] All {self._max_retries} retries exhausted for {method_name}.")
-            raise last_exc
-        return wrapper
-
-    # -- Support pipe operator (prompt | llm) used by LangChain --
-    def __or__(self, other):
-        return self._llm.__or__(other)
-
-    def __ror__(self, other):
-        return self._llm.__ror__(other)
+        if name in ("llm", "max_retries_count", "base_delay_sec"):
+            raise AttributeError(name)
+        return getattr(self.llm, name)
 
     # -- Support with_structured_output for Router/Grader --
     def with_structured_output(self, schema, **kwargs):
-        structured = self._llm.with_structured_output(schema, **kwargs)
-        return RetryLLMWrapper(structured, self._max_retries, self._base_delay)
+        structured = self.llm.with_structured_output(schema, **kwargs)
+        return RetryLLMWrapper(structured, self.max_retries_count, self.base_delay_sec)
 # ──────────────────────────────────────────────────────────────────────────
 
 # Lazy import for optional providers

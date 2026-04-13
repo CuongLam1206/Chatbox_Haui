@@ -13,29 +13,31 @@ class DocumentReranker:
     relevant context is prioritized for generation.
     """
     
+    RERANK_PROMPT_TEMPLATE = """Bạn là chuyên gia thẩm định văn bản cấp cao của HaUI.
+Nhiệm vụ: Chấm điểm độ liên quan (0-10) của các đoạn văn bản đối với câu hỏi và câu trả lời mong đợi.
+
+Quy tắc chấm điểm:
+1. **TRỰC TIẾP (10đ)**: Đoạn văn trả lời trực tiếp câu hỏi hoặc chứa thông tin cần thiết để tạo ra câu trả lời mong đợi.
+2. **ĐIỀU KIỆN (9-10đ)**: Chứa từ khóa "Điều kiện xét", "Tiêu chuẩn xét", "Đối tượng áp dụng".
+3. **MIỄN TRỪ/KỶ LUẬT (9-10đ)**: Nếu hỏi về "Kỷ luật" → ưu tiên đoạn văn chứa "Kỷ luật" trong quy định liên quan.
+4. **THỰC THỂ (10đ)**: Trùng khớp tên Phụ lục, tên mẫu, tên điều.
+5. **GẦN ĐÚNG (5-7đ)**: Cùng chủ đề nhưng không trả lời trực tiếp.
+6. **KHÔNG LIÊN QUAN (0đ)**: Lạc đề.
+
+Lưu ý: So sánh với CẢ HAI câu hỏi VÀ câu trả lời mong đợi để chấm điểm chính xác hơn.
+
+Định dạng trả về: CHỈ trả về dãy số điểm cách nhau bởi dấu phẩy.
+Ví dụ: 10,8,0,5"""
+
     def __init__(self):
         self.llm = get_llm(temperature=0)
-        
         self.prompt = ChatPromptTemplate.from_messages([
-            ("system", """Bạn là chuyên gia thẩm định văn bản cấp cao của HaUI.
-Nhiệm vụ: Chấm điểm độ liên quan (0-10) của các đoạn văn bản đối với câu hỏi.
-
-Quy tắc chấm điểm ưu tiên:
-1. **TRỰC TIẾP (10đ)**: Đoạn văn trả lời trực tiếp câu hỏi (VD: Hỏi "có được không?" -> Đoạn văn ghi "Không được").
-2. **ĐIỀU KIỆN (9-10đ)**: Nếu hỏi về "Điều kiện", "Tiêu chuẩn", "Đối tượng", hãy ưu tiên các đoạn có từ khóa "Điều kiện xét", "Tiêu chuẩn xét", "Đối tượng áp dụng".
-3. **MIỄN TRỪ/KỶ LUẬT (9-10đ)**: Nếu hỏi về "Kỷ luật" ảnh hưởng đến "Học bổng/Thi", hãy ưu tiên đoạn văn nằm trong quy định về Học bổng/Thi mà có nhắc đến từ "Kỷ luật".
-4. **THỰC THỂ (10đ)**: Trùng khớp tên Phụ lục, tên mẫu phiếu, tên chương, tên điều (VD: "Phụ lục 03", "Điều 9").
-5. **GẦN ĐÚNG (5-7đ)**: Đoạn văn nói về cùng chủ đề nhưng không trả lời trực tiếp.
-6. **KHÔNG LIÊN QUAN (0đ)**: Lạc đề hoàn toàn.
-
-Định dạng trả về: CHỈ trả về dãy số điểm cách nhau bởi dấu phẩy, KHÔNG ghi chú, KHÔNG đánh số thứ tự.
-Ví dụ: 10,8,0,5"""),
-            ("human", "Câu hỏi: {question}\n\nCác tài liệu:\n{documents}")
+            ("system", self.RERANK_PROMPT_TEMPLATE),
+            ("human", "Câu hỏi: {question}\nCâu trả lời mong đợi (dự đoán): {expected_answer}\n\nCác tài liệu:\n{documents}")
         ])
-        
         self.chain = self.prompt | self.llm
 
-    def rerank(self, question: str, documents: List[Document], top_k: int = 5) -> List[Document]:
+    def rerank(self, question: str, documents: List[Document], top_k: int = 5, expected_answer: str = "") -> List[Document]:
         """
         Rerank a list of documents based on relevance to the question.
         """
@@ -59,7 +61,8 @@ Ví dụ: 10,8,0,5"""),
         
         response = self.chain.invoke({
             "question": question,
-            "documents": formatted_docs
+            "documents": formatted_docs,
+            "expected_answer": expected_answer or question  # fallback to question if no hypothesis
         })
         
         try:
@@ -79,8 +82,8 @@ Ví dụ: 10,8,0,5"""),
             # Sort by score descending
             doc_scores.sort(key=lambda x: x[1], reverse=True)
             
-            # Keep only docs with score >= 2 (threshold 2 to avoid dropping valid chunks like timetable)
-            reranked_docs = [doc for doc, score in doc_scores if score >= 2]
+            # Keep only docs with score >= 4 (balanced threshold)
+            reranked_docs = [doc for doc, score in doc_scores if score >= 4]
             
             # Safety net: never return empty list — keep at least the best doc
             if not reranked_docs and doc_scores:

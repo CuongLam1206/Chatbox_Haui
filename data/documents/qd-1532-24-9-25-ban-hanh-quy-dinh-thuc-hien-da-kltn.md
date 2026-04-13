@@ -232,7 +232,7 @@ SV được đánh giá ĐA/KLTN nếu đáp ứng đủ các điều kiện sau
    a) Khi tổ chức đánh giá ĐA/KLTN, phải có mặt ít nhất 2/3 số thành viên của HĐ. Trong đó bắt buộc có mặt Chủ tịch HĐ và Thư ký HĐ. Trường hợp thiếu số lượng, buổi đánh giá ĐA/KLTN không được tiến hành.
       Tất cả diễn biến của buổi bảo vệ trực tuyến phải được ghi hình, ghi âm và lưu trữ trên ĐHĐT.
    b) Trình tự đánh giá ĐA/KLTN của HĐ theo hình thức bảo vệ ĐA/KLTN:
-      - **Bước 1:** Thư ký đọc quyết định thành lập HĐ sau đó SV trình bày ĐA/KLTN trong khoảng thời gian từ 10 đến 15 phút.
+      - **Bước 1:** Thư ký đọc quyết định thành lập HĐ sau đó SV (Sinh viên) trình bày ĐA/KLTN (đồ án tốt nghiệp / khóa luận tốt nghiệp) trong khoảng thời gian từ 10 đến 15 phút.
       - **Bước 2:** Thư ký đọc bản nhận xét, câu hỏi của GVHD hoặc người phản biện (trong trường hợp GVHD hoặc người phản biện không trong HĐ) và SV trả lời câu hỏi theo sự điều hành của Chủ tịch HĐ.
       - **Bước 3:** Chủ tịch HĐ điều hành họp HĐ; thành viên HĐ đánh giá ĐA/KLTN bằng phiếu chấm ĐA/KLTN đối với từng SV theo thang 10 và làm tròn đến một chữ số thập phân.
       - **Bước 4:** Chủ tịch HĐ công bố kết quả và đưa ra kết luận cuối cùng về chất lượng ĐA/KLTN.

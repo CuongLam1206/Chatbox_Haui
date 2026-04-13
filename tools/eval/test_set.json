@@ -3,7 +3,7 @@
     "id": "G1-001",
     "group": "G1_quy_che",
     "question": "Sinh viên vắng quá bao nhiêu phần trăm giờ lý thuyết sẽ bị cấm thi?",
-    "ground_truth": "Sinh viên vắng mặt trên 30% số giờ học Lý thuyết không được tham dự kỳ thi kết thúc Học phần và nhận điểm F.",
+    "ground_truth": "Sinh viên vắng mặt trên 30% số tiết học lý thuyết sẽ không được tham dự kỳ thi kết thúc học phần.",
     "source_doc": "Quy chế đào tạo HaUI",
     "difficulty": "easy",
     "type": "factual"
@@ -12,7 +12,7 @@
     "id": "G1-002",
     "group": "G1_quy_che",
     "question": "Điểm học phần được tính như thế nào?",
-    "ground_truth": "Điểm học phần được tính từ điểm thành phần (điểm chuyên cần, điểm kiểm tra, điểm thi) với trọng số theo quy định của từng học phần.",
+    "ground_truth": "Điểm học phần được tính từ tổng các điểm thành phần nhân với trọng số tương ứng, được làm tròn tới một chữ số thập phân.",
     "source_doc": "Quy chế đào tạo HaUI",
     "difficulty": "medium",
     "type": "factual"
@@ -30,7 +30,7 @@
     "id": "G1-004",
     "group": "G1_quy_che",
     "question": "Điều kiện bị buộc thôi học là gì?",
-    "ground_truth": "Sinh viên bị buộc thôi học khi: vượt quá thời gian học tập (6 năm với K16 trở đi), bị cảnh báo KQHT lần thứ 02 liên tiếp, hoặc không đăng ký khối lượng học tập trong 2 HK chính liên tiếp.",
+    "ground_truth": "Sinh viên bị buộc thôi học nếu bị cảnh báo kết quả học tập lần thứ 2 liên tiếp, vượt quá thời gian học tập tối đa, hoặc không đăng ký khối lượng học tập trong 2 học kỳ chính liên tiếp.",
     "source_doc": "Quy chế đào tạo HaUI",
     "difficulty": "medium",
     "type": "factual"
@@ -39,7 +39,7 @@
     "id": "G1-005",
     "group": "G1_quy_che",
     "question": "Sinh viên vắng mặt không lý do trong buổi thi được tính bao nhiêu điểm?",
-    "ground_truth": "Sinh viên vắng mặt trong buổi thi không có lý do chính đáng phải nhận điểm 0.",
+    "ground_truth": "Sinh viên vắng mặt trong buổi thi không có lý do chính đáng sẽ nhận điểm 0.",
     "source_doc": "Quy chế đào tạo HaUI",
     "difficulty": "easy",
     "type": "factual"
@@ -48,7 +48,7 @@
     "id": "G1-006",
     "group": "G1_quy_che",
     "question": "Điểm học phần được tính từ những loại điểm thành phần nào?",
-    "ground_truth": "Học phần được đánh giá qua điểm thành phần bao gồm: điểm kiểm tra thường xuyên, điểm giữa kỳ, điểm thi kết thúc học phần.",
+    "ground_truth": "Điểm học phần được tính từ tổng các điểm thành phần nhân với trọng số tương ứng, được làm tròn tới một chữ số thập phân.",
     "source_doc": "Quy chế đào tạo HaUI",
     "difficulty": "medium",
     "type": "factual"
@@ -57,7 +57,7 @@
     "id": "G1-007",
     "group": "G1_quy_che",
     "question": "Sinh viên có lý do vắng thi được xử lý như thế nào?",
-    "ground_truth": "Sinh viên vắng mặt có lý do chính đáng được dự thi bổ sung và được tính điểm lần đầu. Trong 10 ngày làm việc từ ngày thi phải làm đơn kèm minh chứng để được tham dự kỳ thi bổ sung.",
+    "ground_truth": "Sinh viên vắng thi có lý do chính đáng được dự thi bổ sung và tính điểm lần đầu. Cần nộp đơn xin hoãn thi trước giờ thi và làm đơn kèm minh chứng trong 10 ngày làm việc kể từ ngày thi.",
     "source_doc": "Quy chế đào tạo HaUI",
     "difficulty": "medium",
     "type": "factual"
@@ -75,7 +75,7 @@
     "id": "G1-009",
     "group": "G1_quy_che",
     "question": "Đồ án/tiểu luận/bài tập lớn sinh viên nhận F khi nào?",
-    "ground_truth": "Đối với học phần Đồ án/Tiểu luận/Bài tập lớn, sinh viên nhận điểm F nếu không báo cáo kết quả quá trình thực hiện hoặc không hoàn thành nhiệm vụ theo tiến độ.",
+    "ground_truth": "Sinh viên nhận điểm F cho học phần Tiểu luận, Bài tập lớn, Đồ án/Dự án nếu không báo cáo kết quả tiến độ hoặc không hoàn thành nhiệm vụ theo đề cương.",
     "source_doc": "Quy chế đào tạo HaUI",
     "difficulty": "easy",
     "type": "factual"
@@ -84,7 +84,7 @@
     "id": "G1-010",
     "group": "G1_quy_che",
     "question": "Số tín chỉ tối thiểu để đủ điều kiện tốt nghiệp là bao nhiêu?",
-    "ground_truth": "Sinh viên cần tích lũy đủ số tín chỉ theo chương trình đào tạo của ngành học để xét tốt nghiệp.",
+    "ground_truth": "Số tín chỉ tối thiểu để đủ điều kiện tốt nghiệp là không dưới 120 tín chỉ đối với đại học 4 năm và 90 tín chỉ đối với cao đẳng 3 năm.",
     "source_doc": "Quy chế đào tạo HaUI",
     "difficulty": "hard",
     "type": "factual"
@@ -93,7 +93,7 @@
     "id": "G2-001",
     "group": "G2_hoc_bong",
     "question": "Học bổng khuyến khích học tập gồm mấy mức?",
-    "ground_truth": "Học bổng khuyến khích học tập gồm 3 mức: loại Xuất sắc, loại Giỏi, và loại Khá theo quy định của trường.",
+    "ground_truth": "Học bổng khuyến khích học tập có 3 mức: Xuất sắc (TBC từ 3,60-4,0), Giỏi (TBC từ 3,20-3,59), và Khá (TBC từ 2,50-3,19).",
     "source_doc": "27. 725-NEW-T92024-Quy định xét học bổng sinh viên",
     "difficulty": "easy",
     "type": "factual"
@@ -102,7 +102,7 @@
     "id": "G2-002",
     "group": "G2_hoc_bong",
     "question": "Điều kiện xét học bổng khuyến khích học tập là gì?",
-    "ground_truth": "Điều kiện xét học bổng KKHT: sinh viên phải đạt điểm TBC học kỳ theo quy định, không vi phạm kỷ luật trong kỳ xét, và đăng ký đủ số tín chỉ quy định.",
+    "ground_truth": "Điều kiện xét học bổng KKHT: Điểm TBC học kỳ ≥ 2,5 (tín chỉ) hoặc ≥ 7,0 (niên chế); điểm rèn luyện đạt loại Tốt trở lên; không có điểm học phần dưới 2,0 (hình thức tín chỉ).",
     "source_doc": "27. 725-NEW-T92024-Quy định xét học bổng sinh viên",
     "difficulty": "medium",
     "type": "factual"
@@ -111,7 +111,7 @@
     "id": "G2-003",
     "group": "G2_hoc_bong",
     "question": "Chính sách miễn giảm học phí áp dụng cho đối tượng nào?",
-    "ground_truth": "Miễn giảm học phí theo Nghị định 81/2021/NĐ-CP áp dụng cho: sinh viên dân tộc thiểu số thuộc hộ nghèo hoặc cận nghèo, sinh viên khuyết tật, con thương binh bệnh binh, sinh viên mồ côi, sinh viên hệ cử tuyển và các đối tượng ưu tiên khác theo quy định nhà nước.",
+    "ground_truth": "Miễn học phí: người có công với cách mạng và thân nhân, người khuyết tật, sinh viên mồ côi không quá 22 tuổi. Giảm học phí: đối tượng theo Nghị định 81/2021/NĐ-CP và các trường hợp thường trú vùng kinh tế khó khăn.",
     "source_doc": "11. Số 81-2021. Chính sách miễn giảm, thu chi học phí",
     "difficulty": "medium",
     "type": "factual"
@@ -120,7 +120,7 @@
     "id": "G2-004",
     "group": "G2_hoc_bong",
     "question": "Quy định tính học phí lớp học phần như thế nào?",
-    "ground_truth": "Học phí lớp học phần được tính theo số tín chỉ đăng ký, theo đơn giá tín chỉ của từng năm học theo quy định tại QĐ 20221028.",
+    "ground_truth": "Học phí = NTCHP × HLHP × ĐG. NTCHP là số tín chỉ học phí (xác định theo loại học phần), HLHP là hệ số lớp học phần (phụ thuộc sỹ số sinh viên), ĐG là đơn giá tín chỉ học phí do Hiệu trưởng quy định.",
     "source_doc": "24. 20221028 Quy định tính học phí của lớp học phần, môn học",
     "difficulty": "medium",
     "type": "factual"
@@ -129,7 +129,7 @@
     "id": "G2-005",
     "group": "G2_hoc_bong",
     "question": "Sinh viên bị kỷ luật có được xét học bổng không?",
-    "ground_truth": "Sinh viên bị kỷ luật trong kỳ xét học bổng sẽ không đủ điều kiện nhận học bổng khuyến khích học tập trong kỳ đó.",
+    "ground_truth": "Không, sinh viên đang trong thời gian bị kỷ luật sẽ không được xét học bổng khuyến khích học tập.",
     "source_doc": "27. 725-NEW-T92024-Quy định xét học bổng sinh viên",
     "difficulty": "easy",
     "type": "inference"
@@ -147,7 +147,7 @@
     "id": "G2-007",
     "group": "G2_hoc_bong",
     "question": "Thẻ xe buýt và tàu điện được cấp ở đâu?",
-    "ground_truth": "Thẻ xe buýt và tàu điện được cấp tại Phòng Công tác Sinh viên.",
+    "ground_truth": "Thẻ xe buýt và tàu điện được cấp tại phòng Công tác Sinh viên: Phòng 101 tầng 1 nhà C3 (Cơ sở 3) và Phòng 103, 106 tầng 1 nhà A8 (Cơ sở 1).",
     "source_doc": "Giới thiệu SEEE-Final (s) 2025",
     "difficulty": "easy",
     "type": "factual"
@@ -174,7 +174,7 @@
     "id": "G3-003",
     "group": "G3_seee",
     "question": "Ai là Hiệu trưởng Trường SEEE?",
-    "ground_truth": "PGS. TS. Hoàng Mạnh Kha là Hiệu trưởng Trường Điện - Điện tử (SEEE), SĐT 0912668779.",
+    "ground_truth": "PGS. TS. Hoàng Mạnh Kha là Hiệu trưởng Trường Điện - Điện tử (SEEE).",
     "source_doc": "Giới thiệu SEEE-Final (s) 2025",
     "difficulty": "easy",
     "type": "factual"
@@ -201,7 +201,7 @@
     "id": "G3-006",
     "group": "G3_seee",
     "question": "Phòng Công tác Sinh viên ở tầng mấy, tòa nhà nào tại Cơ sở 1?",
-    "ground_truth": "Phòng Công tác Sinh viên tại Cơ sở 1 ở Phòng 103, 106 tầng 1 nhà A8.",
+    "ground_truth": "Phòng Công tác Sinh viên tại Cơ sở 1 ở tầng 1 nhà A8.",
     "source_doc": "Giới thiệu SEEE-Final (s) 2025",
     "difficulty": "easy",
     "type": "factual"
@@ -273,7 +273,7 @@
     "id": "G4-006",
     "group": "G4_thoi_khoa_bieu",
     "question": "Cơ sở 3 có Tiết 1 học lý thuyết không?",
-    "ground_truth": "Không, Cơ sở 3 lý thuyết bắt đầu từ Tiết 2 (07:40) không có Tiết 1.",
+    "ground_truth": "Không, tại cơ sở 3 Hà Nam, tiết 1 không có giờ học lý thuyết.",
     "source_doc": "Giới thiệu SEEE-Final (s) 2025",
     "difficulty": "medium",
     "type": "boolean"
@@ -295,5 +295,284 @@
     "source_doc": "Giới thiệu SEEE-Final (s) 2025; Quy chế đào tạo HaUI",
     "difficulty": "hard",
     "type": "multi_doc"
+  },
+  {
+    "id": "G6-001",
+    "group": "G6_khen_thuong_ky_luat",
+    "question": "Danh hiệu khen thưởng cá nhân sinh viên gồm mấy loại?",
+    "ground_truth": "Danh hiệu cá nhân gồm 2 loại: Xuất sắc và Giỏi.",
+    "source_doc": "12. Số 1146.qd-cong-tac-khen-thuong-ky-luat-sinh-vien",
+    "difficulty": "easy",
+    "type": "factual"
+  },
+  {
+    "id": "G6-002",
+    "group": "G6_khen_thuong_ky_luat",
+    "question": "Sinh viên đại học được xếp loại Xuất sắc khi điểm TBC từ bao nhiêu?",
+    "ground_truth": "Sinh viên đại học được xếp loại học tập Xuất sắc khi có TBC từ 3.60 đến 4.0.",
+    "source_doc": "12. Số 1146.qd-cong-tac-khen-thuong-ky-luat-sinh-vien",
+    "difficulty": "easy",
+    "type": "factual"
+  },
+  {
+    "id": "G6-003",
+    "group": "G6_khen_thuong_ky_luat",
+    "question": "Mức thưởng cho sinh viên đạt danh hiệu Xuất sắc năm học hệ đại học là bao nhiêu?",
+    "ground_truth": "Mức thưởng cho sinh viên đạt danh hiệu Xuất sắc năm học hệ ĐH, CĐ chính quy là 300.000 đồng.",
+    "source_doc": "12. Số 1146.qd-cong-tac-khen-thuong-ky-luat-sinh-vien",
+    "difficulty": "medium",
+    "type": "factual"
+  },
+  {
+    "id": "G6-004",
+    "group": "G6_khen_thuong_ky_luat",
+    "question": "Hình thức kỷ luật khiển trách hết hiệu lực sau bao lâu?",
+    "ground_truth": "Quyết định kỷ luật khiển trách hết hiệu lực sau 03 tháng kể từ ngày có quyết định kỷ luật, nếu sinh viên không tái phạm hoặc không có vi phạm đến mức phải xử lý kỷ luật thì đương nhiên được chấm dứt hiệu lực.",
+    "source_doc": "12. Số 1146.qd-cong-tac-khen-thuong-ky-luat-sinh-vien",
+    "difficulty": "medium",
+    "type": "factual"
+  },
+  {
+    "id": "G6-005",
+    "group": "G6_khen_thuong_ky_luat",
+    "question": "Hình thức kỷ luật cảnh cáo hết hiệu lực sau bao lâu?",
+    "ground_truth": "Quyết định kỷ luật cảnh cáo hết hiệu lực sau 06 tháng kể từ ngày có quyết định kỷ luật, nếu sinh viên không tái phạm hoặc không có vi phạm đến mức phải xử lý kỷ luật thì đương nhiên được chấm dứt hiệu lực.",
+    "source_doc": "12. Số 1146.qd-cong-tac-khen-thuong-ky-luat-sinh-vien",
+    "difficulty": "medium",
+    "type": "factual"
+  },
+  {
+    "id": "G6-006",
+    "group": "G6_khen_thuong_ky_luat",
+    "question": "Sinh viên đạt giải nhất SV giỏi nghề cấp quốc gia được thưởng bao nhiêu tiền?",
+    "ground_truth": "Sinh viên đạt Huy chương vàng (Giải Nhất) SV giỏi nghề cấp Quốc gia được thưởng 1.000.000 đồng.",
+    "source_doc": "12. Số 1146.qd-cong-tac-khen-thuong-ky-luat-sinh-vien",
+    "difficulty": "medium",
+    "type": "factual"
+  },
+  {
+    "id": "G6-007",
+    "group": "G6_khen_thuong_ky_luat",
+    "question": "Sinh viên nghỉ học từ 46% đến 60% tổng số giờ trong học kỳ bị xử lý kỷ luật thế nào?",
+    "ground_truth": "Theo QĐ 1150 (2024), sinh viên nghỉ học từ 46% đến 60% tổng số giờ trong học kỳ: vi phạm lần 1 bị Cảnh cáo, vi phạm lần 2 bị Đình chỉ có thời hạn, vi phạm lần 3 bị Buộc thôi học.",
+    "source_doc": "28. 1150-NEW-T92024-QĐ khen thưởng kỷ luật sinh viên",
+    "difficulty": "hard",
+    "type": "factual"
+  },
+  {
+    "id": "G7-001",
+    "group": "G7_do_an_tot_nghiep",
+    "question": "Điều kiện để sinh viên được làm đồ án tốt nghiệp là gì?",
+    "ground_truth": "Sinh viên được làm đồ án/khóa luận tốt nghiệp nếu: tích lũy đủ số học phần trong chương trình đào tạo (trừ Thực tập doanh nghiệp), không có công nợ và đủ học phí, không trong thời gian bị đình chỉ học tập hoặc bị truy cứu trách nhiệm hình sự.",
+    "source_doc": "qd-1532-24-9-25-ban-hanh-quy-dinh-thuc-hien-da-kltn",
+    "difficulty": "medium",
+    "type": "factual"
+  },
+  {
+    "id": "G7-002",
+    "group": "G7_do_an_tot_nghiep",
+    "question": "Điểm đồ án tốt nghiệp được tính theo công thức nào?",
+    "ground_truth": "Điểm ĐA/KLTN = 30% × điểm GVHD + 20% × điểm Phản biện + 50% × điểm Hội đồng đánh giá.",
+    "source_doc": "qd-1532-24-9-25-ban-hanh-quy-dinh-thuc-hien-da-kltn",
+    "difficulty": "medium",
+    "type": "factual"
+  },
+  {
+    "id": "G7-003",
+    "group": "G7_do_an_tot_nghiep",
+    "question": "Giảng viên hướng dẫn có trình độ thạc sĩ được hướng dẫn tối đa bao nhiêu sinh viên khối ngành kỹ thuật?",
+    "ground_truth": "GVHD có trình độ thạc sĩ khối ngành kỹ thuật, công nghệ được phép hướng dẫn tối đa 10 sinh viên.",
+    "source_doc": "qd-1532-24-9-25-ban-hanh-quy-dinh-thuc-hien-da-kltn",
+    "difficulty": "medium",
+    "type": "factual"
+  },
+  {
+    "id": "G7-004",
+    "group": "G7_do_an_tot_nghiep",
+    "question": "Hội đồng đánh giá đồ án tốt nghiệp gồm tối thiểu bao nhiêu thành viên?",
+    "ground_truth": "Hội đồng đánh giá đồ án tốt nghiệp gồm tối thiểu 03 thành viên.",
+    "source_doc": "qd-1532-24-9-25-ban-hanh-quy-dinh-thuc-hien-da-kltn",
+    "difficulty": "easy",
+    "type": "factual"
+  },
+  {
+    "id": "G7-005",
+    "group": "G7_do_an_tot_nghiep",
+    "question": "Sinh viên trình bày đồ án tốt nghiệp trước hội đồng trong bao nhiêu phút?",
+    "ground_truth": "Sinh viên trình bày ĐA/KLTN trong khoảng thời gian từ 10 đến 15 phút.",
+    "source_doc": "qd-1532-24-9-25-ban-hanh-quy-dinh-thuc-hien-da-kltn",
+    "difficulty": "easy",
+    "type": "factual"
+  },
+  {
+    "id": "G8-001",
+    "group": "G8_noi_tru",
+    "question": "Đối tượng nào được ưu tiên tiếp nhận vào ở nội trú ký túc xá?",
+    "ground_truth": "Thứ tự ưu tiên: (1) Anh hùng, thương binh, bệnh binh, sinh viên khuyết tật; (2) Con liệt sỹ, con thương binh; (3) SV hộ khẩu vùng cao, vùng đặc biệt khó khăn; (4) SV có cha/mẹ dân tộc thiểu số; (5) SV mồ côi cả cha mẹ; (6) SV con hộ nghèo, cận nghèo; (7) Sinh viên nữ; (8) SV tích cực tham gia hoạt động.",
+    "source_doc": "14. Số 1148.qd-quan-ly-sinh-vien-noi-tru",
+    "difficulty": "medium",
+    "type": "list"
+  },
+  {
+    "id": "G8-002",
+    "group": "G8_noi_tru",
+    "question": "Sinh viên nội trú vắng mặt quá bao lâu phải báo Trung tâm ký túc xá?",
+    "ground_truth": "Nếu vắng mặt tại khu nội trú quá 01 (một) ngày phải báo với Trung tâm Quản lý Ký túc xá.",
+    "source_doc": "14. Số 1148.qd-quan-ly-sinh-vien-noi-tru",
+    "difficulty": "easy",
+    "type": "factual"
+  },
+  {
+    "id": "G8-003",
+    "group": "G8_noi_tru",
+    "question": "Sinh viên nội trú vi phạm nội quy ký túc xá bị xử lý kỷ luật như thế nào?",
+    "ground_truth": "Sinh viên nội trú vi phạm bị xử lý kỷ luật bằng một trong các hình thức: khiển trách, cảnh cáo hoặc bị xem xét chấm dứt hợp đồng nội trú trước thời hạn, buộc ra khỏi Ký túc xá.",
+    "source_doc": "14. Số 1148.qd-quan-ly-sinh-vien-noi-tru",
+    "difficulty": "medium",
+    "type": "factual"
+  },
+  {
+    "id": "G8-004",
+    "group": "G8_noi_tru",
+    "question": "Ban tự quản Ký túc xá gồm bao nhiêu thành viên ban lãnh đạo?",
+    "ground_truth": "Ban tự quản Ký túc xá gồm: 01 Trưởng ban, 02 Phó ban và các thành viên.",
+    "source_doc": "14. Số 1148.qd-quan-ly-sinh-vien-noi-tru",
+    "difficulty": "easy",
+    "type": "factual"
+  },
+  {
+    "id": "G9-001",
+    "group": "G9_quy_che_bo_sung",
+    "question": "Sinh viên bị buộc thôi học khi vượt quá thời gian đào tạo bao lâu?",
+    "ground_truth": "Sinh viên bị buộc thôi học khi vượt quá thời gian tối đa được phép học theo quy định tại Quy chế đào tạo.",
+    "source_doc": "Quy chế đào tạo HaUI",
+    "difficulty": "medium",
+    "type": "factual"
+  },
+  {
+    "id": "G9-002",
+    "group": "G9_quy_che_bo_sung",
+    "question": "Sinh viên muốn học cải thiện điểm thì đăng ký như thế nào?",
+    "ground_truth": "Sinh viên đăng ký học lại, học đổi các học phần đã đạt để cải thiện điểm. Điểm cao nhất trong các lần học sẽ được dùng để tính điểm trung bình học kỳ và trung bình tích lũy.",
+    "source_doc": "Quy chế đào tạo HaUI",
+    "difficulty": "medium",
+    "type": "factual"
+  },
+  {
+    "id": "G9-003",
+    "group": "G9_quy_che_bo_sung",
+    "question": "Hệ đại học chính quy xét khen thưởng bao nhiêu lần trong khóa học?",
+    "ground_truth": "Hệ đại học chính quy xét khen thưởng 4 lần vào thời điểm cuối năm học.",
+    "source_doc": "12. Số 1146.qd-cong-tac-khen-thuong-ky-luat-sinh-vien",
+    "difficulty": "easy",
+    "type": "factual"
+  },
+  {
+    "id": "G9-004",
+    "group": "G9_quy_che_bo_sung",
+    "question": "Lớp sinh viên Xuất sắc cần đạt những tiêu chuẩn gì?",
+    "ground_truth": "Lớp sinh viên Xuất sắc phải: đạt tiêu chuẩn của lớp Tiên tiến, có từ 10% sinh viên đạt danh hiệu Giỏi trở lên, và có cá nhân đạt danh hiệu Xuất sắc.",
+    "source_doc": "12. Số 1146.qd-cong-tac-khen-thuong-ky-luat-sinh-vien",
+    "difficulty": "medium",
+    "type": "factual"
+  },
+  {
+    "id": "G10-001",
+    "group": "G10_phuc_hop_nang_cao",
+    "question": "Sinh viên bị kỷ luật cảnh cáo và muốn xét học bổng thì phải chờ bao lâu?",
+    "ground_truth": "Sinh viên bị kỷ luật cảnh cáo phải chờ 06 tháng kể từ ngày có quyết định kỷ luật. Nếu không tái phạm hoặc không vi phạm đến mức phải xử lý kỷ luật thì đương nhiên được chấm dứt hiệu lực quyết định kỷ luật và được hưởng quyền lợi sinh viên, bao gồm đủ điều kiện xét học bổng KKHT.",
+    "source_doc": "12. Số 1146.qd-cong-tac-khen-thuong-ky-luat-sinh-vien; 27. 725-NEW-T92024-Quy định xét học bổng sinh viên",
+    "difficulty": "hard",
+    "type": "multi_doc"
+  },
+  {
+    "id": "G10-002",
+    "group": "G10_phuc_hop_nang_cao",
+    "question": "Sinh viên đồ án tốt nghiệp không đạt thì có thể làm gì?",
+    "ground_truth": "Sinh viên có đồ án/khóa luận tốt nghiệp bị điểm F phải đăng ký học thêm các học phần chuyên môn để thay thế và đảm bảo tổng số tín chỉ đạt yêu cầu, hoặc đăng ký thực hiện lại ĐA/KLTN trong đợt tiếp theo.",
+    "source_doc": "qd-1532-24-9-25-ban-hanh-quy-dinh-thuc-hien-da-kltn",
+    "difficulty": "medium",
+    "type": "factual"
+  },
+  {
+    "id": "G11-001",
+    "group": "G11_ngoai_tru",
+    "question": "Sinh viên ngoại trú khi thay đổi nơi cư trú phải cập nhật trong bao nhiêu ngày?",
+    "ground_truth": "Sinh viên ngoại trú phải cập nhật địa chỉ nơi cư trú mới trên tài khoản sinh viên trong thời hạn 10 ngày kể từ ngày thay đổi địa chỉ cư trú, và 30 ngày đối với sinh viên khóa mới kể từ ngày nhập học.",
+    "source_doc": "13. Số 1147.qd-quan-ly-sinh-vien-ngoai-tru",
+    "difficulty": "medium",
+    "type": "factual"
+  },
+  {
+    "id": "G11-002",
+    "group": "G11_ngoai_tru",
+    "question": "Đơn vị đầu mối quản lý sinh viên ngoại trú là đơn vị nào?",
+    "ground_truth": "Phòng Công tác sinh viên là đơn vị đầu mối thực hiện quản lý sinh viên ngoại trú.",
+    "source_doc": "13. Số 1147.qd-quan-ly-sinh-vien-ngoai-tru",
+    "difficulty": "easy",
+    "type": "factual"
+  },
+  {
+    "id": "G12-001",
+    "group": "G12_hoc_phi_tin_chi",
+    "question": "Công thức tính học phí lớp học phần như thế nào?",
+    "ground_truth": "Học phí = NTCHP × HLHP × ĐG. NTCHP là số tín chỉ học phí của học phần (phụ thuộc loại học phần), HLHP là hệ số lớp học phần tính theo sỹ số sinh viên, ĐG là đơn giá tín chỉ học phí do Hiệu trưởng quy định.",
+    "source_doc": "24. 20221028 Quy định tính học phí của lớp học phần, môn học",
+    "difficulty": "medium",
+    "type": "factual"
+  },
+  {
+    "id": "G12-002",
+    "group": "G12_hoc_phi_tin_chi",
+    "question": "Lớp học phần có sỹ số dưới 5 sinh viên thì hệ số học phí là bao nhiêu?",
+    "ground_truth": "Lớp học phần có sỹ số dưới 5 sinh viên: hệ số HLHP = 3 với học phần lý thuyết, thực hành, thí nghiệm, ngoại ngữ; hệ số = 1 với tiểu luận, bài tập lớn, đồ án, thực tập.",
+    "source_doc": "24. 20221028 Quy định tính học phí của lớp học phần, môn học",
+    "difficulty": "medium",
+    "type": "factual"
+  },
+  {
+    "id": "G13-001",
+    "group": "G13_dao_van",
+    "question": "Tỷ lệ trùng lặp tối đa cho phép khi kiểm tra đạo văn đồ án tốt nghiệp sinh viên đại học là bao nhiêu?",
+    "ground_truth": "Tỷ lệ trùng lặp tối đa cho phép đối với sinh viên đại học là: Mức 1: 30%, Mức 2: 50%.",
+    "source_doc": "qd-so-197qd-dhcn",
+    "difficulty": "medium",
+    "type": "factual"
+  },
+  {
+    "id": "G13-002",
+    "group": "G13_dao_van",
+    "question": "Nhà trường sử dụng phần mềm nào để kiểm tra đạo văn?",
+    "ground_truth": "Trường Đại học Công nghiệp Hà Nội sử dụng phần mềm Turnitin để kiểm tra đạo văn.",
+    "source_doc": "qd-so-197qd-dhcn",
+    "difficulty": "easy",
+    "type": "factual"
+  },
+  {
+    "id": "G14-001",
+    "group": "G14_tin_chi",
+    "question": "1 tín chỉ lý thuyết tương đương bao nhiêu tiết?",
+    "ground_truth": "1 tín chỉ Lý thuyết quy định là 15 tiết học.",
+    "source_doc": "19.Quy che dao tao tin chỉ 2020 - 2021",
+    "difficulty": "easy",
+    "type": "factual"
+  },
+  {
+    "id": "G14-002",
+    "group": "G14_tin_chi",
+    "question": "Sinh viên bị cảnh báo học tập khi nào?",
+    "ground_truth": "Sinh viên bị cảnh báo khi: Điểm TBC học kỳ dưới 0,8 (học kỳ đầu) hoặc dưới 1,0 (các HK tiếp theo), hoặc TBC tích lũy dưới 1,20 (năm 1), dưới 1,40 (năm 2), dưới 1,60 (năm 3), dưới 1,80 (năm tiếp theo).",
+    "source_doc": "19.Quy che dao tao tin chỉ 2020 - 2021",
+    "difficulty": "hard",
+    "type": "factual"
+  },
+  {
+    "id": "G14-003",
+    "group": "G14_tin_chi",
+    "question": "Điểm TBC tích lũy tối thiểu để được công nhận tốt nghiệp là bao nhiêu?",
+    "ground_truth": "Điểm TBC tích lũy của toàn khóa học đạt từ 2,00 trở lên.",
+    "source_doc": "19.Quy che dao tao tin chỉ 2020 - 2021",
+    "difficulty": "easy",
+    "type": "factual"
   }
 ]

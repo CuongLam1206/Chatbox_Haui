@@ -80,7 +80,7 @@ class LegalDocumentChunker:
         
         # Nếu không tìm thấy các marker đặc biệt, thử tìm bất kỳ tiêu đề Markdown nào (## Tiêu đề)
         if not matches:
-            markdown_header_pattern = r'^##\s+.*$'
+            markdown_header_pattern = r'^##\s+(.*)$'
             matches = list(re.finditer(markdown_header_pattern, text, re.MULTILINE))
         
         # Nếu vẫn không tìm thấy, thử tìm section headings: ## 1. TIÊU ĐỀ
@@ -96,11 +96,12 @@ class LegalDocumentChunker:
         print(f"  [+] Found {len(matches)} articles/appendices:")
         
         # Show Phụ lục matches (priority)
-        phu_luc_matches = [m for m in matches if 'phụ lục' in m.group(0).lower()]
+        phu_luc_matches = [m for m in matches if m.group(0) and 'phụ lục' in m.group(0).lower()]
         if phu_luc_matches:
             print(f"    [P] Phụ lục found ({len(phu_luc_matches)}):")
             for m in phu_luc_matches:
-                print(f"      - Phụ lục {m.group(1)}")
+                val = m.group(1) if m.lastindex else m.group(0)
+                print(f"      - Phụ lục {val}")
         
         # Show first 10 Điều (ASCII only numbers)
         dieu_matches = [m for m in matches if 'điều' in m.group(0).lower()][:10]
@@ -128,7 +129,9 @@ class LegalDocumentChunker:
         
         # === BƯỚC 3: Chunk từng Điều + ghi metadata Chương ===
         for i, match in enumerate(matches):
-            article_num = match.group(1)
+            article_num = match.group(1) if match.lastindex else getattr(match, "group", lambda x: "1")(0)
+            if not article_num: # fallback if empty capture group
+                article_num = str(i + 1)
             article_start = match.start()
             
             # Find where this article ends (start of next article or end of text)

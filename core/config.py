@@ -67,6 +67,17 @@ RELEVANCE_THRESHOLD = 0.2
 MAX_RETRIES = 1  # Reduced retries for faster response
 ENABLE_HALLUCINATION_CHECK = False  # Disabled to save time and tokens
 
+# Retrieval Enhancement Flags
+# ENABLE_HYDE: Sinh hypothetical document để cải thiện embedding match
+#   True  → +5-8s latency, +CR/FF accuracy (khuyến nghị cho eval/research)
+#   False → nhanh hơn, dùng hybrid retriever tiêu chuẩn (khuyến nghị khi cần tốc độ)
+ENABLE_HYDE = os.getenv("ENABLE_HYDE", "true").lower() == "true"
+
+# ENABLE_DECOMPOSER: Tách câu hỏi phức thành sub-queries
+#   True  → +3-5s latency, xử lý tốt cross-domain queries
+#   False → nhanh hơn, chỉ dùng query gốc
+ENABLE_DECOMPOSER = os.getenv("ENABLE_DECOMPOSER", "true").lower() == "true"
+
 # Facebook Configuration
 FB_PAGE_ACCESS_TOKEN = os.getenv("FB_PAGE_ACCESS_TOKEN")
 FB_VERIFY_TOKEN = os.getenv("FB_VERIFY_TOKEN")

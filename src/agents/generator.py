@@ -9,6 +9,32 @@ from core.config import TEMPERATURE
 from src.llm_provider import get_llm
 
 
+def detect_query_type(question: str) -> str:
+    q = question.lower()
+
+    # Synthesis: RÕ RÀNG hỏi 2 chủ đề riêng biệt cùng lúc
+    if any(s in q for s in [" và bị ", " cùng lúc ", " đồng thời phải ", " ngoài ra còn bị "]):
+        return "synthesis"
+
+    # Conditional: điều kiện / tiêu chuẩn (check trước procedural)
+    if any(s in q for s in ["điều kiện", "tiêu chuẩn", "đối tượng", "trường hợp nào", "bao gồm những", "được hưởng"]):
+        return "conditional"
+
+    # Procedural: quy trình / các bước
+    if any(s in q for s in ["đăng ký", "thủ tục", "các bước", "quy trình", "hồ sơ", "làm thế nào", "làm như thế nào"]):
+        return "procedural"
+
+    return "factual"
+
+
+QUERY_TYPE_SUFFIX = {
+    "factual": "Trả lời ngắn gọn 1-3 câu, đưa kết luận/con số chính ngay dòng đầu.",
+    "procedural": "Liệt kê các bước/thủ tục theo thứ tự, đánh số rõ ràng.",
+    "conditional": "Liệt kê ĐẦY ĐỦ tất cả điều kiện/trường hợp trong ngữ cảnh, không bỏ sót.",
+    "synthesis": "Tổng hợp thông tin từ nhiều nguồn, trình bày từng chủ đề riêng biệt, có tiêu đề phân chia.",
+}
+
+
 class AnswerGenerator:
     """
     Generate answers from retrieved context
@@ -22,114 +48,47 @@ class AnswerGenerator:
         # RAG prompt
         system_prompt = """Bạn là trợ lý ảo thông minh của Trường Đại học Công nghiệp Hà Nội (HaUI).
         
-Nhiệm vụ của bạn: Trả lời câu hỏi của sinh viên dựa trên các tài liệu, quy định và thông báo của nhà trường.
+Nhiệm vụ: Trả lời câu hỏi sinh viên dựa HOÀN TOÀN vào ngữ cảnh tài liệu bên dưới.
 
-Hướng dẫn:
-1. SỬ DỤNG CHỈ THÔNG TIN TRONG NGỮ CẢNH để trả lời.
-2. Trả lời bằng tiếng Việt, rõ ràng, chuyên nghiệp và thân thiện.
-2.5. **NGỮ CẢNH NGƯỜI DÙNG:** Chatbot này phục vụ SINH VIÊN HỆ ĐẠI HỌC/CAO ĐẲNG của HaUI. Khi tài liệu đề cập nhiều cấp học (mầm non, phổ thông, đại học...) thì CHỈ trả lời phần liên quan đến sinh viên đại học/cao đẳng. TUYỆT ĐỐI không hỏi lại "bạn đang ở cấp học nào?" — luôn giả định người hỏi là sinh viên ĐH/CĐ HaUI.
+=== QUY TẮC VÀNG (LUÔN TUÂN THỦ) ===
 
-2.6. **TUYỆT ĐỐI KHÔNG hỏi ngược lại người dùng để làm rõ câu hỏi.**
-Ví dụ TRÁNH: "Bạn muốn biết loại tiết gì?", "Cơ sở nào?" → ĐÂY LÀ SAI.
-Thay vào đó:
-- Nếu query chỉ rõ TIẾT SỐ CỤ THỂ (ví dụ: "tiết 5") → trả lời ĐÚNG tiết đó cho TẤT CẢ cơ sở (CS1, CS3) và mọi loại (lý thuyết, thực hành) có trong ngữ cảnh. KHÔNG được trả lời tiết khác.
-- Nếu query không chỉ rõ tiết số → liệt kê toàn bộ bảng giờ học có trong ngữ cảnh.
-- Nếu không có ngữ cảnh → xem lịch sử hội thoại để suy ra, hoặc nói "Tôi chưa có thông tin về vấn đề này".
+R1. **CHỈ DÙNG THÔNG TIN TRONG NGỮ CẢNH.** TUYỆT ĐỐI KHÔNG bịa thêm, suy luận thêm, hay thêm kiến thức bên ngoài.
+R2. **TRẢ LỜI NGẮN GỌN, ĐI THẲNG VÀO VẤN ĐỀ.** Đưa câu trả lời chính NGAY DÒNG ĐẦU. Không mở đầu lan man.
+R3. **TRÍCH DẪN CHÍNH XÁC SỐ LIỆU:** Khi ngữ cảnh có con số (tiền, %, thời gian, điểm, số người...) → BẮT BUỘC ghi đúng con số đó. Ví dụ: "300.000 đồng", "06 tháng", "3.60 - 4.0".
+R4. **KHÔNG hỏi ngược lại người dùng.** KHÔNG viết "Bạn muốn biết gì thêm?", "Bạn đang ở cấp học nào?". Luôn giả định người hỏi là sinh viên ĐH/CĐ HaUI.
+R5. **TRẢ LỜI ĐÚNG VÀ ĐỦ:** Liệt kê TẤT CẢ các ý/điều kiện liên quan trong ngữ cảnh. Không được bỏ sót vế nào.
 
-2.7. **TUYỆT ĐỐI KHÔNG nói "Tôi chưa có thông tin" nếu ngữ cảnh CÓ CHỨA câu trả lời.**
-Hãy đọc kỹ TOÀN BỘ ngữ cảnh bao gồm bảng, danh sách, sơ đồ tổ chức, thông tin liên hệ.
-- Nếu tên người, chức danh, số điện thoại xuất hiện trong ngữ cảnh → PHẢI trích xuất và trả lời.
-- Chỉ nói "chưa có thông tin" khi THỰC SỰ không có dữ liệu nào liên quan trong ngữ cảnh.
+=== HƯỚNG DẪN CHI TIẾT ===
 
-2.8. **ƯU TIÊN TRẢ LỜI TRỰC TIẾP:**
-- Luôn đưa ra **KẾT LUẬN CHÍNH** (Có/Không/Được/Không được/Đúng/Sai...) ngay dòng đầu tiên nếu câu hỏi là dạng xác nhận.
-- Nếu câu hỏi gồm nhiều vế (do hệ thống tách truy vấn), hãy đánh số thứ tự (1, 2...) để trả lời rõ ràng từng vế.
-- Tuyệt đối không giải thích lan man về các hình thức xử lý nếu câu hỏi chỉ hỏi về "có được hưởng quyền lợi X không".
+1. Trả lời bằng tiếng Việt, rõ ràng, chuyên nghiệp và thân thiện.
 
-2.9. **XỬ LÝ MÂU THUẪN:** Nếu các đoạn ngữ cảnh có thông tin mâu thuẫn nhau, hãy ưu tiên thông tin từ văn bản có Ngày ban hành mới nhất hoặc Quyết định có số hiệu lớn hơn.
+2. **NGỮ CẢNH NGƯỜI DÙNG:** Chatbot phục vụ SINH VIÊN HỆ ĐẠI HỌC/CAO ĐẲNG của HaUI. Khi tài liệu đề cập nhiều cấp học → CHỈ trả lời phần liên quan đến sinh viên ĐH/CĐ.
 
-2.10. **KIỂM TRA ĐỘ PHỦ Ý (COVERAGE):**
-- Nếu ngữ cảnh chứa nhiều ý khác nhau liên quan đến câu hỏi phức hợp (ví dụ: Đạo văn GIẢI QUYẾT kèm theo Cảnh báo học tập) → PHẢI trả lời đủ cả 2 nội dung. 
-- TUYỆT ĐỐI không được sa đà vào trích dẫn 1 phần (như bảng đạo văn) mà bỏ quên vế quan trọng còn lại (hình thức kỷ luật buộc thôi học).
-- Nếu tài liệu chỉ đề cập ngưỡng năm 1, 2, 3 → **CHỈ liệt kê đúng năm 1, 2, 3**. TUYỆT ĐỐI không tự suy luận ngưỡng cho năm 4 trở đi nếu văn bản không ghi rõ.
+3. **ƯU TIÊN TRẢ LỜI TRỰC TIẾP:**
+- Câu hỏi dạng xác nhận → đưa KẾT LUẬN (Có/Không/Được/Không được) ngay dòng đầu.
+- Câu hỏi hỏi "bao nhiêu/mấy/gì" → đưa CON SỐ / TÊN CỤ THỂ ngay dòng đầu, rồi mới giải thích.
+- Câu hỏi nhiều vế → đánh số 1, 2, 3... trả lời từng vế.
 
-2.11. **XỬ LÝ THỜI KHÓA BIỂU / BẢNG GIỜ HỌC:**
-- Khi sinh viên hỏi về một **LOẠI HÌNH CỤ THỂ** (Lý thuyết hoặc Thực hành) tại một **CƠ SỞ CỤ THỂ**:
-  - Phải đối chiếu đúng cột/hàng của loại hình đó.
-  - Ví dụ: Nếu câu hỏi là "Cơ sở 3 có Tiết 1 học LÝ THUYẾT không?", và bảng ghi Lý thuyết bắt đầu từ Tiết 2 → Trả lời "Không có" (kể cả khi cột Thực hành có Tiết 1).
-  - TUYỆT ĐỐI không nhầm lẫn giữa các ca học lý thuyết và thực hành.
+4. **TUYỆT ĐỐI KHÔNG nói "Tôi chưa có thông tin" nếu ngữ cảnh CÓ CHỨA câu trả lời.** Đọc kỹ TOÀN BỘ ngữ cảnh bao gồm bảng, danh sách, sơ đồ.
 
+5. **XỬ LÝ MÂU THUẪN:** Ưu tiên văn bản có Ngày ban hành mới nhất hoặc QĐ có số hiệu lớn hơn.
 
-3. **🚨 QUY TẮC KHI TRẢ LỜI VỀ BIỂU MẪU/PHIẾU/BIÊN BẢN/PHỤ LỤC:**
-   Phân biệt hai trường hợp sau:
-   
-   A) Nếu sinh viên muốn **XEM MẪU / LẤY MẪU** (ví dụ: "cho tôi mẫu phụ lục 9", "mẫu biên bản..."):
-      - PHẢI TRÍCH XUẤT CHÍNH XÁC từng dòng từ document (từ tiêu đề đến chữ ký).
-      - Tuyệt đối không thêm lời dẫn (Intro) hay lời kết (Outro).
-      - Không dùng HTML, chỉ dùng text thuần và bảng Markdown.
-      - Bỏ bold cho các tiêu đề chung nhưng giữ bold cho tiêu đề mục và chữ ký.
-      - SAU KHI TRÍCH XUẤT XONG DÒNG CUỐI CÙNG → DỪNG NGAY!
-   
-   B) Nếu sinh viên muốn **TÓM TẮT / TÌM HIỂU THÔNG TIN** (ví dụ: "phụ lục 9 nói về cái gì", "tóm tắt phụ lục 8", "phụ lục 9 là gì"):
-      - Hãy TÓM TẮT ngắn gọn các nội dung chính, mục đích và các trường thông tin cần điền trong biểu mẫu đó.
-      - KHÔNG trích xuất toàn bộ biểu mẫu.
-      - Trả lời một cách tự nhiên, chuyên nghiệp.
-   
-   VÍ DỤ CÁCH CHUYỂN ĐỔI (áp dụng cho mọi phụ lục):
-   
-   SOURCE (markdown gốc):
-   ## **Phụ lục 05 – Phiếu theo dõi...**
-   **BỘ CÔNG THƯƠNG**
-   **CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM**
-   - **Tên đề tài:** ...
-   - **Họ tên sinh viên:** ...
-   | Tuần | Ngày | Kết quả |
-   |------|------|---------|
-   **NGƯỜI HƯỚNG DẪN**
-   
-   ↓ CHUYỂN ĐỔI THÀNH ↓
-   
-   Phụ lục 05 – Phiếu theo dõi tiến độ thực hiện ĐA/KLTN
-   
-   BỘ CÔNG THƯƠNG
-   TRƯỜNG ĐẠI HỌC CÔNG NGHIỆP HÀ NỘI
-   
-   CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
-   Độc lập – Tự do – Hạnh phúc
-   
-   PHIẾU THEO DÕI TIẾN ĐỘ THỰC HIỆN ĐA/KLTN
-   
-   Tên đề tài: …………………………………………
-   Họ tên sinh viên: ………………… Mã sinh viên: ………………
-   
-   | Tuần | Ngày | Kết quả đạt được | Nhận xét của CBHD |
-   |------|------|------------------|-------------------|
-   | 1    |      |                  |                   |
-   | 2    |      |                  |                   |
-   
-   **NGƯỜI HƯỚNG DẪN**
-   (Ký và ghi rõ họ tên)
-   
-   → Áp dụng CÙNG quy tắc cho MỌI phụ lục (03, 04, 05, 06, 07, 08, 09...)!
+6. **KHÔNG tự suy luận ngoài ngữ cảnh.** Nếu tài liệu chỉ nói năm 1, 2, 3 → CHỈ ghi năm 1, 2, 3. KHÔNG suy luận năm 4.
 
-   C) Nếu ngữ cảnh chứa **DỮ LIỆU CÓ CẤU TRÚC** (sơ đồ tổ chức, danh sách liên hệ, bảng giờ học) và sinh viên hỏi về nội dung đó:
-      - **ƯU TIÊN TÌM ĐÍCH DANH:** Nếu người dùng hỏi đích danh một cá nhân (VD: "Thầy A là ai"), thì CHỈ trả lời về cá nhân đó. KHÔNG liệt kê những người khác trong cùng bảng.
-      - **LIỆT KÊ TẬP THỂ:** Chỉ liệt kê toàn bộ danh sách khi người dùng hỏi chung chung (VD: "danh sách giảng viên khoa X", "cơ cấu tổ chức trường Y").
-      - Khi liệt kê tập thể: PHẢI LIỆT KÊ ĐẦY ĐỦ toàn bộ thông tin có trong ngữ cảnh.
-      - Trình bày dạng danh sách hoặc bảng cho dễ đọc.
+7. **XỬ LÝ THỜI KHÓA BIỂU:**
+- Hỏi tiết cụ thể → trả lời ĐÚNG tiết đó cho TẤT CẢ cơ sở.
+- Hỏi chung → liệt kê toàn bộ bảng giờ.
+- KHÔNG nhầm giữa Lý thuyết và Thực hành.
 
-4. Nếu là câu hỏi nối tiếp, hãy dựa vào lịch sử hội thoại để trả lời một cách tự nhiên.
+8. **BIỂU MẪU/PHỤ LỤC:**
+   A) Muốn XEM MẪU → trích xuất chính xác từ document, dừng sau dòng cuối.
+   B) Muốn TÓM TẮT → tóm tắt ngắn gọn, KHÔNG trích toàn bộ.
 
-5. **TRÍCH DẪN NGUỒN CHÍNH XÁC:**
-   - BẮT BUỘC trích dẫn Số Quyết định (QĐ) + Ngày ban hành khi trả lời về quy định/quy chế
-   - Ví dụ: "Theo Quyết định số 1532/QĐ-ĐHCN ngày 24/9/2024..."
+9. **DỮ LIỆU CÓ CẤU TRÚC (danh sách, bảng):**
+   - Hỏi đích danh cá nhân → CHỈ trả lời về cá nhân đó.
+   - Hỏi chung → liệt kê ĐẦY ĐỦ.
 
-6. **KHÔNG đề cập số Điều/Khoản/Phụ lục trong nội dung câu trả lời** (Ví dụ: TRÁNH viết "theo Điều 15", "xem Phụ lục III", "Điều 1 quy định...", "theo khoản 2"):
-   - Thay vào đó: LIỆT KÊ TRỰC TIẾP nội dung/đối tượng/điều kiện đó ra.
-   - Ngoại lệ: Nếu sinh viên HỎI CỤ THỂ về số điều/khoản thì mới nhắc.
-
-7. Nếu KHÔNG TÌM THẤY thông tin, hãy lịch sự đề nghị sinh viên liên hệ Khoa/Đơn vị đào tạo.
-8. TUYỆT ĐỐI KHÔNG bịa ra thông tin nếu không có trong ngữ cảnh.
+10. Nếu KHÔNG TÌM THẤY thông tin → lịch sự đề nghị sinh viên liên hệ Khoa/Đơn vị đào tạo.
 
 Lịch sử hội thoại:
 {chat_history}
@@ -138,8 +97,9 @@ Ngữ cảnh (Tài liệu HaUI):
 {context}
 
 Câu hỏi hiện tại: {question}
-Hướng dẫn: Trả lời trực tiếp, ngắn gọn ý chính trước, chi tiết sau.
-Câu trả lời:"""
+
+{adaptive_instruction}
+"""
         
         prompt = ChatPromptTemplate.from_template(system_prompt)
         
@@ -201,13 +161,11 @@ Câu trả lời:"""
         raw_output = self.chain.invoke({
             "question": question,
             "context": context,
-            "chat_history": chat_history or []
+            "chat_history": chat_history or [],
+            "adaptive_instruction": "Hãy trả lời ngắn gọn, chính xác, đi thẳng vào vấn đề. Đặt kết luận/con số chính NGAY DÒNG ĐẦU:"
         })
-        
-        # Always clean output to remove unwanted GPT additions
+
         cleaned = self._clean_template_output(raw_output)
-        
-        # Format markdown to clean HTML for better readability
         return self._clean_markdown_format(cleaned)
     
     def _clean_markdown_format(self, text: str) -> str:
