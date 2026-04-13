@@ -116,7 +116,8 @@ def estimate_query_complexity(question: str) -> str:
     # Signals cho câu hỏi đơn
     simple_signals = [
         "có không", "có được không", "bao nhiêu", "ở đâu",
-        "khi nào", "là gì", "bằng bao nhiêu", "mấy"
+        "khi nào", "là gì", "bằng bao nhiêu", "mấy",
+        "là ai", "la ai", "liên hệ", "số điện thoại", "sđt"
     ]
 
     complex_score = sum(1 for s in complex_signals if s in q)

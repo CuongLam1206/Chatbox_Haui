@@ -101,7 +101,7 @@ class AgenticRAG:
         
         # Adaptive k: adjust retrieval depth by query complexity
         complexity = estimate_query_complexity(question)
-        k_map = {"simple": 4, "medium": 7, "complex": 10}
+        k_map = {"simple": 8, "medium": 10, "complex": 12}
         k = k_map[complexity]
         print(f"[Retrieval] complexity={complexity} → k={k} | HyDE={'on' if ENABLE_HYDE else 'off'} | Decomp={'on' if ENABLE_DECOMPOSER else 'off'}")
         
@@ -277,6 +277,66 @@ class AgenticRAG:
                 {"$in": ["8"]},
                 "Online-learning query"
             )
+        # ────────────────────────────────────────────────────────────────────────
+
+        # ── Person name lookup injection ─────────────────────────────────────────
+        # Khi query là "X là ai" / "X là gì" → tìm trực tiếp tên bằng BM25 keyword
+        import re as _re2
+        person_match = _re2.match(
+            r'^(?:thầy|cô|ts\.|pgs\.|gs\.|ths\.)?\s*(.+?)\s+là\s+(?:ai|gì)\s*\??$',
+            _q.strip(), _re2.IGNORECASE
+        )
+        if not person_match:
+            # Also match: "X là ai" without prefix
+            person_match = _re2.match(
+                r'^(.+?)\s+là\s+(?:ai|gì)\s*\??$',
+                _q.strip(), _re2.IGNORECASE
+            )
+        
+        if person_match:
+            person_name = person_match.group(1).strip()
+            # Remove common prefixes
+            for prefix in ["thầy ", "cô ", "ts. ", "pgs. ", "gs. ", "ths. "]:
+                if person_name.lower().startswith(prefix):
+                    person_name = person_name[len(prefix):].strip()
+                    break
+            
+            if len(person_name) >= 3:  # Tên ít nhất 3 ký tự
+                print(f"[Retrieval] Person lookup detected: '{person_name}'")
+                try:
+                    # BM25 keyword search for exact person name
+                    if self.vector_store.bm25_retriever:
+                        self.vector_store.bm25_retriever.k = 6
+                        bm25_results = self.vector_store.bm25_retriever.invoke(person_name)
+                        # Filter to only docs containing the person's name
+                        name_docs = [d for d in bm25_results 
+                                     if person_name.lower() in d.page_content.lower()]
+                        if name_docs:
+                            existing_hashes = {hash(d.page_content) for d in documents}
+                            new_docs = [d for d in name_docs if hash(d.page_content) not in existing_hashes]
+                            if new_docs:
+                                print(f"[Retrieval] Person injection: found {len(new_docs)} new chunks containing '{person_name}'")
+                                documents = new_docs + documents
+                            else:
+                                print(f"[Retrieval] Person injection: name already in existing results")
+                        else:
+                            print(f"[Retrieval] Person injection: BM25 found no match for '{person_name}'")
+                    
+                    # Also try vector search with the name directly
+                    name_vector_results = self.vector_store.vectorstore.similarity_search(
+                        f"{person_name} giảng viên điều phối chương trình cố vấn học tập SEEE",
+                        k=4
+                    )
+                    name_vector_docs = [d for d in name_vector_results 
+                                        if person_name.lower() in d.page_content.lower()]
+                    if name_vector_docs:
+                        existing_hashes = {hash(d.page_content) for d in documents}
+                        new_docs = [d for d in name_vector_docs if hash(d.page_content) not in existing_hashes]
+                        if new_docs:
+                            print(f"[Retrieval] Person vector injection: added {len(new_docs)} chunks")
+                            documents = new_docs + documents
+                except Exception as _pe:
+                    print(f"[Retrieval] Person injection failed: {_pe}")
         # ────────────────────────────────────────────────────────────────────────
 
         # ── Location query boost ─────────────────────────────────────────────────
