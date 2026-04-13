@@ -166,8 +166,6 @@ Số điện thoại: 0918793004
 
 ## Bảng tổng hợp toàn bộ nhân sự theo ngành — Trường Điện - Điện tử (SEEE)
 
-Bảng dưới đây liệt kê tất cả Trưởng chương trình, Điều phối chương trình và Cố vấn học tập của từng ngành thuộc Trường Điện - Điện tử (SEEE), đơn vị trực thuộc Đại học Công nghiệp Hà Nội.
-
 | Ngành | Họ tên | Chức vụ | SĐT |
 |---|---|---|---|
 | CNKT Máy tính | TS. Vũ Trung Kiên | Trưởng chương trình | 0989646848 |
@@ -212,66 +210,73 @@ Bảng dưới đây liệt kê tất cả Trưởng chương trình, Điều ph
 | Vi mạch bán dẫn (dự kiến) | TS. Phạm Thanh Sơn | Điều phối chương trình | 0986973589 |
 | Vi mạch bán dẫn (dự kiến) | Thầy Nguyễn Vũ Thắng | Cố vấn học tập | 0986350910 |
 
-## Chi tiết nhân sự từng ngành — Trường SEEE
+## Slide 10: Nhân sự ngành CNKT Máy tính - Trường Điện - Điện tử (SEEE)
+Ngành CNKT Máy tính thuộc Trường Điện - Điện tử (SEEE) có các nhân sự sau:
+- TS. Vũ Trung Kiên là Trưởng chương trình ngành CNKT Máy tính, số điện thoại 0989646848.
+- TS. Đinh Thị Kim Phương là Điều phối chương trình ngành CNKT Máy tính, số điện thoại 0388378898.
+- Cô Phạm Thị Quỳnh Trang là Điều phối chương trình ngành CNKT Máy tính, số điện thoại 0987987118.
+- Thầy Nguyễn Vũ Thắng là Cố vấn học tập ngành CNKT Máy tính, số điện thoại 0986350910.
 
-### Ngành CNKT Máy tính
-- Trưởng chương trình: TS. Vũ Trung Kiên, SĐT: 0989646848
-- Điều phối chương trình: TS. Đinh Thị Kim Phương, SĐT: 0388378898
-- Điều phối chương trình: Cô Phạm Thị Quỳnh Trang, SĐT: 0987987118
-- Cố vấn học tập: Thầy Nguyễn Vũ Thắng, SĐT: 0986350910
+## Slide 11: Nhân sự ngành CNKT Nhiệt - Trường Điện - Điện tử (SEEE)
+Ngành CNKT Nhiệt thuộc Trường Điện - Điện tử (SEEE) có các nhân sự sau:
+- TS. Nguyễn Vũ Linh là Trưởng chương trình ngành CNKT Nhiệt, số điện thoại 0905266696.
+- Thầy Nguyễn Xuân Bình là Điều phối chương trình ngành CNKT Nhiệt, số điện thoại 0912869205.
+- Cô Nguyễn Thị Việt Linh là Điều phối chương trình ngành CNKT Nhiệt, số điện thoại 0976830999.
+- Thầy Nguyễn Vũ Thắng là Cố vấn học tập ngành CNKT Nhiệt, số điện thoại 0986350910.
 
-### Ngành CNKT Nhiệt
-- Trưởng chương trình: TS. Nguyễn Vũ Linh, SĐT: 0905266696
-- Điều phối chương trình: Thầy Nguyễn Xuân Bình, SĐT: 0912869205
-- Điều phối chương trình: Cô Nguyễn Thị Việt Linh, SĐT: 0976830999
-- Cố vấn học tập: Thầy Nguyễn Vũ Thắng, SĐT: 0986350910
+## Slide 12: Nhân sự ngành Năng lượng tái tạo - Trường Điện - Điện tử (SEEE)
+Ngành Năng lượng tái tạo thuộc Trường Điện - Điện tử (SEEE) có các nhân sự sau:
+- TS. Ninh Văn Quân là Trưởng chương trình ngành Năng lượng tái tạo, số điện thoại 0912485051.
+- TS. Lê Anh Tuấn là Điều phối chương trình ngành Năng lượng tái tạo, số điện thoại 0985179699.
+- TS. Nguyễn Công Cường là Điều phối chương trình ngành Năng lượng tái tạo, số điện thoại 0934631694.
+- Thầy Nguyễn Vũ Thắng là Cố vấn học tập ngành Năng lượng tái tạo, số điện thoại 0986350910.
 
-### Ngành Năng lượng tái tạo
-- Trưởng chương trình: TS. Ninh Văn Quân, SĐT: 0912485051
-- Điều phối chương trình: TS. Lê Anh Tuấn, SĐT: 0985179699
-- Điều phối chương trình: TS. Nguyễn Công Cường, SĐT: 0934631694
-- Cố vấn học tập: Thầy Nguyễn Vũ Thắng, SĐT: 0986350910
+## Slide 13: Nhân sự ngành CNKT Điện, Điện tử - Trường Điện - Điện tử (SEEE)
+Ngành CNKT Điện, Điện tử thuộc Trường Điện - Điện tử (SEEE) có các nhân sự sau:
+- TS. Nguyễn Mạnh Quân là Trưởng chương trình ngành CNKT Điện, Điện tử, số điện thoại 0936428889.
+- TS. Nguyễn Văn Hùng là Điều phối chương trình ngành CNKT Điện, Điện tử, số điện thoại 0986763077.
+- Cô Hà Thị Hoài Thu là Điều phối chương trình ngành CNKT Điện, Điện tử, số điện thoại 0983671807.
+- TS. Trần Thùy Vân là Điều phối chương trình ngành CNKT Điện, Điện tử, số điện thoại 0987871888.
+- Cô Trần Thị Hồng Thắm là Điều phối chương trình ngành CNKT Điện, Điện tử, số điện thoại 0904979590.
+- Thầy Vũ Trường Sơn là Cố vấn học tập ngành CNKT Điện, Điện tử, số điện thoại 09865761272.
 
-### Ngành CNKT Điện, Điện tử
-- Trưởng chương trình: TS. Nguyễn Mạnh Quân, SĐT: 0936428889
-- Điều phối chương trình: TS. Nguyễn Văn Hùng, SĐT: 0986763077
-- Điều phối chương trình: Cô Hà Thị Hoài Thu, SĐT: 0983671807
-- Điều phối chương trình: TS. Trần Thùy Vân, SĐT: 0987871888
-- Điều phối chương trình: Cô Trần Thị Hồng Thắm, SĐT: 0904979590
-- Cố vấn học tập: Thầy Vũ Trường Sơn, SĐT: 09865761272
+## Slide 14: Nhân sự ngành CNKT Điện tử - Viễn thông - Trường Điện - Điện tử (SEEE)
+Ngành CNKT Điện tử - Viễn thông thuộc Trường Điện - Điện tử (SEEE) có các nhân sự sau:
+- TS. Bồ Quốc Bảo là Trưởng chương trình ngành CNKT Điện tử - Viễn thông, số điện thoại 0936779989.
+- TS. Trần Đình Hùng là Điều phối chương trình ngành CNKT Điện tử - Viễn thông, số điện thoại 0987891228.
+- Cô Phan Thị Thu Hằng là Điều phối chương trình ngành CNKT Điện tử - Viễn thông, số điện thoại 0936278809.
+- TS. Trần Văn Tùng là Điều phối chương trình ngành CNKT Điện tử - Viễn thông, số điện thoại 0912842071.
+- Cô Bùi Thị Thu Hiền là Điều phối chương trình ngành CNKT Điện tử - Viễn thông, số điện thoại 0982839009.
+- Cô Nguyễn Thị Uyên là Cố vấn học tập ngành CNKT Điện tử - Viễn thông, số điện thoại 0973357113.
 
-### Ngành CNKT Điện tử - Viễn thông
-- Trưởng chương trình: TS. Bồ Quốc Bảo, SĐT: 0936779989
-- Điều phối chương trình: TS. Trần Đình Hùng, SĐT: 0987891228
-- Điều phối chương trình: Cô Phan Thị Thu Hằng, SĐT: 0936278809
-- Điều phối chương trình: TS. Trần Văn Tùng, SĐT: 0912842071
-- Điều phối chương trình: Cô Bùi Thị Thu Hiền, SĐT: 0982839009
-- Cố vấn học tập: Cô Nguyễn Thị Uyên, SĐT: 0973357113
+## Slide 15: Nhân sự ngành CNKT Điện tử y sinh - Trường Điện - Điện tử (SEEE)
+Ngành CNKT Điện tử y sinh thuộc Trường Điện - Điện tử (SEEE) có các nhân sự sau:
+- TS. Nguyễn Đắc Hải là Trưởng chương trình ngành CNKT Điện tử y sinh, số điện thoại 0979456234.
+- Cô Nguyễn Thị Thu Hà là Điều phối chương trình ngành CNKT Điện tử y sinh, số điện thoại 0987909424.
+- Thầy Nguyễn Tuấn Anh là Điều phối chương trình ngành CNKT Điện tử y sinh, số điện thoại 0916083605.
+- Cô Nguyễn Thị Uyên là Cố vấn học tập ngành CNKT Điện tử y sinh, số điện thoại 0973357113.
 
-### Ngành CNKT Điện tử y sinh
-- Trưởng chương trình: TS. Nguyễn Đắc Hải, SĐT: 0979456234
-- Điều phối chương trình: Cô Nguyễn Thị Thu Hà, SĐT: 0987909424
-- Điều phối chương trình: Thầy Nguyễn Tuấn Anh, SĐT: 0916083605
-- Cố vấn học tập: Cô Nguyễn Thị Uyên, SĐT: 0973357113
+## Slide 16: Nhân sự ngành CNKT Điều khiển và Tự động hóa - Trường Điện - Điện tử (SEEE)
+Ngành CNKT Điều khiển và Tự động hóa thuộc Trường Điện - Điện tử (SEEE) có các nhân sự sau:
+- TS. Bùi Văn Huy là Trưởng chương trình ngành CNKT Điều khiển và Tự động hóa, số điện thoại 0977642225.
+- TS. Hà Thị Kim Duyên là Điều phối chương trình ngành CNKT Điều khiển và Tự động hóa, số điện thoại 0988901420.
+- Thầy Nguyễn Đức Quang là Điều phối chương trình ngành CNKT Điều khiển và Tự động hóa, số điện thoại 0904412562.
+- Thầy Trần Đức Hiệp là Điều phối chương trình ngành CNKT Điều khiển và Tự động hóa, số điện thoại 0902126579.
+- Thầy Trần Quyết Thắng là Cố vấn học tập ngành CNKT Điều khiển và Tự động hóa, số điện thoại 0913081697.
 
-### Ngành CNKT Điều khiển và Tự động hóa
-- Trưởng chương trình: TS. Bùi Văn Huy, SĐT: 0977642225
-- Điều phối chương trình: TS. Hà Thị Kim Duyên, SĐT: 0988901420
-- Điều phối chương trình: Thầy Nguyễn Đức Quang, SĐT: 0904412562
-- Điều phối chương trình: Thầy Trần Đức Hiệp, SĐT: 0902126579
-- Cố vấn học tập: Thầy Trần Quyết Thắng, SĐT: 0913081697
+## Slide 17: Nhân sự ngành Kỹ thuật sản xuất thông minh - Trường Điện - Điện tử (SEEE)
+Ngành Kỹ thuật sản xuất thông minh thuộc Trường Điện - Điện tử (SEEE) có các nhân sự sau:
+- TS. Tống Thị Lý là Trưởng chương trình ngành Kỹ thuật sản xuất thông minh, số điện thoại 0965801688.
+- Cô Vũ Thị Yến là Điều phối chương trình ngành Kỹ thuật sản xuất thông minh, số điện thoại 0986051052.
+- Thầy Hà Văn Phương là Điều phối chương trình ngành Kỹ thuật sản xuất thông minh, số điện thoại 0916945669.
+- Thầy Trần Quyết Thắng là Cố vấn học tập ngành Kỹ thuật sản xuất thông minh, số điện thoại 0913081697.
 
-### Ngành Kỹ thuật sản xuất thông minh
-- Trưởng chương trình: TS. Tống Thị Lý, SĐT: 0965801688
-- Điều phối chương trình: Cô Vũ Thị Yến, SĐT: 0986051052
-- Điều phối chương trình: Thầy Hà Văn Phương, SĐT: 0916945669
-- Cố vấn học tập: Thầy Trần Quyết Thắng, SĐT: 0913081697
-
-### Ngành Vi mạch bán dẫn (dự kiến)
-- Trưởng chương trình: TS. Phạm Xuân Thành, SĐT: 0973963903
-- Điều phối chương trình: TS. Đinh Thị Kim Phương, SĐT: 0388378898
-- Điều phối chương trình: TS. Phạm Thanh Sơn, SĐT: 0986973589
-- Cố vấn học tập: Thầy Nguyễn Vũ Thắng, SĐT: 0986350910
+## Slide 18: Nhân sự ngành Vi mạch bán dẫn (dự kiến) - Trường Điện - Điện tử (SEEE)
+Ngành Vi mạch bán dẫn (dự kiến) thuộc Trường Điện - Điện tử (SEEE) có các nhân sự sau:
+- TS. Phạm Xuân Thành là Trưởng chương trình ngành Vi mạch bán dẫn, số điện thoại 0973963903.
+- TS. Đinh Thị Kim Phương là Điều phối chương trình ngành Vi mạch bán dẫn, số điện thoại 0388378898.
+- TS. Phạm Thanh Sơn là Điều phối chương trình ngành Vi mạch bán dẫn, số điện thoại 0986973589.
+- Thầy Nguyễn Vũ Thắng là Cố vấn học tập ngành Vi mạch bán dẫn, số điện thoại 0986350910.
 
 
 ## Slide 19: 
