@@ -24,13 +24,15 @@ def detect_query_type(question: str) -> str:
     if any(s in q for s in ["đăng ký", "thủ tục", "các bước", "quy trình", "hồ sơ", "làm thế nào", "làm như thế nào"]):
         return "procedural"
 
+    # Factual: câu hỏi cần câu trả lời ngắn gọn
+    # (mặc định nếu không thuộc các loại trên)
     return "factual"
 
 
 QUERY_TYPE_SUFFIX = {
-    "factual": "Trả lời ngắn gọn 1-3 câu, đưa kết luận/con số chính ngay dòng đầu.",
-    "procedural": "Liệt kê các bước/thủ tục theo thứ tự, đánh số rõ ràng.",
-    "conditional": "Liệt kê ĐẦY ĐỦ tất cả điều kiện/trường hợp trong ngữ cảnh, không bỏ sót.",
+    "factual": "Trả lời ngắn gọn tối đa 2-3 câu. Đưa kết luận/con số/tên gọi chính NGAY DÒNG ĐẦU. KHÔNG liệt kê chi tiết nếu câu hỏi chỉ hỏi 'bao nhiêu', 'gồm mấy loại', 'là gì'.",
+    "procedural": "Liệt kê các bước/thủ tục theo thứ tự, đánh số rõ ràng. Mỗi bước viết ngắn gọn 1 câu.",
+    "conditional": "Liệt kê ĐẦY ĐỦ tất cả điều kiện/trường hợp trong ngữ cảnh, không bỏ sót. Viết ngắn gọn mỗi điều kiện.",
     "synthesis": "Tổng hợp thông tin từ nhiều nguồn, trình bày từng chủ đề riêng biệt, có tiêu đề phân chia.",
 }
 
@@ -158,11 +160,16 @@ Câu hỏi hiện tại: {question}
         """
         Generate answer from context
         """
+        # Detect query type and use adaptive instruction
+        query_type = detect_query_type(question)
+        adaptive_suffix = QUERY_TYPE_SUFFIX.get(query_type, QUERY_TYPE_SUFFIX["factual"])
+        adaptive_text = f"Loại câu hỏi: {query_type}. {adaptive_suffix}"
+        
         raw_output = self.chain.invoke({
             "question": question,
             "context": context,
             "chat_history": chat_history or [],
-            "adaptive_instruction": "Hãy trả lời ngắn gọn, chính xác, đi thẳng vào vấn đề. Đặt kết luận/con số chính NGAY DÒNG ĐẦU:"
+            "adaptive_instruction": adaptive_text
         })
 
         cleaned = self._clean_template_output(raw_output)
