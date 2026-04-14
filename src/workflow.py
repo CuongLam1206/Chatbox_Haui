@@ -101,7 +101,7 @@ class AgenticRAG:
         
         # Adaptive k: adjust retrieval depth by query complexity
         complexity = estimate_query_complexity(question)
-        k_map = {"simple": 8, "medium": 10, "complex": 12}
+        k_map = {"simple": 5, "medium": 7, "complex": 10}
         k = k_map[complexity]
         print(f"[Retrieval] complexity={complexity} → k={k} | HyDE={'on' if ENABLE_HYDE else 'off'} | Decomp={'on' if ENABLE_DECOMPOSER else 'off'}")
         
