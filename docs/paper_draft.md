@@ -11,7 +11,7 @@ Số điện thoại: 0342322899
 
 ## TÓM TẮT
 
-Bài báo trình bày việc thiết kế và xây dựng hệ thống chatbot trợ lý sinh viên thông minh tại Trường Đại học Công nghiệp Hà Nội (HaUI), dựa trên kiến trúc Agentic RAG (Retrieval-Augmented Generation) kết hợp nhiều tác tử chuyên biệt. Hệ thống sử dụng mô hình ngôn ngữ lớn Gemini 2.0 Flash kết hợp với cơ chế truy xuất lai (Hybrid Search) gồm tìm kiếm ngữ nghĩa (ChromaDB) và tìm kiếm từ khóa (BM25) theo tỷ lệ 50:50. Kiến trúc đa tác tử bao gồm: Router phân loại truy vấn, Rewriter cải thiện câu hỏi, Grader đánh giá tài liệu theo lô, Reranker sắp xếp lại kết quả, và Generator tổng hợp câu trả lời. Thuật toán chia tách ngữ nghĩa (Semantic Chunking) được thiết kế riêng cho văn bản pháp quy tiếng Việt, bảo toàn cấu trúc Điều – Khoản – Phụ lục. Kết quả đánh giá bằng framework RAGAS trên bộ 64 câu hỏi thực tế cho thấy hệ thống đạt Faithfulness 97,50%, Context Recall 100%, Context Precision 93,05%, Answer Relevancy 78,14% và Answer Correctness 86,52% — vượt trội so với kiến trúc Naive RAG và các phương pháp cải tiến hiện hành. Hệ thống đã được triển khai trên Facebook Messenger phục vụ sinh viên toàn trường.
+Bài báo trình bày việc thiết kế và xây dựng hệ thống chatbot trợ lý sinh viên thông minh tại Trường Đại học Công nghiệp Hà Nội (HaUI), dựa trên kiến trúc Agentic RAG (Retrieval-Augmented Generation) kết hợp nhiều tác tử chuyên biệt. Hệ thống sử dụng mô hình ngôn ngữ lớn Gemini 2.0 Flash kết hợp với cơ chế truy xuất lai (Hybrid Search) gồm tìm kiếm ngữ nghĩa (ChromaDB) và tìm kiếm từ khóa (BM25) theo tỷ lệ 50:50. Kiến trúc đa tác tử bao gồm: Router phân loại truy vấn, Rewriter cải thiện câu hỏi, Grader đánh giá tài liệu theo lô, Reranker sắp xếp lại kết quả, và Generator tổng hợp câu trả lời. Thuật toán chia tách ngữ nghĩa (Semantic Chunking) được thiết kế riêng cho văn bản pháp quy tiếng Việt, bảo toàn cấu trúc Điều – Khoản – Phụ lục. Kết quả đánh giá bằng framework RAGAS trên bộ 64 câu hỏi thực tế cho thấy hệ thống đạt Faithfulness 98,20%, Context Recall 100%, Context Precision 93,58%, Answer Relevancy 77,80% và Answer Correctness 87,61% — vượt trội so với kiến trúc Naive RAG và các phương pháp cải tiến hiện hành. Hệ thống đã được triển khai trên Facebook Messenger phục vụ sinh viên toàn trường.
 
 **Từ khóa:** Truy xuất tăng cường sinh; Mô hình ngôn ngữ lớn; Chatbot đa tác tử; Tìm kiếm lai; Văn bản pháp quy tiếng Việt
 
@@ -19,7 +19,7 @@ Bài báo trình bày việc thiết kế và xây dựng hệ thống chatbot t
 
 ## ABSTRACT
 
-This paper presents the design and implementation of an intelligent student assistant chatbot at Hanoi University of Industry (HaUI), based on the Agentic RAG (Retrieval-Augmented Generation) architecture integrating multiple specialized agents. The system employs the Gemini 2.0 Flash large language model combined with a Hybrid Search mechanism consisting of semantic search (ChromaDB) and keyword search (BM25) at a 50:50 ratio. The multi-agent architecture includes: a Router for query classification into six routes, a Rewriter for query optimization, a Grader for batch document relevance evaluation, a Reranker for result re-ordering, and a Generator for answer synthesis. A domain-specific Semantic Chunking algorithm is designed for Vietnamese legal documents, preserving the structural integrity of Articles, Clauses, and Appendices. Evaluation using the RAGAS framework on a 64-question real-world test set achieves Faithfulness of 97.50%, Context Recall of 100%, Context Precision of 93.05%, Answer Relevancy of 78.14%, and Answer Correctness of 86.52% — significantly outperforming Naive RAG and state-of-the-art approaches including CRAG and Self-RAG. The system has been deployed on Facebook Messenger to serve all university students.
+This paper presents the design and implementation of an intelligent student assistant chatbot at Hanoi University of Industry (HaUI), based on the Agentic RAG (Retrieval-Augmented Generation) architecture integrating multiple specialized agents. The system employs the Gemini 2.0 Flash large language model combined with a Hybrid Search mechanism consisting of semantic search (ChromaDB) and keyword search (BM25) at a 50:50 ratio. The multi-agent architecture includes: a Router for query classification into six routes, a Rewriter for query optimization, a Grader for batch document relevance evaluation, a Reranker for result re-ordering, and a Generator for answer synthesis. A domain-specific Semantic Chunking algorithm is designed for Vietnamese legal documents, preserving the structural integrity of Articles, Clauses, and Appendices. Evaluation using the RAGAS framework on a 64-question real-world test set achieves Faithfulness of 98.20%, Context Recall of 100%, Context Precision of 93.58%, Answer Relevancy of 77.80%, and Answer Correctness of 87.61% — significantly outperforming Naive RAG and state-of-the-art approaches including CRAG and Self-RAG. The system has been deployed on Facebook Messenger to serve all university students.
 
 **Keywords:** Retrieval-Augmented Generation; Large Language Models; Multi-agent chatbot; Hybrid search; Vietnamese legal documents
 
@@ -241,23 +241,23 @@ Bộ test gồm **64 câu hỏi thực tế** được xây dựng dựa trên c
 
 | Chỉ số RAGAS | Thành phần đánh giá | Kết quả |
 |--------------|--------------------|---------| 
-| Faithfulness (Độ trung thực) | Generation | **97,50%** |
+| Faithfulness (Độ trung thực) | Generation | **98,20%** |
 | Context Recall (Độ phủ ngữ cảnh) | Retrieval | **100%** |
-| Context Precision (Độ chính xác ngữ cảnh) | Retrieval | **93,05%** |
-| Answer Relevancy (Độ liên quan câu trả lời) | Generation | **78,14%** |
-| Answer Correctness (Độ chính xác câu trả lời) | End-to-End | **86,52%** |
+| Context Precision (Độ chính xác ngữ cảnh) | Retrieval | **93,58%** |
+| Answer Relevancy (Độ liên quan câu trả lời) | Generation | **77,80%** |
+| Answer Correctness (Độ chính xác câu trả lời) | End-to-End | **87,61%** |
 
 **Phân tích kết quả chi tiết:**
 
-*Về Faithfulness (97,50%):* Đây là chỉ số quan trọng nhất, đo lường mức độ câu trả lời bám sát ngữ cảnh truy xuất được mà không bịa đặt thông tin. Kết quả 97,50% chứng tỏ hệ thống gần như loại bỏ hoàn toàn hiện tượng ảo giác. Kết quả này tương đương mức yêu cầu của các hệ thống RAG trong lĩnh vực y tế (>95%) và vượt xa mức trung bình 70-85% của Naive RAG [2].
+*Về Faithfulness (98,20%):* Đây là chỉ số quan trọng nhất, đo lường mức độ câu trả lời bám sát ngữ cảnh truy xuất được mà không bịa đặt thông tin. Kết quả 98,20% chứng tỏ hệ thống gần như loại bỏ hoàn toàn hiện tượng ảo giác. Kết quả này tương đương mức yêu cầu của các hệ thống RAG trong lĩnh vực y tế (>95%) và vượt xa mức trung bình 70-85% của Naive RAG [2].
 
 *Về Context Recall (100%):* Bộ truy xuất tìm được đầy đủ 100% thông tin cần thiết từ CSDL cho mọi câu hỏi trong bộ test — nhờ sự kết hợp hiệu quả giữa Hybrid Search (Vector + BM25) và chiến lược tiêm tri thức theo ý định (Intent-based Article Injection).
 
-*Về Context Precision (93,05%):* Chỉ số này đánh giá khả năng xếp hạng ưu tiên tài liệu liên quan hàng đầu. Kết quả 93,05% cho thấy tài liệu đúng được đẩy lên vị trí cao trong danh sách kết quả nhờ Grader Agent loại bỏ tài liệu không liên quan và Reranker Agent chấm điểm lại.
+*Về Context Precision (93,58%):* Chỉ số này đánh giá khả năng xếp hạng ưu tiên tài liệu liên quan hàng đầu. Kết quả 93,58% cho thấy tài liệu đúng được đẩy lên vị trí cao trong danh sách kết quả nhờ Grader Agent loại bỏ tài liệu không liên quan và Reranker Agent chấm điểm lại.
 
-*Về Answer Relevancy (78,14%):* Chỉ số thấp hơn do đặc thù thiết kế: hệ thống được cấu hình trả lời chi tiết, đầy đủ (bao gồm trích dẫn Điều, Khoản cụ thể và liên kết Google Drive) thay vì trả lời ngắn gọn. RAGAS phạt điểm khi câu trả lời chứa thông tin bổ sung ngoài phạm vi câu hỏi, mặc dù thông tin bổ sung này có giá trị thực tiễn cho sinh viên.
+*Về Answer Relevancy (77,80%):* Chỉ số thấp hơn do đặc thù thiết kế: hệ thống được cấu hình trả lời chi tiết, đầy đủ (bao gồm trích dẫn Điều, Khoản cụ thể và liên kết Google Drive) thay vì trả lời ngắn gọn. RAGAS phạt điểm khi câu trả lời chứa thông tin bổ sung ngoài phạm vi câu hỏi, mặc dù thông tin bổ sung này có giá trị thực tiễn cho sinh viên.
 
-*Về Answer Correctness (86,52%):* Chỉ số End-to-End kết hợp cả semantic similarity và factual correctness giữa câu trả lời và ground truth. Kết quả 86,52% cho thấy hệ thống trả lời chính xác và đầy đủ so với đáp án tham chiếu.
+*Về Answer Correctness (87,61%):* Chỉ số End-to-End kết hợp cả semantic similarity và factual correctness giữa câu trả lời và ground truth. Kết quả 87,61% cho thấy hệ thống trả lời chính xác và đầy đủ so với đáp án tham chiếu.
 
 ### 3.6. So sánh với các phương pháp tiếp cận khác
 
@@ -290,7 +290,7 @@ Bảng 5 so sánh kết quả RAGAS của hệ thống đề xuất với các n
 
 | Hệ thống | Kiến trúc | LLM | Faithfulness | Ctx Recall | Ctx Precision | Ans Relevancy |
 |:---|:---|:---|:---:|:---:|:---:|:---:|
-| **HaUI (đề xuất)** | **Agentic RAG** | **Gemini 2.0 Flash** | **97,50%** | **100%** | **93,05%** | **78,14%** |
+| **HaUI (đề xuất)** | **Agentic RAG** | **Gemini 2.0 Flash** | **98,20%** | **100%** | **93,58%** | **77,80%** |
 | Hartono et al. [12] | Naive RAG | Gemma2-2b | 78% | 68% | 81% | 64% |
 | Naive RAG baseline [2] | Naive RAG | GPT-3.5 | ~75% | ~65% | ~72% | ~68% |
 | Advanced RAG + HyDE [2] | Advanced RAG | GPT-4 | ~88% | ~82% | ~87% | ~75% |
@@ -298,9 +298,9 @@ Bảng 5 so sánh kết quả RAGAS của hệ thống đề xuất với các n
 | Self-RAG [6] | Self-reflective | Llama-2 13B | ~87% | — | — | — |
 | InfoGain-RAG [15] | Filtering RAG | GPT-4 | ~92% | — | ~90% | — |
 
-So sánh trực tiếp nhất là với nghiên cứu của Hartono và cộng sự [12] — cùng domain chatbot đại học, cùng sử dụng RAGAS để đánh giá. Kết quả cho thấy hệ thống đề xuất vượt trội ở mọi chỉ số: Faithfulness cao hơn 19,50 điểm phần trăm (97,50% so với 78%), Context Recall cao hơn 32 điểm phần trăm (100% so với 68%), Context Precision cao hơn 12,05 điểm phần trăm, và Answer Relevancy cao hơn 14,14 điểm phần trăm. Sự khác biệt đáng kể này đến từ việc hệ thống đề xuất sử dụng kiến trúc đa tác tử với các bước sàng lọc tài liệu (Grader, Reranker), trong khi Hartono et al. sử dụng Naive RAG không có cơ chế lọc.
+So sánh trực tiếp nhất là với nghiên cứu của Hartono và cộng sự [12] — cùng domain chatbot đại học, cùng sử dụng RAGAS để đánh giá. Kết quả cho thấy hệ thống đề xuất vượt trội ở mọi chỉ số: Faithfulness cao hơn 20,20 điểm phần trăm (98,20% so với 78%), Context Recall cao hơn 32 điểm phần trăm (100% so với 68%), Context Precision cao hơn 12,58 điểm phần trăm, và Answer Relevancy cao hơn 13,80 điểm phần trăm. Sự khác biệt đáng kể này đến từ việc hệ thống đề xuất sử dụng kiến trúc đa tác tử với các bước sàng lọc tài liệu (Grader, Reranker), trong khi Hartono et al. sử dụng Naive RAG không có cơ chế lọc.
 
-So với các phương pháp cải tiến khác, Faithfulness 97,50% của hệ thống đề xuất cao hơn CRAG (~90%) và Self-RAG (~87%). Điều này cho thấy sự kết hợp đồng thời nhiều tác tử chuyên biệt mang lại hiệu quả tổng hợp (synergy effect) vượt trội so với việc chỉ áp dụng riêng lẻ từng kỹ thuật.
+So với các phương pháp cải tiến khác, Faithfulness 98,20% của hệ thống đề xuất cao hơn CRAG (~90%) và Self-RAG (~87%). Điều này cho thấy sự kết hợp đồng thời nhiều tác tử chuyên biệt mang lại hiệu quả tổng hợp (synergy effect) vượt trội so với việc chỉ áp dụng riêng lẻ từng kỹ thuật.
 
 ### 3.7. Hạn chế của nghiên cứu
 
@@ -326,7 +326,7 @@ Bài báo đã trình bày việc thiết kế và xây dựng thành công hệ
 
 2. **Thuật toán Semantic Chunking cho văn bản pháp quy tiếng Việt**: Đóng góp mới trong lĩnh vực xử lý ngôn ngữ tự nhiên tiếng Việt, bảo toàn hoàn toàn cấu trúc Chương – Điều – Khoản – Phụ lục và gắn metadata chi tiết cho từng chunk.
 
-3. **Hiệu suất vượt trội**: Đánh giá trên bộ 64 câu hỏi bằng RAGAS cho thấy hệ thống đạt Faithfulness 97,50%, Context Recall 100%, Context Precision 93,05%, và Answer Correctness 86,52%. So với nghiên cứu tương đương [12], hệ thống cải thiện Faithfulness 19,50 điểm phần trăm và Context Recall 32 điểm phần trăm.
+3. **Hiệu suất vượt trội**: Đánh giá trên bộ 64 câu hỏi bằng RAGAS cho thấy hệ thống đạt Faithfulness 98,20%, Context Recall 100%, Context Precision 93,58%, và Answer Correctness 87,61%. So với nghiên cứu tương đương [12], hệ thống cải thiện Faithfulness 20,20 điểm phần trăm và Context Recall 32 điểm phần trăm.
 
 4. **Cơ chế Batch Grading**: Giảm số lượng API call đánh giá tài liệu từ *k* xuống 1 so với CRAG [5], tiết kiệm chi phí và giảm độ trễ.
 
