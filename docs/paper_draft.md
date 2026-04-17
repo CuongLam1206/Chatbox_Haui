@@ -249,7 +249,6 @@ Bộ test gồm **64 câu hỏi thực tế** được xây dựng dựa trên c
 
 | Chỉ số RAGAS | Thành phần đánh giá | Kết quả |
 |--------------|--------------------|---------| 
-<<<<<<< HEAD
 | Faithfulness (Độ trung thực) | Generation | **98,20%** |
 | Context Recall (Độ phủ ngữ cảnh) | Retrieval | **100%** |
 | Context Precision (Độ chính xác ngữ cảnh) | Retrieval | **93,58%** |
@@ -258,7 +257,7 @@ Bộ test gồm **64 câu hỏi thực tế** được xây dựng dựa trên c
 
 **Phân tích kết quả chi tiết:**
 
-*Về Faithfulness (98,20%):* Đây là chỉ số quan trọng nhất, đo lường mức độ câu trả lời bám sát ngữ cảnh truy xuất được mà không bịa đặt thông tin. Kết quả 98,20% chứng tỏ hệ thống gần như loại bỏ hoàn toàn hiện tượng ảo giác. Kết quả này tương đương mức yêu cầu của các hệ thống RAG trong lĩnh vực y tế (>95%) và vượt xa mức trung bình 70-85% của Naive RAG [2].
+*Về Faithfulness (98,20%):* Đây là chỉ số quan trọng nhất, đo lường mức độ câu trả lời bám sát ngữ cảnh truy xuất được mà không bịa đặt thông tin. Kết quả 98,20% chứng tỏ hệ thống gần như loại bỏ hoàn toàn hiện tượng ảo giác. Kết quả này vượt mức yêu cầu của các hệ thống RAG trong lĩnh vực y tế (>95%) và vượt xa mức trung bình 70-85% của Naive RAG [2].
 
 *Về Context Recall (100%):* Bộ truy xuất tìm được đầy đủ 100% thông tin cần thiết từ CSDL cho mọi câu hỏi trong bộ test — nhờ sự kết hợp hiệu quả giữa Hybrid Search (Vector + BM25) và chiến lược tiêm tri thức theo ý định (Intent-based Article Injection).
 
@@ -267,25 +266,6 @@ Bộ test gồm **64 câu hỏi thực tế** được xây dựng dựa trên c
 *Về Answer Relevancy (77,80%):* Chỉ số thấp hơn do đặc thù thiết kế: hệ thống được cấu hình trả lời chi tiết, đầy đủ (bao gồm trích dẫn Điều, Khoản cụ thể và liên kết Google Drive) thay vì trả lời ngắn gọn. RAGAS phạt điểm khi câu trả lời chứa thông tin bổ sung ngoài phạm vi câu hỏi, mặc dù thông tin bổ sung này có giá trị thực tiễn cho sinh viên.
 
 *Về Answer Correctness (87,61%):* Chỉ số End-to-End kết hợp cả semantic similarity và factual correctness giữa câu trả lời và ground truth. Kết quả 87,61% cho thấy hệ thống trả lời chính xác và đầy đủ so với đáp án tham chiếu.
-=======
-| Faithfulness (Độ trung thực) | Generation | **99,22%** |
-| Context Recall (Độ phủ ngữ cảnh) | Retrieval | **100%** |
-| Context Precision (Độ chính xác ngữ cảnh) | Retrieval | **91,10%** |
-| Answer Relevancy (Độ liên quan câu trả lời) | Generation | **78,02%** |
-| Answer Correctness (Độ chính xác câu trả lời) | End-to-End | **85,35%** |
-
-**Phân tích kết quả chi tiết:**
-
-*Về Faithfulness (99,22%):* Đây là chỉ số quan trọng nhất, đo lường mức độ câu trả lời bám sát ngữ cảnh truy xuất được mà không bịa đặt thông tin. Kết quả 99,22% chứng tỏ hệ thống gần như loại bỏ hoàn toàn hiện tượng ảo giác. Kết quả này vượt mức yêu cầu của các hệ thống RAG trong lĩnh vực y tế (>95%) và vượt xa mức trung bình 70-85% của Naive RAG [2].
-
-*Về Context Recall (100%):* Bộ truy xuất tìm được đầy đủ 100% thông tin cần thiết từ CSDL cho mọi câu hỏi trong bộ test — nhờ sự kết hợp hiệu quả giữa Hybrid Search (Vector + BM25) và chiến lược tiêm tri thức theo ý định (Intent-based Article Injection).
-
-*Về Context Precision (91,10%):* Chỉ số này đánh giá khả năng xếp hạng ưu tiên tài liệu liên quan hàng đầu. Kết quả 91,10% cho thấy tài liệu đúng được đẩy lên vị trí cao trong danh sách kết quả nhờ Grader Agent loại bỏ tài liệu không liên quan và Reranker Agent chấm điểm lại.
-
-*Về Answer Relevancy (78,02%):* Chỉ số thấp hơn do đặc thù thiết kế: hệ thống được cấu hình trả lời chi tiết, đầy đủ (bao gồm trích dẫn Điều, Khoản cụ thể và liên kết Google Drive) thay vì trả lời ngắn gọn. RAGAS phạt điểm khi câu trả lời chứa thông tin bổ sung ngoài phạm vi câu hỏi, mặc dù thông tin bổ sung này có giá trị thực tiễn cho sinh viên.
-
-*Về Answer Correctness (85,35%):* Chỉ số End-to-End kết hợp cả semantic similarity và factual correctness giữa câu trả lời và ground truth. Kết quả 85,35% cho thấy hệ thống trả lời chính xác và đầy đủ so với đáp án tham chiếu.
->>>>>>> 39b70524bfe53dc550b7b2b625d0c60bf6780837
 
 ### 3.6. So sánh với các phương pháp tiếp cận khác
 
