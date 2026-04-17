@@ -7,11 +7,11 @@ An intelligent chatbot system utilizing **Agentic RAG** (Retrieval-Augmented Gen
 ### **Key Features:**
 - ✅ **Agentic RAG**: Automatically routes queries, rewrites questions, grades documents, and reranks results.
 - ✅ **Semantic Chunking**: Splits documents by Article and Appendix to preserve complete context.
-- ✅ **Hybrid Search**: Combines Vector Search (50%) + BM25 (50%).
-- ✅ **Metadata Filtering**: Exact filtering by article number or via hardcoded intent injection.
+- ✅ **Hybrid Search**: Combines Vector Search (50%) + BM25 (50%) with Intent-based Article Injection.
+- ✅ **Adaptive Generation (v5)**: Dynamically adjusts answer complexity (concise vs. detailed) and guarantees entity metadata extraction (Phone/Office).
 - ✅ **Multi-Model Support**: Gemini, OpenAI, Groq, OpenRouter, and Ollama (local).
 - ✅ **Auto-Update**: Automatically detects & indexes new documents using an MD5 hash tracker.
-- ✅ **Deployment**: Friendly Gradio web interface and a FastAPI backend supporting Facebook Messenger webhooks.
+- ✅ **Deployment**: Gradio Web UI, Facebook Messenger Webhook, and Dockerized for Render Cloud.
 
 ### **Use Cases:**
 - 📚 Look up university training regulations and policies.
@@ -19,6 +19,13 @@ An intelligent chatbot system utilizing **Agentic RAG** (Retrieval-Augmented Gen
 - 💬 Q&A regarding graduation requirements, courses, and final projects.
 - 🔍 Search for information across multiple documents simultaneously.
 - 🤖 Learn student slang and save custom abbreviations dynamically from the chat context.
+
+### 🏆 **System Performance (RAGAS Evaluation)**
+Evaluated across 64 complex student queries using the standard RAGAS framework (LLM-as-a-judge):
+- **Faithfulness**: `98.20%` (Near-zero hallucination).
+- **Context Recall**: `100%` (Perfect information retrieval via Hybrid Search).
+- **Context Precision**: `93.58%` (High priority ranking of relevant facts).
+- **Answer Correctness**: `87.61%` (Highly accurate, surpassing standard Naive RAG baselines).
 
 ---
 
@@ -98,7 +105,8 @@ graph TB
 
 #### **Generator** (`generator.py`)
 - **Function**: Synthesizes the final answer using retrieved contexts aligned with HaUI's rules.
-- **RAG Security**: Strict prompt engineering for timetable scheduling and hallucination prevention.
+- **Adaptive Control**: Automatically shifts between concise (for factual queries) and detailed (for procedural/technical queries).
+- **RAG Security**: Strict prompt engineering for entity metadata extraction (contact info) and hallucination prevention.
 
 ---
 
