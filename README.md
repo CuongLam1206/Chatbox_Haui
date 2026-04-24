@@ -2,6 +2,43 @@
 
 An intelligent chatbot system utilizing **Agentic RAG** (Retrieval-Augmented Generation) to answer queries regarding training regulations at Hanoi University of Industry (HaUI).
 
+# 🎓 University Chatbot – User Guide
+
+Welcome! 👋
+You can access and use the university chatbot via Facebook Messenger at the link below:
+
+👉 [https://www.facebook.com/profile.php?id=61587469763306](https://www.facebook.com/profile.php?id=61587469763306)
+
+---
+
+## 🚀 How to Use
+
+1. Open the Facebook link above
+2. Click **"Message"**
+3. Send your question (e.g., curriculum, credits, schedule, etc.)
+4. The chatbot will automatically respond
+
+---
+
+## ⏳ Important Note
+
+* This chatbot is deployed on **Render (free tier)**
+* After a period of inactivity, the service may go to **sleep mode**
+* When you send a message after it has been idle, it may take around **5–10 minutes to restart**
+
+👉 If you don’t receive a response immediately, please **wait a few minutes** and try sending your message again.
+
+---
+
+## 💡 Tips
+
+* Ask clear and concise questions for better responses
+* Try rephrasing your question if needed
+
+---
+
+Thank you for using the chatbot! 🙌
+
 ## 🎯 Overview
 
 ### **Key Features:**
