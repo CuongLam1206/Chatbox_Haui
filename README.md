@@ -1,43 +1,39 @@
-# Agentic RAG Chatbot - HaUI Smart Assistant
+# 🎓 Hướng dẫn sử dụng Chatbot Trường
 
-An intelligent chatbot system utilizing **Agentic RAG** (Retrieval-Augmented Generation) to answer queries regarding training regulations at Hanoi University of Industry (HaUI).
-
-# 🎓 University Chatbot – User Guide
-
-Welcome! 👋
-You can access and use the university chatbot via Facebook Messenger at the link below:
+Chào bạn! 👋
+Bạn có thể sử dụng chatbot hỗ trợ thông tin của trường thông qua Facebook Messenger tại link dưới đây:
 
 👉 [https://www.facebook.com/profile.php?id=61587469763306](https://www.facebook.com/profile.php?id=61587469763306)
 
 ---
 
-## 🚀 How to Use
+## 🚀 Cách sử dụng
 
-1. Open the Facebook link above
-2. Click **"Message"**
-3. Send your question (e.g., curriculum, credits, schedule, etc.)
-4. The chatbot will automatically respond
-
----
-
-## ⏳ Important Note
-
-* This chatbot is deployed on **Render (free tier)**
-* After a period of inactivity, the service may go to **sleep mode**
-* When you send a message after it has been idle, it may take around **5–10 minutes to restart**
-
-👉 If you don’t receive a response immediately, please **wait a few minutes** and try sending your message again.
+1. Truy cập vào link Facebook bên trên
+2. Nhấn **"Nhắn tin" (Message)**
+3. Gửi câu hỏi của bạn (ví dụ: chương trình học, tín chỉ, lịch học,...)
+4. Chatbot sẽ tự động phản hồi
 
 ---
 
-## 💡 Tips
+## ⏳ Lưu ý quan trọng
 
-* Ask clear and concise questions for better responses
-* Try rephrasing your question if needed
+* Chatbot được deploy trên **Render (bản miễn phí)**
+* Khi không có người dùng trong một thời gian, hệ thống sẽ **tự động sleep**
+* Khi bạn nhắn tin lần đầu sau thời gian idle, chatbot có thể mất khoảng **5–10 phút để khởi động lại**
+
+👉 Vì vậy, nếu chưa thấy phản hồi ngay, bạn vui lòng **chờ một chút** và gửi lại tin nhắn nếu cần.
 
 ---
 
-Thank you for using the chatbot! 🙌
+## 💡 Gợi ý
+
+* Hỏi ngắn gọn, rõ ràng để chatbot trả lời tốt hơn
+* Có thể thử nhiều cách hỏi khác nhau nếu chưa nhận được kết quả mong muốn
+
+---
+
+Cảm ơn bạn đã sử dụng chatbot! 🙌
 
 ## 🎯 Overview
 
