@@ -4,6 +4,7 @@ Chào bạn! 👋
 Bạn có thể sử dụng chatbot hỗ trợ thông tin của trường thông qua Facebook Messenger tại link dưới đây:
 
 👉 [https://www.facebook.com/profile.php?id=61587469763306](https://www.facebook.com/profile.php?id=61587469763306)
+Phạm vi câu hỏi nằm trong các tài liệu sau: https://drive.google.com/drive/folders/1TMHD8WuqQOwqFC1Ef8L1qEZYajlL48v_?usp=drive_link
 
 ---
 
